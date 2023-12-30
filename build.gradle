@@ -8,8 +8,10 @@ group = 'com.kuit'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+	sourceCompatibility = JavaVersion.VERSION_17
 }
+
+
 
 configurations {
 	compileOnly {
@@ -32,4 +34,9 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+bootJar {
+	enabled = true
+	archiveFileName = 'char-diary-app-0.0.1-SNAPSHOT.jar'
 }
