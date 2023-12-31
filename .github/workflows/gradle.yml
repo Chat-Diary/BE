@@ -9,9 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "CHAT-63-DevOps-ToolChain" ]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "CHAT-63-DevOps-ToolChain" ]
 
 permissions:
   contents: read
@@ -30,7 +30,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Gradle
-        run: ./gradlew build  # 직접 Gradle 빌드 명령 실행
+        run: ./gradlew --warning-mode all build
 
   deploy:
     runs-on: ubuntu-latest
@@ -48,10 +48,11 @@ jobs:
 
       - name: Check if JAR file exists
         run: |
-          if [ -f "./build/libs/*.jar" ]; then
+          if [ -f "./build/libs/char-diary-app-0.0.1-SNAPSHOT.jar" ]; then
             echo "JAR file exists"
           else
             echo "JAR file does not exist"
+      
           fi
           
       - name: Copy jar file to remote
@@ -60,7 +61,7 @@ jobs:
           username: ec2-user
           host: ${{ secrets.HOST }}
           key: ${{ secrets.PRIVATE_KEY }}
-          source: "./build/libs/*.jar"  # 빌드된 JAR 파일 위치
+          source: "./build/libs/char-diary-app-0.0.1-SNAPSHOT.jar"          
           target: "/home/ec2-user/cicd"
 
       - name: Copy deploy script file to remote
