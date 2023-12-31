@@ -30,7 +30,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Gradle
-        run: ./gradlew --warning-mode all build
+        run: ./gradlew --warning-mode all build -i
 
   deploy:
     runs-on: ubuntu-latest
@@ -48,11 +48,10 @@ jobs:
 
       - name: Check if JAR file exists
         run: |
-          if [ -f "./build/libs/char-diary-app-0.0.1-SNAPSHOT.jar" ]; then
+          if [ -f "./build/libs/chatdiary-0.0.1-SNAPSHOT-plain.jar" ]; then
             echo "JAR file exists"
           else
             echo "JAR file does not exist"
-      
           fi
           
       - name: Copy jar file to remote
@@ -61,8 +60,17 @@ jobs:
           username: ec2-user
           host: ${{ secrets.HOST }}
           key: ${{ secrets.PRIVATE_KEY }}
-          source: "./build/libs/char-diary-app-0.0.1-SNAPSHOT.jar"          
+          source: "./build/libs/chatdiary-0.0.1-SNAPSHOT-plain.jar"
           target: "/home/ec2-user/cicd"
+
+      - name: Check deploy script exists
+        run: |
+          if [ -f deploy.sh ]; then
+            echo "deploy.sh exists"
+          else
+            echo "deploy.sh does not exist"
+            exit 1
+          fi
 
       - name: Copy deploy script file to remote
         uses: appleboy/scp-action@master
@@ -73,6 +81,20 @@ jobs:
           source: "deploy.sh"
           target: "/home/ec2-user/cicd"
 
+      - name: Set up Environment Variables
+        env:
+          DEPLOY_SERVER: ${{ secrets.HOST }}
+          DEPLOY_USER: ${{ secrets.USERNAME }}
+          DEPLOY_KEY: ${{ secrets.PRIVATE_KEY }}
+          DEPLOY_TARGET_DIR: /home/ec2-user/app
+        run: |
+          # You can add any necessary environment setup here
+          echo "Setting up environment variables..."
+          echo "DEPLOY_SERVER=$DEPLOY_SERVER"
+          echo "DEPLOY_USER=$DEPLOY_USER"
+          echo "DEPLOY_KEY=$DEPLOY_KEY"
+          echo "DEPLOY_TARGET_DIR=$DEPLOY_TARGET_DIR"
+      
       - name: Execute deploy script
         uses: appleboy/ssh-action@master
         with:
@@ -82,4 +104,3 @@ jobs:
           script: |
             chmod +x /home/ec2-user/cicd/deploy.sh
             sh /home/ec2-user/cicd/deploy.sh
-
