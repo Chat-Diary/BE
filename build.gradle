@@ -39,4 +39,5 @@ tasks.named('test') {
 bootJar {
 	enabled = true
 	archiveFileName = 'char-diary-app-0.0.1-SNAPSHOT.jar'
+	destinationDirectory = file('./build/libs')
 }
