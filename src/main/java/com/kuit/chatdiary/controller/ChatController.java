@@ -5,9 +5,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -17,8 +19,8 @@ public class ChatController {
 
     private String apiKey="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";
 
-    @PostMapping("/ask")
-    public ResponseEntity<String> ask(@RequestBody Map<String, String> prompt) {
+    @PostMapping("/askTest")
+    public ResponseEntity<String> test(@RequestBody Map<String, String> prompt) {
         RestTemplate restTemplate = new RestTemplate();
         String apiUrl = "https://api.openai.com/v1/chat/completions";
 
@@ -36,10 +38,12 @@ public class ChatController {
 
         HttpEntity<String> entity = new HttpEntity<>(body.toString(), headers);
 
+        System.out.println("hello");
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, entity, String.class);
             return response;
-        } catch (Exception e) {
+        } catch (RestClientException e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
