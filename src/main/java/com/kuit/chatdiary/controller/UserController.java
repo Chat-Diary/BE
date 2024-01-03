@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class UserController {
-    @ResponseBody
     @GetMapping("/user")
     public String user() {
-        return "user";
+        return "forward:/user.html";
     }
 }
+

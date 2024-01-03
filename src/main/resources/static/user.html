@@ -2,9 +2,146 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>user</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+  body { font-family: Arial, sans-serif; }
+  .hide-link-text {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+    .section-title {
+      margin-top: 2rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      position: relative;
+    }
+
+    .project-details {
+      font-size: 1.1rem;
+    }
+    .project-description {
+      font-size: 1.2rem;
+    }
+    .role {
+      font-size: 1.1rem;
+    }
+    .footer-space {
+      margin-bottom: 6rem;
+    }
+  .chat-container {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    height: 350px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: scroll;
+  }
+  .chat-box {
+    background: #eee;
+    padding: 5px;
+    margin: 10px 0;
+    border-radius: 5px;
+    max-width: 200px;
+  }
+  .mine {
+    background: lightblue;
+    margin-left: auto;
+  }
+  .input-area {
+    margin: auto;
+    display: flex;
+    margin-top: 10px;
+    max-width: 400px;
+    width: 100%;
+  }
+  input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    margin-right: 5px;
+    border: 1px solid #ddd;
+  }
+  button {
+    padding: 10px;
+    border: none;
+    background: #5b9bd5;
+    color: white;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #4a8bc2;
+  }
+</style>
 </head>
 <body>
-    hello user
+
+<br><br><br><br><br><br>
+<div class="chat-container" id="chatContainer">
+
+</div>
+
+<div class="input-area">
+    <input type="text" id="inputBox" placeholder="Type a message...">
+    <button id="sendButton">Send</button>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+     async function sendToOpenAI(message) {
+      try {
+        const response = await fetch('/ask', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ prompt: message })
+        });
+        const data = await response.json();
+        console.log("Response data:", data); // 서버 응답 로깅
+
+        // 서버 응답에서 필요한 텍스트 추출
+        if (data.choices && data.choices.length > 0 && data.choices[0].message && data.choices[0].message.content) {
+            const aiResponse = data.choices[0].message.content.trim();
+            displayMessage(aiResponse, 'yours');
+        } else {
+            console.error('Invalid response structure:', data);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+
+    function sendMessage() {
+      var inputBox = document.querySelector('#inputBox');
+      var message = inputBox.value.trim();
+
+      if (message) {
+        displayMessage(message, 'mine');
+        sendToOpenAI(message);
+        inputBox.value = '';
+      }
+    }
+
+    function displayMessage(message, className) {
+      var chatContainer = document.querySelector('#chatContainer');
+      var messageElement = document.createElement('div');
+      messageElement.classList.add('chat-box', className);
+      messageElement.textContent = message;
+      chatContainer.appendChild(messageElement);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    document.querySelector('#sendButton').addEventListener('click', sendMessage);
+    document.querySelector('#inputBox').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+
 </body>
 </html>
