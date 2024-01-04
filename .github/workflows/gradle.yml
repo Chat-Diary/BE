@@ -2,7 +2,7 @@ name: Java CI/CD with Gradle
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "develop", "CHAT-147-OpenAI-API-integration" ]
   pull_request:
     branches: [ "develop" ]
 
