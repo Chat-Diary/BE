@@ -24,6 +24,8 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew --warning-mode all build -i
+        env:
+          OPEN_AI_KEY: ${{ secrets.OPEN_AI_KEY }}
 
   docker-build:
     runs-on: ubuntu-latest
@@ -47,9 +49,9 @@ jobs:
       - name: Docker Hub build & push
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PWD }}
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }} .          
+          docker build --build-arg OPEN_AI_KEY=${{ secrets.OPEN_AI_KEY }} -t chatdiary/chatdiary-image:latest .
           docker images
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}
+          docker push chatdiary/chatdiary-image:latest
 
       - name: deploy
         uses: appleboy/ssh-action@master
