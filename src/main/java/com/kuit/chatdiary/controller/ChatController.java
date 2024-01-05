@@ -1,6 +1,7 @@
 package com.kuit.chatdiary.controller;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,8 +17,8 @@ import java.util.Map;
 @RestController
 public class ChatController {
 
-    private String apiKey="현희 카톡 키값";
-
+    @Value("${OPEN_AI_KEY}")
+    private String OPEN_AI_KEY;
     @PostMapping("/ask")
     public ResponseEntity<String> ask(@RequestBody Map<String, String> prompt) {
         RestTemplate restTemplate = new RestTemplate();
@@ -33,7 +34,7 @@ public class ChatController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(apiKey);
+        headers.setBearerAuth(OPEN_AI_KEY);
 
         HttpEntity<String> entity = new HttpEntity<>(body.toString(), headers);
 
