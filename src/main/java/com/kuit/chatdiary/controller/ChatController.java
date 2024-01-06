@@ -36,6 +36,7 @@ public class ChatController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(OPEN_AI_KEY);
 
+
         HttpEntity<String> entity = new HttpEntity<>(body.toString(), headers);
 
         try {
