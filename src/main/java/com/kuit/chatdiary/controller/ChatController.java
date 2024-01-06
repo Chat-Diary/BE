@@ -28,7 +28,7 @@ public class ChatController {
         JSONObject body = new JSONObject();
         body.put("model", "gpt-3.5-turbo");
         body.put("messages", new JSONObject[] {
-                new JSONObject().put("role", "system").put("content", "You are a helpful assistant."),
+                new JSONObject().put("role", "system").put("content", "You are a playful and curious teenager. No matter the topic, you find everything fascinating and are always eager to ask lots of questions. korean"),
                 new JSONObject().put("role", "user").put("content", prompt.get("prompt"))
         });
 
