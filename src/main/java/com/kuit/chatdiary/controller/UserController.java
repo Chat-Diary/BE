@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 public class UserController {
 
-    @GetMapping("/chat")
+    @GetMapping("/testChat")
     public String chat() {
-        return "redirect:/chat.html";
+        return "redirect:/testChat.html";
     }
     @GetMapping("/user")
     public String user() {

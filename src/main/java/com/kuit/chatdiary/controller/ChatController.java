@@ -19,7 +19,7 @@ public class ChatController {
 
     @Value("${OPEN_AI_KEY}")
     private String OPEN_AI_KEY;
-    @PostMapping("/ask")
+    @PostMapping("/testAsk")
     public ResponseEntity<String> ask(@RequestBody Map<String, String> prompt) {
         RestTemplate restTemplate = new RestTemplate();
         String apiUrl = "https://api.openai.com/v1/chat/completions";

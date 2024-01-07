@@ -14,7 +14,7 @@ public class OpenAIController {
     @Autowired
     private final OpenAIService openAIService;
 
-    @GetMapping("/gpt")
+    @GetMapping("/testGpt")
     public ResponseEntity<?> openAI() {
         try {
             return ResponseEntity.ok().body(openAIService.getCompletion("안녕"));
