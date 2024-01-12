@@ -4,10 +4,16 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity(name = "chat")
 @Getter
 @NoArgsConstructor
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +29,8 @@ public class Chat {
 
     private String content;
 
-    private String chat_type;
+    @CreatedDate
+    private LocalDateTime chat_type;
 
     private String create_at;
 }
