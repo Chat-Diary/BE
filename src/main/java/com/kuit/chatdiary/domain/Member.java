@@ -34,7 +34,6 @@ public class Member {
     @ColumnDefault("ACTIVE")
     private String status;
 
-
     @OneToMany(mappedBy = "member")  // 자신이 연관관계 주인이 아님
     private List<Chat> chatList = new ArrayList<>();
 
