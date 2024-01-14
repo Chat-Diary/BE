@@ -29,14 +29,4 @@ public class DiaryInquiryService {
         return diaries;
     }
 
-    public List<Diary> getMonthlyDiaryPhotos(Long userId, int year,int month){
-        LocalDate firstDayOfMonth =LocalDate.of(year,month,1);
-        LocalDate lastDayOfMonth =firstDayOfMonth.plusMonths(1).minusDays(1);
-
-        List<Diary> diaries = diaryInquiryRepository.inquiryDiaryRange(userId,firstDayOfMonth,lastDayOfMonth);
-        diaries.forEach(diary -> diary.getPhotoList().size());
-        return diaries;
-    }
-
-
 }

@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class DiaryInquiryResponse {
+
     private Long diary_id;
     private Long user_id;
     private String day;

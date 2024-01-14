@@ -7,9 +7,11 @@ import lombok.Setter;
 @Setter
 public class DiaryInquiryRequest {
 
+
     private Long diary_id;
     private Long user_id;
     private String day;
     private String title;
     private String content;
+
 }
