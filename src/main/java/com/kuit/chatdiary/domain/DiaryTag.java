@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 public class DiaryTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long diary_tag_id;
+    @Column(name = "diary_tag_id")
+    private Long diaryTagId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="diary_id")

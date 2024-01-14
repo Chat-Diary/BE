@@ -11,7 +11,8 @@ import lombok.Setter;
 public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long photo_id;
+    @Column(name = "photo_id")
+    private Long photoId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="diary_id")
@@ -21,5 +22,6 @@ public class Photo {
     @JoinColumn(name = "chat_id")
     private Chat chat;
 
-    private String image_url;
+    @Column(name = "image_url")
+    private String imageUrl;
 }
