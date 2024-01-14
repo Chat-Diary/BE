@@ -1,6 +1,7 @@
 package com.kuit.chatdiary.domain;
 
 import jakarta.persistence.*;
+import lombok.Cleanup;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -18,17 +19,20 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) //auto increment
-    private Long user_id;
+    @Column(name = "user_id")
+    private Long userId;
 
     private String email;
 
     private String password;
 
     @CreatedDate
-    private LocalDateTime create_at;
+    @Column(name = "create_at")
+    private LocalDateTime createAt;
 
     @LastModifiedDate
-    private LocalDateTime update_at;
+    @Column(name = "update_at")
+    private LocalDateTime updateAt;
 
     @ColumnDefault("ACTIVE")
     private String status;

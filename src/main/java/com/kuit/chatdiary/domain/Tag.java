@@ -14,10 +14,13 @@ import java.util.List;
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tag_id;
+    @Column(name = "tag_id")
+    private Long tagId;
 
     private String category;
-    private String tag_name;
+
+    @Column(name = "tag_name")
+    private String tagName;
 
     @OneToMany(mappedBy = "tag")
     private List<DiaryTag> diaryTagList = new ArrayList<>();

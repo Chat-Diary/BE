@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long chat_id;
+    @Column(name = "chat_id")
+    private Long chatId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
@@ -29,7 +30,9 @@ public class Chat {
     private String content;
 
     @CreatedDate
-    private LocalDateTime create_at;
+    @Column(name = "create_at")
+    private LocalDateTime createAt;
 
-    private String chat_type;
+    @Column(name = "chat_type")
+    private String chatType;
 }

@@ -21,7 +21,8 @@ import java.util.List;
 public class Diary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long diary_id;
+    @Column(name = "diary_id")
+    private Long diaryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
@@ -34,10 +35,12 @@ public class Diary {
     private String content;
 
     @CreatedDate
-    private LocalDateTime create_at;
+    @Column(name = "create_at")
+    private LocalDateTime createAt;
 
     @LastModifiedDate
-    private LocalDateTime update_at;
+    @Column(name = "update_at")
+    private LocalDateTime updateAt;
 
     @ColumnDefault("ACTIVE")
     private String status;
