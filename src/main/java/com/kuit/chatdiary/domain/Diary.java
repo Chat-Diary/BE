@@ -19,6 +19,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+
 public class Diary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
