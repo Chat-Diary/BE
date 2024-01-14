@@ -30,5 +30,4 @@ public class DiaryInquiryController {
             return ResponseEntity.ok(events);
 
     }
-
 }

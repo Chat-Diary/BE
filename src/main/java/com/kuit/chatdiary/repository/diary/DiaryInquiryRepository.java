@@ -15,6 +15,7 @@ public class DiaryInquiryRepository implements DiaryRepository {
         this.em=em;
     }
 
+
     public List<Diary> inquiryDiary(Long userId, LocalDate day) {
         return em.createQuery("SELECT d FROM diary d LEFT JOIN FETCH d.diaryTagList WHERE d.member.user_id = :userId AND d.day = :day", Diary.class)
                 .setParameter("userId", userId)
