@@ -23,6 +23,7 @@ public class DiaryInquiryController {
         this.diaryInquiryService = diaryInquiryService;
     }
 
+
     @GetMapping("/getDailyEvents")
     public ResponseEntity<List<Diary>> getDiaryList(@RequestParam("user_id") Long user_id, @RequestParam("day") String day) {
             LocalDate selectedDate = LocalDate.parse(day);
