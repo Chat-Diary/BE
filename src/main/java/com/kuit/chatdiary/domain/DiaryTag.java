@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "diarytag")
 @Getter
 @NoArgsConstructor
+
 public class DiaryTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

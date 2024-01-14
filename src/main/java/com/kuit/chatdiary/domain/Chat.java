@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Entity(name = "chat")
 @Getter
 @NoArgsConstructor
-@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class Chat {
     @Id
@@ -30,7 +29,7 @@ public class Chat {
     private String content;
 
     @CreatedDate
-    private LocalDateTime chat_type;
+    private LocalDateTime create_at;
 
-    private String create_at;
+    private String chat_type;
 }

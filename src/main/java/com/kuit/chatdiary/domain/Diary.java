@@ -1,5 +1,6 @@
 package com.kuit.chatdiary.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,8 @@ import java.util.List;
 @Entity(name = "diary")
 @Getter
 @NoArgsConstructor
-@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+
 public class Diary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

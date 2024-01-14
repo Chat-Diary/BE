@@ -15,7 +15,6 @@ import java.util.List;
 @Entity(name = "member")
 @Getter
 @NoArgsConstructor
-@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) //auto increment
