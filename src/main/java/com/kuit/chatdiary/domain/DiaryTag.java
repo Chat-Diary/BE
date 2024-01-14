@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 @Entity(name = "diarytag")
 @Getter
 @NoArgsConstructor
-
 public class DiaryTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "diary_tag_id")
-    private Long diaryTagId;
+    private Long diary_tag_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="diary_id")

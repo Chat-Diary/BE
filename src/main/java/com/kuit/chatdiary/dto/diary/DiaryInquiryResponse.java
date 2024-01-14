@@ -1,22 +1,17 @@
 package com.kuit.chatdiary.dto.diary;
 
-import com.kuit.chatdiary.domain.DiaryTag;
-import com.kuit.chatdiary.domain.Photo;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class DiaryInquiryResponse {
+
     private Long diary_id;
     private Long user_id;
-    private String diaryDate;
+    private String day;
     private List<String> tags;
-    private List<DiaryTag> diaryTagList = new ArrayList<>();
-    private List<Photo> photoList = new ArrayList<>();
+    private String representativePhotoUrl;
 }

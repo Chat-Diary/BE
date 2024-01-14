@@ -1,8 +1,9 @@
 package com.kuit.chatdiary.service.diary;
 
 import com.kuit.chatdiary.domain.Diary;
-import com.kuit.chatdiary.dto.diary.DiaryInquiryResponse;
+import com.kuit.chatdiary.domain.Photo;
 import com.kuit.chatdiary.repository.diary.DiaryInquiryRepository;
+import com.kuit.chatdiary.repository.diary.DiaryRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,20 +21,11 @@ public class DiaryInquiryService {
     /**
      * diary.getPhotoList().size(); 를 통해 jpa가 각 객체의 사진 목록 로드
      * */
-    public List<DiaryInquiryResponse> getDiaryWithPhotos(Long userId, LocalDate date){
-        List<DiaryInquiryResponse> diaries = diaryInquiryRepository.inquiryDiary(userId, date);
+    public List<Diary> getDiaryWithPhotos(Long userId, LocalDate day){
+        List<Diary> diaries = diaryInquiryRepository.inquiryDiary(userId, day);
         diaries.forEach(diary -> {
                 diary.getPhotoList().size();
         });
-        return diaries;
-    }
-
-    public List<DiaryInquiryResponse> getMonthlyDiaryPhotos(Long userId, int year,int month){
-        LocalDate firstDayOfMonth =LocalDate.of(year,month,1);
-        LocalDate lastDayOfMonth =firstDayOfMonth.plusMonths(1).minusDays(1);
-
-        List<DiaryInquiryResponse> diaries = diaryInquiryRepository.inquiryDiaryRange(userId,firstDayOfMonth,lastDayOfMonth);
-        diaries.forEach(diary -> diary.getPhotoList().size());
         return diaries;
     }
 
