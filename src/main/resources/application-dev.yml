@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DEV_DB_HOST}:3306/chatdiary?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://${DEV_DB_HOST}:3306/ChatDiary?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     username: ${DEV_DB_USER}
     password: ${DEV_DB_PASSWORD}
   jpa:
