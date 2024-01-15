@@ -2,6 +2,7 @@ package com.kuit.chatdiary.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -17,7 +18,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-
 public class Diary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +42,6 @@ public class Diary {
     @Column(name = "update_at")
     private LocalDateTime updateAt;
 
-    @ColumnDefault("ACTIVE")
     private String status;
 
     @OneToMany(mappedBy = "diary")
@@ -50,4 +49,6 @@ public class Diary {
 
     @OneToMany(mappedBy = "diary")
     private List<Photo> photoList = new ArrayList<>();
+
+
 }

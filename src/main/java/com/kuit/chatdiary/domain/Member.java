@@ -1,6 +1,7 @@
 package com.kuit.chatdiary.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Cleanup;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +35,6 @@ public class Member {
     @Column(name = "update_at")
     private LocalDateTime updateAt;
 
-    @ColumnDefault("ACTIVE")
     private String status;
 
     @OneToMany(mappedBy = "member")  // 자신이 연관관계 주인이 아님
@@ -42,5 +42,6 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Diary> diaryList = new ArrayList<>();
+
 
 }

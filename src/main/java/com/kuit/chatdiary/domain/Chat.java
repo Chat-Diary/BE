@@ -1,6 +1,7 @@
 package com.kuit.chatdiary.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -24,7 +25,6 @@ public class Chat {
     private Member member;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("USER")
     private Sender sender;
 
     private String content;
@@ -35,4 +35,8 @@ public class Chat {
 
     @Column(name = "chat_type")
     private String chatType;
+
+
+
+
 }
