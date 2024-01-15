@@ -25,6 +25,7 @@ public class Chat {
     private Member member;
 
     @Enumerated(EnumType.STRING)
+    @ColumnDefault("'USER'")
     private Sender sender;
 
     private String content;

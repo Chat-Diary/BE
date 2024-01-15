@@ -42,6 +42,7 @@ public class Diary {
     @Column(name = "update_at")
     private LocalDateTime updateAt;
 
+    @ColumnDefault("'ACTIVE'")
     private String status;
 
     @OneToMany(mappedBy = "diary")
