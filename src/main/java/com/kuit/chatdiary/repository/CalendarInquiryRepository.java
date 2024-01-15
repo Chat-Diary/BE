@@ -14,22 +14,26 @@ import java.util.Map;
 public class CalendarInquiryRepository {
     private final EntityManager em;
 
-
     public CalendarInquiryRepository(EntityManager em) {
         this.em = em;
     }
 
-    public Map<Sender, Boolean> existsChatByDate(long userId, LocalDate day){
+    public Map<Sender, Boolean> existsChatByDate(long userId, LocalDate day) {
         List<Object[]> results = em.createQuery("select c.sender, count(c) from chat c where c.member.userId = :userId and c.createAt between :startOfDay and :endOfDay group by c.sender", Object[].class)
-                .setParameter("userId",userId)
+                .setParameter("userId", userId)
                 .setParameter("startOfDay", day.atStartOfDay())
                 .setParameter("endOfDay", day.plusDays(1).atStartOfDay())
                 .getResultList();
 
         Map<Sender, Boolean> senderExistsMap = new HashMap<>();
         for (Object[] result : results) {
-            senderExistsMap.put((Sender) result[0], (Long) result[1] > 0);
+            senderExistsMap.put(Sender.valueOf((String) result[0]), (Long) result[1] > 0);
         }
+
+        for (Sender sender : Sender.values()) {
+            senderExistsMap.putIfAbsent(sender, false);
+        }
+
         return senderExistsMap;
     }
 }
