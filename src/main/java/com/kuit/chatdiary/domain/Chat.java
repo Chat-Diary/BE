@@ -34,6 +34,8 @@ public class Chat {
     @Column(name = "create_at")
     private LocalDateTime createAt;
 
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'CHAT'")
     @Column(name = "chat_type")
     private String chatType;
 
