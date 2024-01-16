@@ -37,7 +37,7 @@ public class Chat {
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'CHAT'")
     @Column(name = "chat_type")
-    private String chatType;
+    private ChatType chatType;
 
 
 
