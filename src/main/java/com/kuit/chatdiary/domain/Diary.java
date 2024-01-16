@@ -28,7 +28,8 @@ public class Diary {
     @JoinColumn(name="user_id")
     private Member member;
 
-    private String day;
+    @Column(name = "diary_date")
+    private String diaryDate;
 
     private String title;
 
