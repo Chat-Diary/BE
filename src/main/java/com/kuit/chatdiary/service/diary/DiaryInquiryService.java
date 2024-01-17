@@ -21,8 +21,8 @@ public class DiaryInquiryService {
     /**
      * diary.getPhotoList().size(); 를 통해 jpa가 각 객체의 사진 목록 로드
      * */
-    public List<Diary> getDiaryWithPhotos(Long userId, LocalDate day){
-        List<Diary> diaries = diaryInquiryRepository.inquiryDiary(userId, day);
+    public List<Diary> getDiaryWithPhotos(Long userId, LocalDate date){
+        List<Diary> diaries = diaryInquiryRepository.inquiryDiary(userId, date);
         diaries.forEach(diary -> {
                 diary.getPhotoList().size();
         });
@@ -37,6 +37,5 @@ public class DiaryInquiryService {
         diaries.forEach(diary -> diary.getPhotoList().size());
         return diaries;
     }
-
 
 }
