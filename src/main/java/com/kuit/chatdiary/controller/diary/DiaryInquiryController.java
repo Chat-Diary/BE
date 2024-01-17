@@ -32,6 +32,7 @@ public class DiaryInquiryController {
 
     }
 
+    @GetMapping("/get-monthly-diary")
     public ResponseEntity<List<Diary>> getMonthlyDiaryList(@RequestParam("user_id") Long user_id,
                                                            @RequestParam("year") int year,
                                                            @RequestParam("month") int month){
