@@ -27,7 +27,8 @@ public class CalendarInquiryRepository {
 
         Map<Sender, Boolean> senderExistsMap = new HashMap<>();
         for (Object[] result : results) {
-            senderExistsMap.put(Sender.valueOf((String) result[0]), (Long) result[1] > 0);
+            Sender sender = Sender.getByIndex((int) result[0]);
+            senderExistsMap.put(sender, (Long) result[1] > 0);
         }
 
         for (Sender sender : Sender.values()) {
