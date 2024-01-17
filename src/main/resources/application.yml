@@ -1,15 +1,24 @@
 spring:
   profiles:
-    active: prod
+    active: ${ACTIVE_PROFILE}
 
 ---
 
 spring:
-  profiles:
-    active: dev
+  config:
+    activate:
+      on-profile: prod
 
 ---
 
 spring:
-  profiles:
-    active: local
+  config:
+    activate:
+      on-profile: dev
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
