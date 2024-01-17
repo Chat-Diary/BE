@@ -16,15 +16,15 @@ public class DiaryInquiryRepository implements DiaryRepository {
     }
 
 
-    public List<Diary> inquiryDiary(Long userId, LocalDate day) {
-        return em.createQuery("SELECT d FROM diary d LEFT JOIN FETCH d.diaryTagList WHERE d.member.userId = :userId AND d.day = :day", Diary.class)
+    public List<Diary> inquiryDiary(Long userId, LocalDate diaryDate) {
+        return em.createQuery("SELECT d FROM diary d LEFT JOIN FETCH d.diaryTagList WHERE d.member.userId = :userId AND d.diaryDate = :diaryDate", Diary.class)
                 .setParameter("userId", userId)
-                .setParameter("day", day.toString())
+                .setParameter("diaryDate", diaryDate.toString())
                 .getResultList();
     }
 
     public List<Diary> inquiryDiaryRange(Long userId, LocalDate startDate, LocalDate endDate) {
-        return em.createQuery("SELECT d FROM diary d LEFT JOIN FETCH d.diaryTagList WHERE d.member.userId = :userId AND d.day BETWEEN :startDate AND :endDate", Diary.class)
+        return em.createQuery("SELECT d FROM diary d LEFT JOIN FETCH d.diaryTagList WHERE d.member.userId = :userId AND d.diaryDate BETWEEN :startDate AND :endDate", Diary.class)
                 .setParameter("userId", userId)
                 .setParameter("startDate", startDate.toString())
                 .setParameter("endDate", endDate.toString())
