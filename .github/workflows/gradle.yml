@@ -49,7 +49,15 @@ jobs:
       - name: Docker Hub build & push
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PWD }}
-          docker build --build-arg OPEN_AI_KEY=${{ secrets.OPEN_AI_KEY }} -t chatdiary/chatdiary-image:latest .
+          docker build --build-arg OPEN_AI_KEY=${{ secrets.OPEN_AI_KEY }} \
+          --build-arg DEV_DB_HOST=${{ secrets.DEV_DB_HOST }} \
+          --build-arg DEV_DB_PASSWORD=${{ secrets.DEV_DB_PASSWORD }} \
+          --build-arg DEV_DB_USER=${{ secrets.DEV_DB_USER }} \
+          --build-arg PROD_DB_HOST=${{ secrets.PROD_DB_HOST }} \
+          --build-arg PROD_DB_PASSWORD=${{ secrets.PROD_DB_PASSWORD }} \
+          --build-arg PROD_DB_USER=${{ secrets.PROD_DB_USER }} \
+          --build-arg ACTIVE_PROFILE=${{ secrets.ACTIVE_PROFILE }} \
+          -t chatdiary/chatdiary-image:latest .
           docker images
           docker push chatdiary/chatdiary-image:latest
 
@@ -62,6 +70,7 @@ jobs:
           port: ${{ secrets.WAS_PORT }}
           script: |
             sudo docker ps
+            sudo docker rm -f $(sudo docker ps -qa)
             sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}
             sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}
             sudo docker image prune -f
