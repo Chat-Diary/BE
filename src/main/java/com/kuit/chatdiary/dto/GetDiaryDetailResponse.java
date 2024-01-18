@@ -5,13 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
+
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetDiaryDetailResponse {
 
-    public String day;
+    private Date diaryDate ;
 
     private String title;
 
@@ -19,5 +22,5 @@ public class GetDiaryDetailResponse {
 
     private String content;
 
-    private Long tagId;  //tag 테이블의 tag_id
+    private String tagName;
 }

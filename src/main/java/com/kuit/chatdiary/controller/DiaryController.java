@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Date;
+import java.text.ParseException;
 import java.util.List;
 
 @Slf4j
@@ -21,11 +23,12 @@ public class DiaryController {
     private final DiaryService diaryService;
 
     @GetMapping("/detail")
-    public ResponseEntity<List<GetDiaryDetailResponse>> showDiary(@RequestParam(name="user_id") Long userId, @RequestParam(name="day") String day)
-    {
+    public ResponseEntity<List<GetDiaryDetailResponse>> showDiary(@RequestParam(name="user_id") Long userId, @RequestParam(name="diary_date") Date diaryDate) throws ParseException, ParseException {
         log.info("[DiaryController.showDiary]");
 
-        return ResponseEntity.ok().body(diaryService.showDiary(userId,day));
+        return ResponseEntity.ok().body(diaryService.showDiary(userId,diaryDate));
     }
+
+
 }
 

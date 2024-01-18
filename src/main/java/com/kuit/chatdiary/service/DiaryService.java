@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.text.ParseException;
 import java.util.List;
 
 @Slf4j
@@ -20,8 +22,8 @@ public class DiaryService {
     @Transactional
 
 
-    public List<GetDiaryDetailResponse> showDiary(Long userId, String day) {
+    public List<GetDiaryDetailResponse> showDiary(Long userId, Date diaryDate) throws ParseException {
         log.info("[DiaryService.showDiary]");
-        return diaryRepository.showDiaryDetail(userId, day);
+        return diaryRepository.showDiaryDetail(userId, diaryDate);
     }
 }
