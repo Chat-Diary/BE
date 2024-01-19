@@ -35,7 +35,7 @@ public class TagSearchRepository {
             response.setUpdateAt(diary.getUpdateAt());
             response.setStatus(diary.getStatus());
             response.setTagList(diary.getDiaryTagList().stream().map(diaryTag -> diaryTag.getTag().getTagName()).collect(Collectors.toList()));
-            response.setPhotoCount(diary.getPhotoList().size());
+            response.setPhotoList(diary.getPhotoList());
             return response;
         }).collect(Collectors.toList());
     }
