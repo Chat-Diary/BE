@@ -1,4 +1,4 @@
-package com.kuit.chatdiary.dto;
+package com.kuit.chatdiary.dto.diary;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.sql.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetDiaryDetailResponse {
+public class DiaryShowDetailResponse {
 
     private Date diaryDate ;
 
