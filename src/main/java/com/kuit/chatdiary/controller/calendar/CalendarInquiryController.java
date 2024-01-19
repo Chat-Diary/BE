@@ -14,11 +14,9 @@ import java.util.Map;
 @RestController
 public class CalendarInquiryController {
     private final CalendarInquiryService calendarInquiryService;
-
     public CalendarInquiryController(CalendarInquiryService calendarInquiryService) {
         this.calendarInquiryService = calendarInquiryService;
     }
-
     @GetMapping("/chat-exists")
     public ResponseEntity<Map<Sender, Boolean>> getChatExistsByDate(
             @RequestParam("memberId") long memberId,
