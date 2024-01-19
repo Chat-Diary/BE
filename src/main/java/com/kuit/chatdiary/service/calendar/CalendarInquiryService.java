@@ -10,13 +10,10 @@ import java.util.Map;
 
 @Service
 public class CalendarInquiryService {
-
     private final CalendarInquiryRepository calendarInquiryRepository;
-
     public CalendarInquiryService(CalendarInquiryRepository calendarInquiryRepository) {
         this.calendarInquiryRepository = calendarInquiryRepository;
     }
-
     public Map<Sender,Boolean> existsChatByDate(long memberId, LocalDate day){
         return calendarInquiryRepository.existsChatByDate(memberId,day);
     }
