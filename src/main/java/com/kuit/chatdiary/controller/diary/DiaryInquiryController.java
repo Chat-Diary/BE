@@ -20,15 +20,6 @@ public class DiaryInquiryController {
         this.diaryInquiryService = diaryInquiryService;
     }
 
-
-    @GetMapping("/getDailyEvents")
-    public ResponseEntity<List<DiaryInquiryResponse>> getDiaryList(@RequestParam("user_id") Long user_id, @RequestParam("day") String day) {
-        LocalDate selectedDate = LocalDate.parse(day);
-        List<DiaryInquiryResponse> events = diaryInquiryService.getDiaryWithPhotos(user_id, selectedDate);
-        return ResponseEntity.ok(events);
-
-    }
-
     @GetMapping("/get-monthly-diary")
     public ResponseEntity<List<DiaryInquiryResponse>> getMonthlyDiaryList(@RequestParam("user_id") Long user_id,
                                                                           @RequestParam("year") int year,
