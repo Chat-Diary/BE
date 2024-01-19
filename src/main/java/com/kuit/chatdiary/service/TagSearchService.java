@@ -16,4 +16,5 @@ public class TagSearchService {
     public List<TagSearchResponse> findByTag(String tagName){
         return tagSearchRepository.findByTag(tagName);
     }
+
 }

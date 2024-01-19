@@ -34,5 +34,4 @@ public class TagSearchRepository {
             return response;
         }).collect(Collectors.toList());
     }
-
 }
