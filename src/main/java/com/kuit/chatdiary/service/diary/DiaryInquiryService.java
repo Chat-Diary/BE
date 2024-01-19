@@ -3,6 +3,7 @@ package com.kuit.chatdiary.service.diary;
 import com.kuit.chatdiary.dto.diary.DiaryInquiryResponse;
 import com.kuit.chatdiary.repository.diary.DiaryInquiryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
