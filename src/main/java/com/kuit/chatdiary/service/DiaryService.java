@@ -1,6 +1,6 @@
 package com.kuit.chatdiary.service;
 
-import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponse;
+import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponseDTO;
 import com.kuit.chatdiary.repository.DiaryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
 
     @Transactional
-    public List<DiaryShowDetailResponse> showDiary(Long userId, Date diaryDate) throws ParseException {
+    public List<DiaryShowDetailResponseDTO> showDiary(Long userId, Date diaryDate) throws ParseException {
         log.info("[DiaryService.showDiary]");
         return diaryRepository.showDiaryDetail(userId, diaryDate);
     }

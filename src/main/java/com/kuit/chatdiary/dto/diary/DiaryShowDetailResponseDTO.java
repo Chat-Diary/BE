@@ -12,7 +12,7 @@ import java.sql.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DiaryShowDetailResponse {
+public class DiaryShowDetailResponseDTO {
 
     private Date diaryDate ;
 

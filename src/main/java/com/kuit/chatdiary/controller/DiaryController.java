@@ -1,6 +1,6 @@
 package com.kuit.chatdiary.controller;
 
-import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponse;
+import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponseDTO;
 import com.kuit.chatdiary.service.DiaryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class DiaryController {
     private final DiaryService diaryService;
 
     @GetMapping("/detail")
-    public ResponseEntity<List<DiaryShowDetailResponse>> showDiary(@RequestParam(name="user_id") Long userId, @RequestParam(name="diary_date") Date diaryDate) throws ParseException, ParseException {
+    public ResponseEntity<List<DiaryShowDetailResponseDTO>> showDiary(@RequestParam(name="user_id") Long userId, @RequestParam(name="diary_date") Date diaryDate) throws ParseException, ParseException {
         log.info("[DiaryController.showDiary]");
 
         return ResponseEntity.ok().body(diaryService.showDiary(userId,diaryDate));

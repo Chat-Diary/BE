@@ -1,6 +1,6 @@
 package com.kuit.chatdiary.repository;
 
-import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponse;
+import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponseDTO;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ public class DiaryRepository {
 
     private final EntityManager em;
 
-    public List<DiaryShowDetailResponse> showDiaryDetail (Long userId, Date diaryDate) throws ParseException {
+    public List<DiaryShowDetailResponseDTO> showDiaryDetail (Long userId, Date diaryDate) throws ParseException {
 
         log.info("[DiaryRepository.showDiaryDetail]");
 
@@ -26,7 +26,7 @@ public class DiaryRepository {
                 " OUTER JOIN d.diaryTagList dt"+
                 " LEFT OUTER JOIN d.photoList p" +
                 " LEFT OUTER JOIN dt.tag t"+
-                " WHERE d.member.userId = :user_id AND d.diaryDate = :diary_date", DiaryShowDetailResponse.class)
+                " WHERE d.member.userId = :user_id AND d.diaryDate = :diary_date", DiaryShowDetailResponseDTO.class)
                 .setParameter("user_id", userId).setParameter("diary_date", diaryDate).getResultList();
 
     }
