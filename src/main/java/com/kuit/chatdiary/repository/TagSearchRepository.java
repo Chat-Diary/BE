@@ -24,7 +24,6 @@ public class TagSearchRepository {
         List<Diary> diaries = em.createQuery("select d from diary d join d.diaryTagList dt where dt.tag.tagName = :tagName", Diary.class)
                 .setParameter("tagName",tagName)
                 .getResultList();
-
         return diaries.stream().map(diary -> {
             TagSearchResponse response = new TagSearchResponse();
             response.setDiaryId(diary.getDiaryId());

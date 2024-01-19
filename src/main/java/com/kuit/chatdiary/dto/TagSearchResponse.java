@@ -22,4 +22,5 @@ public class TagSearchResponse {
     private LocalDateTime updateAt;
     private String status;
     private List<String> tagList;
-    private List<Photo> photoList;}
+    private List<Photo> photoList;
+}
