@@ -12,9 +12,7 @@ import java.util.List;
 @RestController
 public class TagSearchController {
 
-
     private final TagSearchService tagSearchService;
-
     public TagSearchController(TagSearchService tagSearchService) {
         this.tagSearchService = tagSearchService;
     }

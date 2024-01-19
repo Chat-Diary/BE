@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public class TagSearchService {
+    
     private final TagSearchRepository tagSearchRepository;
     public TagSearchService(TagSearchRepository tagSearchRepository) {
         this.tagSearchRepository = tagSearchRepository;

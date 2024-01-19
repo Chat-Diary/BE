@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class TagSearchResponse {
+
     private Long diaryId;
     private String title;
     private String content;
@@ -23,4 +24,5 @@ public class TagSearchResponse {
     private String status;
     private List<String> tagList;
     private List<Photo> photoList;
+
 }
