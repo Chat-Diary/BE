@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.util.List;
 
 
 @Getter
@@ -18,9 +19,12 @@ public class DiaryShowDetailResponseDTO {
 
     private String title;
 
-    private String imgUrl;
+    //private String imgUrl;
+    private List<String> imgUrl;
 
     private String content;
 
-    private String tagName;
+    //private String tagName;
+    private List<String> tagName;
+
 }

@@ -20,7 +20,7 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
 
     @Transactional
-    public List<DiaryShowDetailResponseDTO> showDiary(Long userId, Date diaryDate) throws ParseException {
+    public DiaryShowDetailResponseDTO showDiary(Long userId, Date diaryDate) throws ParseException {
         log.info("[DiaryService.showDiary]");
         return diaryRepository.showDiaryDetail(userId, diaryDate);
     }

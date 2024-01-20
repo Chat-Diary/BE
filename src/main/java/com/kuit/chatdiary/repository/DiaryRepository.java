@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -17,17 +17,34 @@ public class DiaryRepository {
 
     private final EntityManager em;
 
-    public List<DiaryShowDetailResponseDTO> showDiaryDetail (Long userId, Date diaryDate) throws ParseException {
+    public DiaryShowDetailResponseDTO showDiaryDetail (Long userId, Date diaryDate) throws ParseException {
 
         log.info("[DiaryRepository.showDiaryDetail]");
 
-        return em.createQuery("SELECT d.diaryDate, p.imageUrl, d.title, d.content, t.tagName"+
-                " FROM diary d LEFT"+
-                " OUTER JOIN d.diaryTagList dt"+
-                " LEFT OUTER JOIN d.photoList p" +
-                " LEFT OUTER JOIN dt.tag t"+
-                " WHERE d.member.userId = :user_id AND d.diaryDate = :diary_date", DiaryShowDetailResponseDTO.class)
-                .setParameter("user_id", userId).setParameter("diary_date", diaryDate).getResultList();
+        Long diaryId = 0L;
+        String title = "";
+        String content = "";
+
+        List<Object[]> resultList = em.createQuery("SELECT d.diaryId, d.title, d.content FROM diary d WHERE d.member.userId = :user_id AND d.diaryDate = :diary_date")
+                        .setParameter("user_id", userId).setParameter("diary_date", diaryDate).getResultList();
+
+        for(Object[] result : resultList){
+            diaryId = (Long) result[0];
+            title = (String) result[1];
+            content = (String) result[2];
+        }
+
+
+        List<String> imageUrlList = em.createQuery("SELECT p.imageUrl FROM photo p WHERE p.diary.diaryId = :diary_id")
+                .setParameter("diary_id", diaryId).getResultList();
+
+        List<String> tagNameList = em.createQuery("SELECT t.tagName"+
+                        " FROM diarytag dt LEFT OUTER JOIN dt.tag t"+
+                        " WHERE dt.diary.id = :diary_id")
+                .setParameter("diary_id", diaryId).getResultList();
+
+
+        return new DiaryShowDetailResponseDTO(diaryDate, title, imageUrlList, content, tagNameList);
 
     }
 

@@ -23,7 +23,7 @@ public class DiaryController {
     private final DiaryService diaryService;
 
     @GetMapping("/detail")
-    public ResponseEntity<List<DiaryShowDetailResponseDTO>> showDiary(@RequestParam(name="user_id") Long userId, @RequestParam(name="diary_date") Date diaryDate) throws ParseException, ParseException {
+    public ResponseEntity<DiaryShowDetailResponseDTO> showDiary(@RequestParam(name="user_id") Long userId, @RequestParam(name="diary_date") Date diaryDate) throws ParseException, ParseException {
         log.info("[DiaryController.showDiary]");
 
         return ResponseEntity.ok().body(diaryService.showDiary(userId,diaryDate));
