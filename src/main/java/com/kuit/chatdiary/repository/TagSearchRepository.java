@@ -16,13 +16,23 @@ public class TagSearchRepository {
     public TagSearchRepository(EntityManager em) {
         this.em = em;
     }
-    public List<TagSearchResponse> findByTag(String tagName){
-        List<Diary> diaries = em.createQuery("select d from diary d join d.diaryTagList dt where dt.tag.tagName = :tagName", Diary.class)
-                .setParameter("tagName",tagName)
+
+    /**
+     * HAVING COUNT 안쓰면 일부만 포함해도 반환이 되어서..
+     * */
+    public List<TagSearchResponse> findByTag(List<String> tagNames) {
+        String jpql = "SELECT d FROM diary d WHERE d.id IN " +
+                "(SELECT dt.diary.id FROM diarytag dt WHERE dt.tag.tagName IN :tagNames " +
+                "GROUP BY dt.diary.id HAVING COUNT(DISTINCT dt.tag) = :tagCount)";
+
+        List<Diary> diaries = em.createQuery(jpql, Diary.class)
+                .setParameter("tagNames", tagNames)
+                .setParameter("tagCount", (long) tagNames.size())
                 .getResultList();
-        return diaries.stream().map(diary -> {
-            TagSearchResponse response = new TagSearchResponse(diary); // 생성자를 사용하여 객체 생성
-            return response;
-        }).collect(Collectors.toList());
+
+        return diaries.stream()
+                .map(TagSearchResponse::new)
+                .collect(Collectors.toList());
     }
+
 }

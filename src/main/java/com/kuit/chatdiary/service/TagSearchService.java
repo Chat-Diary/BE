@@ -13,8 +13,8 @@ public class TagSearchService {
     public TagSearchService(TagSearchRepository tagSearchRepository) {
         this.tagSearchRepository = tagSearchRepository;
     }
-    public List<TagSearchResponse> findByTag(String tagName){
-        return tagSearchRepository.findByTag(tagName);
+    public List<TagSearchResponse> findByTag(List<String> tagNames){
+        return tagSearchRepository.findByTag(tagNames);
     }
 
 }

@@ -18,7 +18,7 @@ public class TagSearchController {
         this.tagSearchService = tagSearchService;
     }
     @GetMapping("/search_tag")
-    public List<TagSearchResponse> findByTag(@RequestParam String tagName) {
-        return tagSearchService.findByTag(tagName);
+    public List<TagSearchResponse> findByTag(@RequestParam(name = "tagName") List<String> tagNames) {
+        return tagSearchService.findByTag(tagNames);
     }
 }
