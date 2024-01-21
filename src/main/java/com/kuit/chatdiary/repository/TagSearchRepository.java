@@ -26,9 +26,6 @@ public class TagSearchRepository {
             response.setTitle(diary.getTitle());
             response.setContent(diary.getContent());
             response.setDiaryDate(diary.getDiaryDate());
-            response.setCreateAt(diary.getCreateAt());
-            response.setUpdateAt(diary.getUpdateAt());
-            response.setStatus(diary.getStatus());
             response.setTagList(diary.getDiaryTagList().stream().map(diaryTag -> diaryTag.getTag().getTagName()).collect(Collectors.toList()));
             response.setPhotoList(diary.getPhotoList());
             return response;

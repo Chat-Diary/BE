@@ -17,9 +17,6 @@ public class TagSearchResponse {
     private String title;
     private String content;
     private Date diaryDate;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
-    private String status;
     private List<String> tagList;
     private List<Photo> photoList;
 }
