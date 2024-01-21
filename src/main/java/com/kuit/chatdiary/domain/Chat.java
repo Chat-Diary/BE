@@ -1,5 +1,6 @@
 package com.kuit.chatdiary.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class Chat {
     @Column(name = "chat_id")
     private Long chatId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private Member member;
@@ -38,7 +40,10 @@ public class Chat {
     @Column(name = "chat_type")
     private ChatType chatType;
 
-
-
+    public Chat(Member member, Sender sender, String content) {
+        this.member = member;
+        this.sender = sender;
+        this.content = content;
+    }
 
 }
