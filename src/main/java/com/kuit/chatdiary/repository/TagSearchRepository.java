@@ -21,13 +21,7 @@ public class TagSearchRepository {
                 .setParameter("tagName",tagName)
                 .getResultList();
         return diaries.stream().map(diary -> {
-            TagSearchResponse response = new TagSearchResponse();
-            response.setDiaryId(diary.getDiaryId());
-            response.setTitle(diary.getTitle());
-            response.setContent(diary.getContent());
-            response.setDiaryDate(diary.getDiaryDate());
-            response.setTagList(diary.getDiaryTagList().stream().map(diaryTag -> diaryTag.getTag().getTagName()).collect(Collectors.toList()));
-            response.setPhotoList(diary.getPhotoList());
+            TagSearchResponse response = new TagSearchResponse(diary); // 생성자를 사용하여 객체 생성
             return response;
         }).collect(Collectors.toList());
     }
