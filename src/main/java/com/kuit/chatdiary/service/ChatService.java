@@ -35,7 +35,7 @@ public class ChatService {
         Chat userChat = new Chat(member, Sender.USER, content);
         chatRepository.save(userChat);
 
-        String gptResponse = extractGptResponse(openAIService.getCompletion(content));
+        String gptResponse = extractGptResponse(openAIService.getCompletion(userId, content));
 
         Chat gptChat = new Chat(member, Sender.getByIndex(model), gptResponse);
         chatRepository.save(gptChat);
@@ -62,7 +62,7 @@ public class ChatService {
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Member not found"));
 
-        String gptResponse = extractGptResponse(openAIService.getCompletion(content));
+        String gptResponse = extractGptResponse(openAIService.getCompletion(userId, content));
 
         log.info("gptResponse: {}", gptResponse);
         Chat gptChat = new Chat(member, Sender.getByIndex(model), gptResponse);
