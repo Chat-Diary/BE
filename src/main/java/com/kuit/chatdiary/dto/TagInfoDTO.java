@@ -10,5 +10,4 @@ import lombok.Setter;
 public class TagInfoDTO {
     private Long tagId;
     private String tagName;
-
 }

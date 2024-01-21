@@ -22,8 +22,7 @@ public class DiaryInquiryController {
 
     @GetMapping("/get-monthly-diary")
     public ResponseEntity<List<DiaryInquiryResponse>> getMonthlyDiaryList(@RequestParam("user_id") Long user_id,
-                                                                          @RequestParam("year") int year,
-                                                                          @RequestParam("month") int month){
+                                                                          @RequestParam("year") int year, @RequestParam("month") int month){
         List<DiaryInquiryResponse> monthlyEvents = diaryInquiryService.getMonthlyDiaryPhotos(user_id,year,month);
         return ResponseEntity.ok(monthlyEvents);
     }

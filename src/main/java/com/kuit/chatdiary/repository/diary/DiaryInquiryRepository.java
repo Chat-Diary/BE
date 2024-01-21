@@ -32,7 +32,7 @@ public class DiaryInquiryRepository {
                 .setParameter("startDate", startDate, TemporalType.DATE)
                 .setParameter("endDate", endDate,TemporalType.DATE)
                 .getResultList();
-
+        
         return diaries.stream()
                 .map(DiaryInquiryResponse::new)
                 .collect(Collectors.toList());

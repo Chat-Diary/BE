@@ -22,7 +22,6 @@ public class DiaryInquiryResponse {
     private Date diaryDate;
     private List<TagInfoDTO> tagList;
     private List<String> photoList;
-
     @Builder
     public DiaryInquiryResponse(Diary diary){
         this.diaryId = diary.getDiaryId();
