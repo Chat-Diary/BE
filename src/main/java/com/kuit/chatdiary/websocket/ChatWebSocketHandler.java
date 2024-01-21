@@ -4,14 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuit.chatdiary.dto.chat.ChatRequestDTO;
 import com.kuit.chatdiary.domain.Chat;
 import com.kuit.chatdiary.service.ChatService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
+@Slf4j
 @Component
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
@@ -30,7 +33,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 int status = chatService.processUserMessage(request.getUserId(), request.getContent(), request.getSelectedModel());
                 session.sendMessage(new TextMessage(objectMapper.writeValueAsString(status)));
             } catch (Exception e) {
-                // 예외 처리 로직
+                log.error("User message processing failed", e);
+                sendErrorMessage(session, "User message processing error");
             }
         });
 
@@ -39,8 +43,17 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 Chat gptResponse = chatService.processGptMessage(request.getUserId(), request.getContent(), request.getSelectedModel());
                 session.sendMessage(new TextMessage(objectMapper.writeValueAsString(gptResponse)));
             } catch (Exception e) {
-                // 예외 처리 로직
+                log.error("GPT message processing failed", e);
+                sendErrorMessage(session, "GPT message processing error");
             }
         });
+    }
+
+    private void sendErrorMessage(WebSocketSession session, String errorMessage) {
+        try {
+            session.sendMessage(new TextMessage(errorMessage));
+        } catch (IOException e) {
+            log.error("Error sending error message", e);
+        }
     }
 }
