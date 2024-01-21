@@ -32,16 +32,10 @@ public class DiaryInquiryRepository {
                 .setParameter("startDate", startDate, TemporalType.DATE)
                 .setParameter("endDate", endDate,TemporalType.DATE)
                 .getResultList();
-        return diaries.stream().map(diary -> {
-            DiaryInquiryResponse response = new DiaryInquiryResponse();
-            response.setDiary_id(diary.getMember().getUserId());
-            response.setDiary_id(diary.getDiaryId());
-            response.setTitle(diary.getTitle());
-            response.setDiaryDate(diary.getDiaryDate());
-            response.setDiaryTagList(diary.getDiaryTagList());
-            response.setPhotoList(diary.getPhotoList());
-            return response;
-        }).collect(Collectors.toList());
+
+        return diaries.stream()
+                .map(DiaryInquiryResponse::new)
+                .collect(Collectors.toList());
 
     }
 
