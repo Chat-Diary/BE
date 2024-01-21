@@ -8,6 +8,7 @@ import com.kuit.chatdiary.repository.CalendarInquiryRepository;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +21,9 @@ public class CalendarInquiryService {
         this.calendarInquiryRepository = calendarInquiryRepository;
     }
 
-    public Map<LocalDate, Map<Sender, Boolean>> existsChatByMonth(long memberId, YearMonth month) {
-        return calendarInquiryRepository.existsChatByMonth(memberId, month);
+    public Map<LocalDate, List<CalendarInquiryResponse>> existsChatByMonth(long memberId, YearMonth month) {
+        Map<LocalDate, List<CalendarInquiryResponse>> chatExistsByMonth = calendarInquiryRepository.existsChatByMonth(memberId,month);
+        return chatExistsByMonth;
     }
 
 
