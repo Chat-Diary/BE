@@ -1,5 +1,7 @@
 package com.kuit.chatdiary.service;
 
+import com.kuit.chatdiary.dto.diary.DiaryDeleteRequestDTO;
+import com.kuit.chatdiary.dto.diary.DiaryDeleteResponseDTO;
 import com.kuit.chatdiary.dto.diary.DiaryModifyRequestDTO;
 import com.kuit.chatdiary.dto.diary.DiaryModifyResponseDTO;
 import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponseDTO;
@@ -31,5 +33,11 @@ public class DiaryService {
     public DiaryModifyResponseDTO modifyDiary(DiaryModifyRequestDTO diaryModifyRequestDTO)  {
         log.info("[DiaryService.modifyDiary]");
         return diaryRepository.modifyDiary(diaryModifyRequestDTO);
+    }
+
+    @Transactional
+    public DiaryDeleteResponseDTO deleteDiary(DiaryDeleteRequestDTO diaryDeleteRequestDTO) {
+        log.info("[DiaryService.deleteDiary]");
+        return diaryRepository.deleteDiary(diaryDeleteRequestDTO);
     }
 }

@@ -1,5 +1,7 @@
 package com.kuit.chatdiary.controller;
 
+import com.kuit.chatdiary.dto.diary.DiaryDeleteRequestDTO;
+import com.kuit.chatdiary.dto.diary.DiaryDeleteResponseDTO;
 import com.kuit.chatdiary.dto.diary.DiaryModifyRequestDTO;
 import com.kuit.chatdiary.dto.diary.DiaryModifyResponseDTO;
 import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponseDTO;
@@ -42,6 +44,15 @@ public class DiaryController {
 
 
         return ResponseEntity.ok().body(diaryService.modifyDiary(diaryModifyRequestDTO));
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<DiaryDeleteResponseDTO> deleteDiary(@RequestBody DiaryDeleteRequestDTO diaryDeleteRequestDTO) {
+        log.info("[DiaryController.modifyDiary]");
+
+
+
+        return ResponseEntity.ok().body(diaryService.deleteDiary(diaryDeleteRequestDTO));
     }
 
 

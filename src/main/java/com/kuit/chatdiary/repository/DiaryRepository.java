@@ -1,5 +1,7 @@
 package com.kuit.chatdiary.repository;
 
+import com.kuit.chatdiary.dto.diary.DiaryDeleteRequestDTO;
+import com.kuit.chatdiary.dto.diary.DiaryDeleteResponseDTO;
 import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponseDTO;
 import com.kuit.chatdiary.dto.diary.DiaryModifyRequestDTO;
 import com.kuit.chatdiary.dto.diary.DiaryModifyResponseDTO;
@@ -56,7 +58,6 @@ public class DiaryRepository {
 
         Long diaryId = 0L;
 
-        System.out.println(diaryModifyRequestDTO.getDiaryDate());
 
         List<Long> resultList = em.createQuery("SELECT d.diaryId FROM diary d WHERE d.member.userId = :user_id AND d.diaryDate = :diary_date")
                 .setParameter("user_id", diaryModifyRequestDTO.getUserId()).setParameter("diary_date",diaryModifyRequestDTO.getDiaryDate()).getResultList();
@@ -81,9 +82,40 @@ public class DiaryRepository {
 
         //일기 태그 수정
 
+
+
         DiaryModifyResponseDTO diaryModifyResponseDTO = new DiaryModifyResponseDTO(true);
 
         return diaryModifyResponseDTO;
 
+    }
+
+    public DiaryDeleteResponseDTO deleteDiary(DiaryDeleteRequestDTO diaryDeleteRequestDTO) {
+        log.info("[DiaryRepository.deleteDiary]");
+
+        Long diaryId = 0L;
+
+
+        List<Long> resultList = em.createQuery("SELECT d.diaryId FROM diary d WHERE d.member.userId = :user_id AND d.diaryDate = :diary_date")
+                .setParameter("user_id", diaryDeleteRequestDTO.getUserId()).setParameter("diary_date",diaryDeleteRequestDTO.getDiaryDate()).getResultList();
+
+        for(Long result : resultList){
+            diaryId = result;
+        }
+
+        System.out.println("diaryId: "+diaryId);
+
+
+        // 이미지 주소 삭제
+        em.createQuery("DELETE FROM photo p WHERE p.diary.diaryId = :diary_id").setParameter("diary_id",diaryId).executeUpdate();
+        // 다이어리 태그 삭제
+        em.createQuery("DELETE FROM diarytag dt WHERE dt.diary.diaryId = :diary_id").setParameter("diary_id",diaryId).executeUpdate();
+        // 일기 삭제
+        em.createQuery("DELETE FROM diary d WHERE d.diaryId = :diary_id").setParameter("diary_id",diaryId).executeUpdate();
+
+
+        DiaryDeleteResponseDTO diaryDeleteResponseDTO = new DiaryDeleteResponseDTO(true);
+
+        return diaryDeleteResponseDTO;
     }
 }
