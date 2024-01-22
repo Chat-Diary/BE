@@ -1,5 +1,7 @@
 package com.kuit.chatdiary.service;
 
+import com.kuit.chatdiary.dto.diary.DiaryModifyRequestDTO;
+import com.kuit.chatdiary.dto.diary.DiaryModifyResponseDTO;
 import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponseDTO;
 import com.kuit.chatdiary.repository.DiaryRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,5 +25,11 @@ public class DiaryService {
     public DiaryShowDetailResponseDTO showDiary(Long userId, Date diaryDate) throws ParseException {
         log.info("[DiaryService.showDiary]");
         return diaryRepository.showDiaryDetail(userId, diaryDate);
+    }
+}
+
+    public DiaryModifyResponseDTO modifyDiary(DiaryModifyRequestDTO diaryModifyRequestDTO)  {
+        log.info("[DiaryService.modifyDiary]");
+        return diaryRepository.modifyDiary(diaryModifyRequestDTO);
     }
 }

@@ -1,6 +1,8 @@
 package com.kuit.chatdiary.repository;
 
 import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponseDTO;
+import com.kuit.chatdiary.dto.diary.DiaryModifyRequestDTO;
+import com.kuit.chatdiary.dto.diary.DiaryModifyResponseDTO;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,4 +50,40 @@ public class DiaryRepository {
 
     }
 
+
+    public DiaryModifyResponseDTO modifyDiary(DiaryModifyRequestDTO diaryModifyRequestDTO) {
+        log.info("[DiaryRepository.modifyDiary]");
+
+        Long diaryId = 0L;
+
+        System.out.println(diaryModifyRequestDTO.getDiaryDate());
+
+        List<Long> resultList = em.createQuery("SELECT d.diaryId FROM diary d WHERE d.member.userId = :user_id AND d.diaryDate = :diary_date")
+                .setParameter("user_id", diaryModifyRequestDTO.getUserId()).setParameter("diary_date",diaryModifyRequestDTO.getDiaryDate()).getResultList();
+
+        for(Long result : resultList){
+            diaryId = result;
+        }
+
+        System.out.println("diaryId: "+diaryId);
+
+        // 일기 제목, 내용 수정
+
+        em.createQuery("UPDATE diary d SET d.title = :title, d.content = :content"
+        +" WHERE d.diaryId = :diary_id")
+                .setParameter("title", diaryModifyRequestDTO.getTitle())
+                .setParameter("content", diaryModifyRequestDTO.getContent())
+                .setParameter("diary_id", diaryId).executeUpdate();
+
+        //일기 이미지주소 수정
+
+
+
+        //일기 태그 수정
+
+        DiaryModifyResponseDTO diaryModifyResponseDTO = new DiaryModifyResponseDTO(true);
+
+        return diaryModifyResponseDTO;
+
+    }
 }
