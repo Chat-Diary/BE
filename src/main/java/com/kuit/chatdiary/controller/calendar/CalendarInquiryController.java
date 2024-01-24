@@ -2,6 +2,7 @@ package com.kuit.chatdiary.controller.calendar;
 
 import com.kuit.chatdiary.domain.Sender;
 import com.kuit.chatdiary.dto.CalendarInquiryResponse;
+import com.kuit.chatdiary.dto.DateInquiryResponse;
 import com.kuit.chatdiary.service.calendar.CalendarInquiryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,12 +26,12 @@ public class CalendarInquiryController {
     public CalendarInquiryController(CalendarInquiryService calendarInquiryService) {
         this.calendarInquiryService = calendarInquiryService;
     }
-    @GetMapping("/chat-exists-month")
-    public ResponseEntity<Map<LocalDate, List<CalendarInquiryResponse>>> getChatExistsByMonth(
+    @GetMapping("/chat")
+    public ResponseEntity<List<DateInquiryResponse>> getChatExistsByMonth(
             @RequestParam("memberId") long memberId,
             @RequestParam("month") @DateTimeFormat(pattern = "yyyy-MM") YearMonth month) {
-        Map<LocalDate, List<CalendarInquiryResponse>> chatExistsByMonth = calendarInquiryService.existsChatByMonth(memberId, month);
-//        log.info("Result: {}", chatExistsByMonth);
+
+        List<DateInquiryResponse> chatExistsByMonth = calendarInquiryService.existsChatByMonth(memberId, month);
         return ResponseEntity.ok(chatExistsByMonth);
     }
 }

@@ -2,6 +2,7 @@ package com.kuit.chatdiary.service.calendar;
 
 import com.kuit.chatdiary.domain.Sender;
 import com.kuit.chatdiary.dto.CalendarInquiryResponse;
+import com.kuit.chatdiary.dto.DateInquiryResponse;
 import org.springframework.stereotype.Service;
 import com.kuit.chatdiary.repository.CalendarInquiryRepository;
 
@@ -21,10 +22,21 @@ public class CalendarInquiryService {
         this.calendarInquiryRepository = calendarInquiryRepository;
     }
 
-    public Map<LocalDate, List<CalendarInquiryResponse>> existsChatByMonth(long memberId, YearMonth month) {
-        Map<LocalDate, List<CalendarInquiryResponse>> chatExistsByMonth = calendarInquiryRepository.existsChatByMonth(memberId,month);
-        return chatExistsByMonth;
+    public List<DateInquiryResponse> existsChatByMonth(long memberId, YearMonth month) {
+        Map<LocalDate, List<CalendarInquiryResponse>> chatExistsByMonth = calendarInquiryRepository.existsChatByMonth(memberId, month);
+
+        List<DateInquiryResponse> list = new ArrayList<>();
+        /**각 요소들에 대해 반복*/
+        for(Map.Entry<LocalDate, List<CalendarInquiryResponse>> entry : chatExistsByMonth.entrySet()) {
+            List<LocalDate> dates = new ArrayList<>();
+            /**키 값 받아서 리스트에 저장*/
+            dates.add(entry.getKey());
+            DateInquiryResponse response = new DateInquiryResponse(dates, entry.getValue());
+            list.add(response);
+        }
+        return list;
     }
+
 
 
 
