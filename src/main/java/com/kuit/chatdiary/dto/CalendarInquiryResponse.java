@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class CalendarInquiryResponse {
-
     private Sender sender;
     private boolean exists;
 }
