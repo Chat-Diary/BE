@@ -21,6 +21,7 @@ public class DiaryTagStatisticsService {
 
     public List<TagStatisticResponse> calculateTagStatistics(Long memberId, Date startDate, Date endDate) {
         List<Object[]> tagStatistics = diaryTagRepository.findTagStatisticsByMember(memberId, startDate, endDate);
+        /** 쿼리 3번째 결과를 추출해서 스트림으로 탐색해서 다 더해서 전체 카운트 계산..! */
         long totalTags = tagStatistics.stream().mapToLong(e -> (Long) e[2]).sum();
         List<TagStatisticResponse> statisticsList = new ArrayList<>();
         for (Object[] result : tagStatistics) {
