@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagStatisticResponse {
+    private String category;
     private String tagName;
     private Long count;
     private double percentage;

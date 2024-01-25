@@ -17,10 +17,10 @@ public class DiaryTagRepository {
     }
 
     public List<Object[]> findTagStatisticsByMember(Long memberId, Date startDate, Date endDate) {
-        String jpql = "SELECT dt.tag.tagName, COUNT(dt) FROM diarytag dt " +
+        String jpql = "SELECT dt.tag.category, dt.tag.tagName, COUNT(dt) FROM diarytag dt " +
                 "JOIN dt.diary.member m " +
                 "WHERE m.id = :memberId AND dt.diary.diaryDate BETWEEN :startDate AND :endDate " +
-                "GROUP BY dt.tag.tagName";
+                "GROUP BY dt.tag.category, dt.tag.tagName";
         return em.createQuery(jpql, Object[].class)
                 .setParameter("memberId", memberId)
                 .setParameter("startDate", startDate)
