@@ -28,7 +28,7 @@ public class DiaryTagStatisticsService {
             String category = (String) result[0];
             String tagName = (String) result[1];
             Long count = (Long) result[2];
-            statisticsList.add(new TagStatisticResponse(category, tagName, count, calculatePercent(count,totalTags)));
+            statisticsList.add(new TagStatisticResponse(category, tagName, count, calculatePercent(count, totalTags), startDate, endDate));
         }
         return statisticsList;
     }

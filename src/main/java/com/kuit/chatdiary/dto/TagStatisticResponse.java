@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,5 +16,7 @@ public class TagStatisticResponse {
     private String tagName;
     private Long count;
     private double percentage;
+    private Date startDate;
+    private Date endDate;
 
 }
