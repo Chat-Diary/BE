@@ -1,14 +1,13 @@
 package com.kuit.chatdiary.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kuit.chatdiary.dto.chat.ChatRequestDTO;
+import com.kuit.chatdiary.dto.chat.ChatWebSocketRequestDTO;
 import com.kuit.chatdiary.domain.Chat;
 import com.kuit.chatdiary.service.ChatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
@@ -26,7 +25,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        ChatRequestDTO request = objectMapper.readValue(message.getPayload(), ChatRequestDTO.class);
+        ChatWebSocketRequestDTO request = objectMapper.readValue(message.getPayload(), ChatWebSocketRequestDTO.class);
 
         CompletableFuture.runAsync(() -> {
             try {

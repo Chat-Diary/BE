@@ -7,13 +7,7 @@ import com.kuit.chatdiary.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Service
@@ -28,20 +22,8 @@ public class ChatService {
     @Autowired
     private OpenAIService openAIService;
 
-    public Chat processMessage(Long userId, String content, Integer model) throws JsonProcessingException {
-        Member member = memberRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
-
-        Chat userChat = new Chat(member, Sender.USER, content);
-        chatRepository.save(userChat);
-
-        String gptResponse = extractGptResponse(openAIService.getCompletion(userId, content));
-
-        Chat gptChat = new Chat(member, Sender.getByIndex(model), gptResponse);
-        chatRepository.save(gptChat);
-
-        return gptChat;
-    }
+    @Autowired
+    private ObjectMapper objectMapper;
 
     public int processUserMessage(Long userId, String content, Integer model) throws JsonProcessingException {
         try {
@@ -72,7 +54,6 @@ public class ChatService {
     }
 
     public String extractGptResponse(String jsonResponse) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(jsonResponse);
         JsonNode choicesNode = rootNode.path("choices");
 
