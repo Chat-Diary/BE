@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Entity(name="photo")
 @Getter
+@Setter
 @NoArgsConstructor
 public class Photo {
     @Id
@@ -13,9 +14,12 @@ public class Photo {
     @Column(name = "photo_id")
     private Long photoId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="diary_id")
-    private Diary diary;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name="diary_id")
+//    private Diary diary;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "diary_photo_id")
+    private DiaryPhoto diaryPhoto;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id")
