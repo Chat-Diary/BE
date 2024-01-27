@@ -2,9 +2,9 @@ name: Java CI/CD with Gradle
 
 on:
   push:
-    branches: [ "develop", "CHAT-230-BE-CORS-허용" ]
+    branches: [ "develop" ]
   pull_request:
-    branches: [ "develop", "CHAT-230-BE-CORS-허용" ]
+    branches: [ "develop" ]
 
 permissions:
   contents: read
