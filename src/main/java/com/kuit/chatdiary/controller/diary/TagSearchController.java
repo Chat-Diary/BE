@@ -1,8 +1,7 @@
-package com.kuit.chatdiary.controller;
+package com.kuit.chatdiary.controller.diary;
 
-import com.kuit.chatdiary.dto.TagSearchResponse;
-import com.kuit.chatdiary.service.TagSearchService;
-import org.springframework.stereotype.Controller;
+import com.kuit.chatdiary.dto.diary.TagSearchResponseDTO;
+import com.kuit.chatdiary.service.diary.TagSearchService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,8 +16,8 @@ public class TagSearchController {
     public TagSearchController(TagSearchService tagSearchService) {
         this.tagSearchService = tagSearchService;
     }
-    @GetMapping("/search_tag")
-    public List<TagSearchResponse> findByTag(@RequestParam(name = "tagName") List<String> tagNames) {
+    @GetMapping("/list/tag")
+    public List<TagSearchResponseDTO> findByTag(@RequestParam(name = "tagName") List<String> tagNames) {
         return tagSearchService.findByTag(tagNames);
     }
 }

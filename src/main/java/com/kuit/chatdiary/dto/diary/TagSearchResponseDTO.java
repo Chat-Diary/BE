@@ -1,9 +1,8 @@
-package com.kuit.chatdiary.dto;
+package com.kuit.chatdiary.dto.diary;
 
 import com.kuit.chatdiary.domain.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,19 +10,17 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TagSearchResponse {
+public class TagSearchResponseDTO {
     private Long diaryId;
     private String title;
-    private String content;
     private Date diaryDate;
     private List<TagInfoDTO> tagList;
     private List<String> photoList;
 
     @Builder
-    public TagSearchResponse(Diary diary){
+    public TagSearchResponseDTO(Diary diary){
         this.diaryId = diary.getDiaryId();
         this.title = diary.getTitle();
-        this.content = diary.getContent();
         this.diaryDate = diary.getDiaryDate();
         this.tagList = diary.getDiaryTagList().stream()
                 .map(diaryTag -> {

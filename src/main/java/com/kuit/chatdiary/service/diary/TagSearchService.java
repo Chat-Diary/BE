@@ -1,6 +1,6 @@
-package com.kuit.chatdiary.service;
+package com.kuit.chatdiary.service.diary;
 
-import com.kuit.chatdiary.dto.TagSearchResponse;
+import com.kuit.chatdiary.dto.diary.TagSearchResponseDTO;
 import com.kuit.chatdiary.repository.TagSearchRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ public class TagSearchService {
     public TagSearchService(TagSearchRepository tagSearchRepository) {
         this.tagSearchRepository = tagSearchRepository;
     }
-    public List<TagSearchResponse> findByTag(List<String> tagNames){
+    public List<TagSearchResponseDTO> findByTag(List<String> tagNames){
         return tagSearchRepository.findByTag(tagNames);
     }
 

@@ -2,9 +2,9 @@
 //
 //import java.time.LocalDateTime;
 //import java.util.*;
-//import com.kuit.chatdiary.controller.TagSearchController;
+//import com.kuit.chatdiary.controller.diary.TagSearchController;
 //import com.kuit.chatdiary.dto.TagSearchResponse;
-//import com.kuit.chatdiary.service.TagSearchService;
+//import com.kuit.chatdiary.service.diary.TagSearchService;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
