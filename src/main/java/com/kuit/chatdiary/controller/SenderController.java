@@ -22,6 +22,7 @@ public class SenderController {
     public SenderController(SenderService senderService) {
         this.senderService = senderService;
     }
+
     @GetMapping("/sender")
     public ResponseEntity<List<ChatSenderStaticResponseDTO>> getTagStatistics(
             @RequestParam("memberId") Long memberId,
