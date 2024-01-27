@@ -14,6 +14,7 @@ public class SenderRepository {
     public SenderRepository(EntityManager em) {
         this.em = em;
     }
+
     public List<Object[]> countChatsBySenderAndDate(Long userId, Date startDate, Date endDate) {
         String sql = "SELECT c.sender, COUNT(*) " +
                 "FROM chat c " +
