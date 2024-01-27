@@ -45,19 +45,18 @@ public class DiaryService {
 
         //0. 다이어리 ID 구하기
         Long diaryId = diaryRepository.findDiaryId(diaryModifyRequestDTO);
-//        System.out.println("diartId: "+diaryId);
-//
-//        //1. title, content 변경
-//        diaryRepository.modifyDiaryTitleContent(diaryId, diaryModifyRequestDTO);
-//
+
+        //1. title, content 변경
+        diaryRepository.modifyDiaryTitleContent(diaryId, diaryModifyRequestDTO);
+
 //        //2. DiaryPhoto에서 사진 삭제
         diaryRepository.deleteImgFromDP(diaryId,diaryModifyRequestDTO.getDeleteImgUrls());
-//
-//        //3. 새로운 사진 추가
-//        diaryRepository.addNewImg(diaryId, diaryModifyRequestDTO.getNewImgUrls());
+
+        //3. 새로운 사진 추가
+        diaryRepository.addNewImg(diaryId, diaryModifyRequestDTO.getNewImgUrls());
 
         //4. 태그 수정
-        //diaryRepository.modifyTag(diaryId, diaryModifyRequestDTO.getTagNames());
+        diaryRepository.modifyTag(diaryId, diaryModifyRequestDTO.getTagNames());
 
         return new DiaryModifyResponseDTO(true);
     }
