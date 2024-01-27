@@ -1,4 +1,4 @@
-package com.kuit.chatdiary.dto;
+package com.kuit.chatdiary.dto.diary;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-public class DateRange {
+public class DateRangeDTO {
     private final Date startDate;
     private final Date endDate;
 }

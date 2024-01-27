@@ -1,4 +1,4 @@
-package com.kuit.chatdiary.repository;
+package com.kuit.chatdiary.repository.diary;
 
 import com.kuit.chatdiary.domain.Diary;
 import com.kuit.chatdiary.domain.DiaryTag;

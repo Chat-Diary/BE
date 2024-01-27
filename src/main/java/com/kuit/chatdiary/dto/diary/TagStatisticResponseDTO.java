@@ -1,4 +1,4 @@
-package com.kuit.chatdiary.dto;
+package com.kuit.chatdiary.dto.diary;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.sql.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagStatisticResponse {
+public class TagStatisticResponseDTO {
     private String category;
     private String tagName;
     private Long count;
