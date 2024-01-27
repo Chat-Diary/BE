@@ -3,11 +3,15 @@ package com.kuit.chatdiary.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.kuit.chatdiary.domain.*;
+import com.kuit.chatdiary.dto.chat.ChatGetResponseDTO;
 import com.kuit.chatdiary.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -64,6 +68,16 @@ public class ChatService {
         }
 
         return "";
+    }
+
+    public List<ChatGetResponseDTO> getChats(Long chatId) {
+        List<Chat> chats = chatRepository.findTop100ByChatIdGreaterThan(chatId);
+        if (chats.isEmpty()) {
+            return null;
+        }
+        return chats.stream()
+                .map(ChatGetResponseDTO::new)
+                .collect(Collectors.toList());
     }
 
 }
