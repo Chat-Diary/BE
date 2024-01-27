@@ -1,4 +1,4 @@
-package com.kuit.chatdiary.dto.chat;
+package com.kuit.chatdiary.dto.diary;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
