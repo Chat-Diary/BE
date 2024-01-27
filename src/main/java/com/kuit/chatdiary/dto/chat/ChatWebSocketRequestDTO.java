@@ -1,5 +1,6 @@
 package com.kuit.chatdiary.dto.chat;
 
+import com.kuit.chatdiary.domain.ChatType;
 import lombok.Getter;
 import lombok.Setter;
 

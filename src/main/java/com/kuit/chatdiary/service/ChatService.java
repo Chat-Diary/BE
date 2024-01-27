@@ -30,7 +30,7 @@ public class ChatService {
             Member member = memberRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("Member not found"));
 
-            Chat userChat = new Chat(member, Sender.USER, content);
+            Chat userChat = new Chat(member, Sender.USER, content, ChatType.CHAT);
             chatRepository.save(userChat);
 
             return HttpStatus.OK.value();
@@ -47,7 +47,7 @@ public class ChatService {
         String gptResponse = extractGptResponse(openAIService.getCompletion(userId, content));
 
         log.info("gptResponse: {}", gptResponse);
-        Chat gptChat = new Chat(member, Sender.getByIndex(model), gptResponse);
+        Chat gptChat = new Chat(member, Sender.getByIndex(model), gptResponse, ChatType.CHAT);
         chatRepository.save(gptChat);
 
         return gptChat;

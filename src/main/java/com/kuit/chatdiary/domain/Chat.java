@@ -40,10 +40,11 @@ public class Chat {
     @Column(name = "chat_type")
     private ChatType chatType;
 
-    public Chat(Member member, Sender sender, String content) {
+    public Chat(Member member, Sender sender, String content, ChatType chatType) {
         this.member = member;
         this.sender = sender;
         this.content = content;
+        this.chatType = chatType;
     }
 
 }
