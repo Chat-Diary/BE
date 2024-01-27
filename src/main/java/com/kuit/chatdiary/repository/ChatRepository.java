@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public class ChatRepository {
+
     private final EntityManager em;
 
     public ChatRepository(EntityManager em) {
