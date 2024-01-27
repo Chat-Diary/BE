@@ -3,12 +3,11 @@ package com.kuit.chatdiary.service.chat;
 import com.kuit.chatdiary.domain.Sender;
 import com.kuit.chatdiary.dto.chat.ChatSenderStaticResponseDTO;
 import com.kuit.chatdiary.dto.diary.DateRangeDTO;
-import com.kuit.chatdiary.repository.ChatRepository;
+import com.kuit.chatdiary.repository.SenderRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -16,15 +15,13 @@ import java.util.List;
 @Service
 public class SenderService {
 
-    public final ChatRepository chatRepository;
+    public final SenderRepository senderRepository;
 
-    public SenderService(ChatRepository chatRepository) {
-        this.chatRepository = chatRepository;
+    public SenderService(SenderRepository senderRepository) {
+        this.senderRepository = senderRepository;
     }
-
     public List<ChatSenderStaticResponseDTO> calculateSenderStatistics(Long memberId, Date startDate, Date endDate) {
-        List<Object[]> chatStatistics = chatRepository.countChatsBySenderAndDate(memberId, startDate, endDate);
-
+        List<Object[]> chatStatistics = senderRepository.countChatsBySenderAndDate(memberId, startDate, endDate);
         long totalChats = chatStatistics.stream().mapToLong(e -> (Long) e[1]).sum();
 
         List<ChatSenderStaticResponseDTO> statisticsList = new ArrayList<>();
