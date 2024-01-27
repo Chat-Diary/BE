@@ -1,7 +1,7 @@
 package com.kuit.chatdiary.repository.diary;
 
 import com.kuit.chatdiary.domain.Diary;
-import com.kuit.chatdiary.dto.diary.DiaryListResponse;
+import com.kuit.chatdiary.dto.diary.DiaryListResponseDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TemporalType;
 import org.springframework.stereotype.Repository;
@@ -19,14 +19,14 @@ public class DiaryListRepository {
     }
 
 
-    public List<DiaryListResponse> inquiryDiary(Long userId, LocalDate diaryDate) {
-        return em.createQuery("SELECT d FROM diary d LEFT JOIN FETCH d.diaryTagList WHERE d.member.userId = :userId AND d.diaryDate = :diaryDate", DiaryListResponse.class)
+    public List<DiaryListResponseDTO> inquiryDiary(Long userId, LocalDate diaryDate) {
+        return em.createQuery("SELECT d FROM diary d LEFT JOIN FETCH d.diaryTagList WHERE d.member.userId = :userId AND d.diaryDate = :diaryDate", DiaryListResponseDTO.class)
                 .setParameter("userId", userId)
                 .setParameter("diaryDate", diaryDate.toString())
                 .getResultList();
     }
 
-    public List<DiaryListResponse> inquiryDiaryRange(Long userId, Date startDate, Date endDate) {
+    public List<DiaryListResponseDTO> inquiryDiaryRange(Long userId, Date startDate, Date endDate) {
         List<Diary> diaries=em.createQuery("SELECT d FROM diary d LEFT JOIN FETCH d.diaryTagList WHERE d.member.userId = :userId AND d.diaryDate BETWEEN :startDate AND :endDate", Diary.class)
                 .setParameter("userId", userId)
                 .setParameter("startDate", startDate, TemporalType.DATE)
@@ -34,7 +34,7 @@ public class DiaryListRepository {
                 .getResultList();
         
         return diaries.stream()
-                .map(DiaryListResponse::new)
+                .map(DiaryListResponseDTO::new)
                 .collect(Collectors.toList());
 
     }

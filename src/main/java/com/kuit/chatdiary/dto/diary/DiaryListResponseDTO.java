@@ -2,7 +2,6 @@ package com.kuit.chatdiary.dto.diary;
 
 import com.kuit.chatdiary.domain.Diary;
 import com.kuit.chatdiary.domain.Photo;
-import com.kuit.chatdiary.dto.TagInfoDTO;
 import lombok.*;
 
 import java.util.Date;
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DiaryListResponse {
+public class DiaryListResponseDTO {
     private Long diaryId;
     private Long userId;
     private String title;
@@ -21,7 +20,7 @@ public class DiaryListResponse {
     private List<TagInfoDTO> tagList;
     private List<String> photoList;
     @Builder
-    public DiaryListResponse(Diary diary){
+    public DiaryListResponseDTO(Diary diary){
         this.diaryId = diary.getDiaryId();
         this.title = diary.getTitle();
         this.content = diary.getContent();

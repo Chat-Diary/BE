@@ -1,7 +1,7 @@
 package com.kuit.chatdiary.controller.diary;
 
 
-import com.kuit.chatdiary.dto.diary.DiaryListResponse;
+import com.kuit.chatdiary.dto.diary.DiaryListResponseDTO;
 import com.kuit.chatdiary.service.diary.DiaryListService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +22,9 @@ public class DiaryListController {
     }
 
     @GetMapping("/monthly/list")
-    public ResponseEntity<List<DiaryListResponse>> getMonthlyDiaryList(@RequestParam("user_id") Long user_id,
-                                                                       @RequestParam("year") int year, @RequestParam("month") int month){
-        List<DiaryListResponse> monthlyEvents = diaryListService.getMonthlyDiaryPhotos(user_id,year,month);
+    public ResponseEntity<List<DiaryListResponseDTO>> getMonthlyDiaryList(@RequestParam("user_id") Long user_id,
+                                                                          @RequestParam("year") int year, @RequestParam("month") int month){
+        List<DiaryListResponseDTO> monthlyEvents = diaryListService.getMonthlyDiaryPhotos(user_id,year,month);
         return ResponseEntity.ok(monthlyEvents);
     }
 
