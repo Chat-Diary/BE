@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import java.sql.Date;
 
-
 @AllArgsConstructor
 @Getter
 @Setter
