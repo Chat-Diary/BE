@@ -4,15 +4,14 @@ import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public class ChatRepository {
+public class SenderRepository {
 
     private final EntityManager em;
 
-    public ChatRepository(EntityManager em) {
+    public SenderRepository(EntityManager em) {
         this.em = em;
     }
 
