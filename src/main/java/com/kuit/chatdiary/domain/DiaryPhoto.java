@@ -7,6 +7,7 @@ import lombok.Setter;
 
 @Entity(name="diaryphoto")
 @Getter
+@Setter
 @NoArgsConstructor
 public class DiaryPhoto {
 
@@ -15,7 +16,6 @@ public class DiaryPhoto {
     @Column(name = "diary_photo_id")
     private Long diaryPhotoId;
 
-    //단방향
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="diary_id")
     private Diary diary;
