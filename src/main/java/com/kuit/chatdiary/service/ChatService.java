@@ -71,7 +71,7 @@ public class ChatService {
     }
 
     public List<ChatGetResponseDTO> getChats(Long chatId) {
-        List<Chat> chats = chatRepository.findTop100ByChatIdGreaterThan(chatId);
+        List<Chat> chats = chatRepository.findTop10ByChatIdGreaterThan(chatId);
         if (chats.isEmpty()) {
             return null;
         }
