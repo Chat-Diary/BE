@@ -20,13 +20,6 @@ public class DiaryListService {
     /**
      * diary.getPhotoList().size(); 를 통해 jpa가 각 객체의 사진 목록 로드
      * */
-    public List<DiaryListResponseDTO> getDiaryWithPhotos(Long userId, LocalDate date){
-        List<DiaryListResponseDTO> diaries = diaryListRepository.inquiryDiary(userId, date);
-        diaries.forEach(diary -> {
-            diary.getPhotoList().size();
-        });
-        return diaries;
-    }
 
     public List<DiaryListResponseDTO> getMonthlyDiaryPhotos(Long userId, int year, int month){
         LocalDate firstDayOfMonthLocal =LocalDate.of(year,month,1);
@@ -36,7 +29,7 @@ public class DiaryListService {
         Date lastDayOfMonth = Date.valueOf(lastDayOfMonthLocal);
 
         List<DiaryListResponseDTO> diaries = diaryListRepository.inquiryDiaryRange(userId, firstDayOfMonth, lastDayOfMonth);
-        diaries.forEach(diary -> diary.getPhotoList().size());
+        diaries.forEach(diary -> diary.getPhotoList());
         return diaries;
     }
 

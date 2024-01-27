@@ -15,7 +15,6 @@ public class DiaryListResponseDTO {
     private Long diaryId;
     private Long userId;
     private String title;
-    private String content;
     private Date diaryDate;
     private List<TagInfoDTO> tagList;
     private List<String> photoList;
@@ -23,7 +22,6 @@ public class DiaryListResponseDTO {
     public DiaryListResponseDTO(Diary diary){
         this.diaryId = diary.getDiaryId();
         this.title = diary.getTitle();
-        this.content = diary.getContent();
         this.diaryDate = diary.getDiaryDate();
         this.tagList = diary.getDiaryTagList().stream()
                 .map(diaryTag -> {

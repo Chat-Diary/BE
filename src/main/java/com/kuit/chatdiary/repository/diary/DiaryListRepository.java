@@ -18,14 +18,6 @@ public class DiaryListRepository {
         this.em=em;
     }
 
-
-    public List<DiaryListResponseDTO> inquiryDiary(Long userId, LocalDate diaryDate) {
-        return em.createQuery("SELECT d FROM diary d LEFT JOIN FETCH d.diaryTagList WHERE d.member.userId = :userId AND d.diaryDate = :diaryDate", DiaryListResponseDTO.class)
-                .setParameter("userId", userId)
-                .setParameter("diaryDate", diaryDate.toString())
-                .getResultList();
-    }
-
     public List<DiaryListResponseDTO> inquiryDiaryRange(Long userId, Date startDate, Date endDate) {
         List<Diary> diaries=em.createQuery("SELECT d FROM diary d LEFT JOIN FETCH d.diaryTagList WHERE d.member.userId = :userId AND d.diaryDate BETWEEN :startDate AND :endDate", Diary.class)
                 .setParameter("userId", userId)
@@ -38,6 +30,4 @@ public class DiaryListRepository {
                 .collect(Collectors.toList());
 
     }
-
-
 }
