@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,8 +46,12 @@ public class DiaryController {
 
 
     @PostMapping("/modify")
-    public ResponseEntity<DiaryModifyResponseDTO> modifyDiary(@RequestPart(value="image") List<MultipartFile> multipartFiles, @RequestPart(value="request") DiaryModifyRequestDTO diaryModifyRequestDTO) throws IOException {
+    public ResponseEntity<DiaryModifyResponseDTO> modifyDiary(@RequestPart(value="image") List<MultipartFile> multipartFiles, @RequestPart(value="request") DiaryModifyRequestDTO diaryModifyRequestDTO) throws IOException, ParseException {
         log.info("[DiaryController.modifyDiary]");
+
+        System.out.println(diaryModifyRequestDTO.getDiaryDate());
+        System.out.println(diaryModifyRequestDTO.getDiaryDate().getClass().getName());
+
 
         List<String> newImageUrls =  diaryService.FileUpload(multipartFiles);
 
@@ -56,7 +61,7 @@ public class DiaryController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<DiaryDeleteResponseDTO> deleteDiary(@RequestBody DiaryDeleteRequestDTO diaryDeleteRequestDTO) {
+    public ResponseEntity<DiaryDeleteResponseDTO> deleteDiary(@RequestBody DiaryDeleteRequestDTO diaryDeleteRequestDTO) throws ParseException {
         log.info("[DiaryController.modifyDiary]");
 
         return ResponseEntity.ok().body(diaryService.deleteDiary(diaryDeleteRequestDTO));

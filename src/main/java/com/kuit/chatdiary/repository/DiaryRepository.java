@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.List;
@@ -51,23 +54,25 @@ public class DiaryRepository {
 
     }
 
-    public Long findDiaryId(DiaryModifyRequestDTO diaryModifyRequestDTO){
+
+    public Long findDiaryId(DiaryModifyRequestDTO diaryModifyRequestDTO) throws ParseException {
+
         log.info("[DiaryRepository.findDiaryId]");
-
-
-
-    public DiaryModifyResponseDTO modifyDiary(DiaryModifyRequestDTO diaryModifyRequestDTO) {
-        log.info("[DiaryRepository.modifyDiary]");
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Long diaryId = 0L;
+
+        Date diaryDate = dateFormat.parse(diaryModifyRequestDTO.getDiaryDate());
+
         List<Long> resultList = em.createQuery("SELECT d.diaryId FROM diary d WHERE d.member.userId = :user_id AND d.diaryDate = :diary_date")
-                .setParameter("user_id", diaryModifyRequestDTO.getUserId()).setParameter("diary_date",diaryModifyRequestDTO.getDiaryDate()).getResultList();
+                .setParameter("user_id", diaryModifyRequestDTO.getUserId()).setParameter("diary_date",diaryDate).getResultList();
 
         for(Long result : resultList){
             diaryId = result;
         }
 
+
         return diaryId;
+
     }
 
     public void modifyDiaryTitleContent(Long diaryId,DiaryModifyRequestDTO diaryModifyRequestDTO) {
@@ -107,7 +112,6 @@ public class DiaryRepository {
             }
                 }
 
-        // 일기 제목, 내용 수정
 
     }
 
@@ -161,14 +165,17 @@ public class DiaryRepository {
 
 
 
-    public DiaryDeleteResponseDTO deleteDiary(DiaryDeleteRequestDTO diaryDeleteRequestDTO) {
+    public DiaryDeleteResponseDTO deleteDiary(DiaryDeleteRequestDTO diaryDeleteRequestDTO) throws ParseException {
         log.info("[DiaryRepository.deleteDiary]");
 
         Long diaryId = 0L;
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date diaryDate = dateFormat.parse(diaryDeleteRequestDTO.getDiaryDate());
+
 
         List<Long> resultList = em.createQuery("SELECT d.diaryId FROM diary d WHERE d.member.userId = :user_id AND d.diaryDate = :diary_date")
-                .setParameter("user_id", diaryDeleteRequestDTO.getUserId()).setParameter("diary_date",diaryDeleteRequestDTO.getDiaryDate()).getResultList();
+                .setParameter("user_id", diaryDeleteRequestDTO.getUserId()).setParameter("diary_date",diaryDate).getResultList();
 
         for(Long result : resultList){
             diaryId = result;

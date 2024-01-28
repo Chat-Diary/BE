@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,14 +30,14 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
 
-    @Transactional
     public DiaryShowDetailResponseDTO showDiary(Long userId, Date diaryDate) throws ParseException {
         log.info("[DiaryService.showDiary]");
         return diaryRepository.showDiaryDetail(userId, diaryDate);
     }
-}
 
-    public DiaryModifyResponseDTO modifyDiary(DiaryModifyRequestDTO diaryModifyRequestDTO)  {
+    @Transactional
+    public DiaryModifyResponseDTO modifyDiary(DiaryModifyRequestDTO diaryModifyRequestDTO) throws ParseException {
+
         log.info("[DiaryService.modifyDiary]");
 
         //0. 다이어리 ID 구하기
@@ -58,7 +59,7 @@ public class DiaryService {
     }
 
     @Transactional
-    public DiaryDeleteResponseDTO deleteDiary(DiaryDeleteRequestDTO diaryDeleteRequestDTO) {
+    public DiaryDeleteResponseDTO deleteDiary(DiaryDeleteRequestDTO diaryDeleteRequestDTO) throws ParseException {
         log.info("[DiaryService.deleteDiary]");
         return diaryRepository.deleteDiary(diaryDeleteRequestDTO);
     }
