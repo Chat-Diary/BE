@@ -22,7 +22,11 @@ public class SenderService {
     }
     public List<ChatSenderStaticResponseDTO> calculateSenderStatistics(Long memberId, Date startDate, Date endDate) {
         List<Object[]> chatStatistics = senderRepository.countChatsBySenderAndDate(memberId, startDate, endDate);
-        long totalChats = chatStatistics.stream().mapToLong(e -> (Long) e[1]).sum();
+        /** USER가 Sender이면 계산 안하기  */
+        long totalChats = chatStatistics.stream()
+                .filter(e -> !Sender.USER.name().equals(e[0]))
+                .mapToLong(e -> (Long) e[1])
+                .sum();
 
         List<ChatSenderStaticResponseDTO> statisticsList = new ArrayList<>();
         for (Object[] result : chatStatistics) {
