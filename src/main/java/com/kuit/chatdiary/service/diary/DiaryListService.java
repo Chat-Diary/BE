@@ -14,23 +14,16 @@ public class DiaryListService {
     private final DiaryListRepository diaryListRepository;
 
     public DiaryListService(DiaryListRepository diaryListRepository){
-        this.diaryListRepository=diaryListRepository;
+        this.diaryListRepository = diaryListRepository;
     }
 
-    /**
-     * diary.getPhotoList().size(); 를 통해 jpa가 각 객체의 사진 목록 로드
-     * */
-
     public List<DiaryListResponseDTO> getMonthlyDiaryPhotos(Long userId, int year, int month){
-        LocalDate firstDayOfMonthLocal =LocalDate.of(year,month,1);
-        LocalDate lastDayOfMonthLocal =firstDayOfMonthLocal.plusMonths(1).minusDays(1);
+        LocalDate firstDayOfMonthLocal = LocalDate.of(year, month, 1);
+        LocalDate lastDayOfMonthLocal = firstDayOfMonthLocal.plusMonths(1).minusDays(1);
 
         Date firstDayOfMonth = Date.valueOf(firstDayOfMonthLocal);
         Date lastDayOfMonth = Date.valueOf(lastDayOfMonthLocal);
 
-        List<DiaryListResponseDTO> diaries = diaryListRepository.inquiryDiaryRange(userId, firstDayOfMonth, lastDayOfMonth);
-        diaries.forEach(diary -> diary.getPhotoList());
-        return diaries;
+        return diaryListRepository.inquiryDiaryRange(userId, firstDayOfMonth, lastDayOfMonth);
     }
-
 }
