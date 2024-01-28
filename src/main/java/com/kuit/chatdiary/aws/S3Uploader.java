@@ -26,7 +26,6 @@ public class S3Uploader {
 
     private final AmazonS3 amazonS3;
 
-    //@Value("${cloud.aws.s3.bucket}")
     private final String bucket;
 
 
@@ -44,7 +43,6 @@ public class S3Uploader {
         String uniqueFileName = uuid + "_" + originalFileName.replaceAll("\\s", "_");
 
         String fileName = dirName + "/" + uniqueFileName;
-        log.info("fileName: " + fileName);
         File uploadFile = convert(multipartFile);
 
         String uploadImageUrl = putS3(uploadFile, fileName);
@@ -75,31 +73,5 @@ public class S3Uploader {
         return amazonS3.getUrl(bucket, fileName).toString();
     }
 
-//    private void removeNewFile(File targetFile) {
-//        if (targetFile.delete()) {
-//            log.info("파일이 삭제되었습니다.");
-//        } else {
-//            log.info("파일이 삭제되지 못했습니다.");
-//        }
-//    }
-//
-//    public void deleteFile(String fileName) {
-//        try {
-//            // URL 디코딩을 통해 원래의 파일 이름을 가져옵니다.
-//            String decodedFileName = URLDecoder.decode(fileName, "UTF-8");
-//            log.info("Deleting file from S3: " + decodedFileName);
-//            amazonS3.deleteObject(bucket, decodedFileName);
-//        } catch (UnsupportedEncodingException e) {
-//            log.error("Error while decoding the file name: {}", e.getMessage());
-//        }
-//    }
-//
-//    public String updateFile(MultipartFile newFile, String oldFileName, String dirName) throws IOException {
-//        // 기존 파일 삭제
-//        log.info("S3 oldFileName: " + oldFileName);
-//        deleteFile(oldFileName);
-//        // 새 파일 업로드
-//        return upload(newFile, dirName);
-//    }
 
 }
