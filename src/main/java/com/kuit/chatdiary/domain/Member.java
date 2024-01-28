@@ -1,7 +1,8 @@
 package com.kuit.chatdiary.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Cleanup;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -37,12 +38,11 @@ public class Member {
     @ColumnDefault("'ACTIVE'")
     private String status;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "member")  // 자신이 연관관계 주인이 아님
-    private List<Chat> chatList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    private List<Diary> diaryList = new ArrayList<>();
+//    @OneToMany(mappedBy = "member")  // 자신이 연관관계 주인이 아님
+//    private List<Chat> chatList = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "member")
+//    private List<Diary> diaryList = new ArrayList<>();
 
 
 }

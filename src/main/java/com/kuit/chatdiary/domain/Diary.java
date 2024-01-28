@@ -47,8 +47,8 @@ public class Diary {
     @ColumnDefault("'ACTIVE'")
     private String status;
 
-    @OneToMany(mappedBy = "diary")
-    private List<DiaryTag> diaryTagList = new ArrayList<>();
+//    @OneToMany(mappedBy = "diary")
+//    private List<DiaryTag> diaryTagList = new ArrayList<>();
 
     @OneToMany(mappedBy = "diary")
     private List<Photo> photoList = new ArrayList<>();
