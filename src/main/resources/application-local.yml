@@ -11,3 +11,15 @@ spring:
       hibernate:
         format_sql: true
 
+cloud:
+  aws:
+    s3:
+      bucket: chatdiary-bucket
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+    credentials:
+      access-key: AKIA5VORDNY5D2IOGKAM
+      secret-key: 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
