@@ -4,7 +4,6 @@ import com.kuit.chatdiary.domain.*;
 import com.kuit.chatdiary.dto.diary.DiaryDeleteRequestDTO;
 import com.kuit.chatdiary.dto.diary.DiaryDeleteResponseDTO;
 import com.kuit.chatdiary.dto.diary.DiaryModifyRequestDTO;
-import com.kuit.chatdiary.dto.diary.DiaryModifyResponseDTO;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -83,23 +82,23 @@ public class DiaryRepository {
 
         }
 
-        System.out.println("title, content 변경 완료!");
-
     }
 
 
     public void deleteImgFromDP(Long diaryId ,List<String> deleteImgUrls){
         log.info("[DiaryRepository.deleteImgFromDP]");
-        System.out.println("삭제할 url: "+ deleteImgUrls);
+
+     /*   이미지 url로 삭제할 photo_id를 찾음
+         -> photo_id기반으로 삭제할 diary_photo_id를 찾음
+         -> diary_photo_id 기준으로 diaryphoto테이블에서 행 삭제*/
 
         List<Long> deletePhotoIds = em.createQuery("SELECT p.photoId FROM photo p"+
                 " WHERE p.imageUrl IN :urls").setParameter("urls", deleteImgUrls).getResultList();
         List<Long> deleteDiaryPhotoIds = em.createQuery("SELECT dp.diaryPhotoId FROM diaryphoto dp"+
-                " WHERE dp.photo.photoId IN :urls AND dp.diary.diaryId =: diary_id")
-                .setParameter("urls", deletePhotoIds).setParameter("diary_id", diaryId)
+                " WHERE dp.photo.photoId IN :delete_photo_ids AND dp.diary.diaryId =: diary_id")
+                .setParameter("delete_photo_ids", deletePhotoIds).setParameter("diary_id", diaryId)
                 .getResultList();
 
-        //diaryphoto에서 삭제
         for(Long deleteDiaryPhotoId : deleteDiaryPhotoIds){
 
             DiaryPhoto deleteDiaryPhoto = em.find(DiaryPhoto.class, deleteDiaryPhotoId);
@@ -114,8 +113,11 @@ public class DiaryRepository {
 
     public void addNewImg(Long diaryId, List<String> newImgUrls) {
         log.info("[DiaryRepository.addNewImg]");
+
+/*        생성된 이미지URL을 포함한 photo객체 생성, 저장
+         -> Photo객체를 포함하여 diaryPhoto객체 생성, 저장*/
+
         for(String newImgUrl: newImgUrls){
-            System.out.println("새 imgurl: "+ newImgUrl);
             //Photo에 저장
             Photo photo = new Photo();
             photo.setImageUrl(newImgUrl);
@@ -129,7 +131,6 @@ public class DiaryRepository {
 
         }
 
-        System.out.println("새로운 이미지 저장 완료");
     }
 
     public void modifyTag(Long diaryId, List<String> tagNames) {
