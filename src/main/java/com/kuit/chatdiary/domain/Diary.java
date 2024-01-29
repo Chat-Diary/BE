@@ -50,8 +50,5 @@ public class Diary {
 //    @OneToMany(mappedBy = "diary")
 //    private List<DiaryTag> diaryTagList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "diary")
-    private List<Photo> photoList = new ArrayList<>();
-
 
 }

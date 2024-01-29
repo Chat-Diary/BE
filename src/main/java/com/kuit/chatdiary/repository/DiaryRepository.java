@@ -4,6 +4,7 @@ import com.kuit.chatdiary.domain.*;
 import com.kuit.chatdiary.dto.diary.DiaryDeleteRequestDTO;
 import com.kuit.chatdiary.dto.diary.DiaryDeleteResponseDTO;
 import com.kuit.chatdiary.dto.diary.DiaryModifyRequestDTO;
+import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponseDTO;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.sql.Date;
-import java.text.ParseException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,7 +22,7 @@ public class DiaryRepository {
 
     private final EntityManager em;
 
-    public DiaryShowDetailResponseDTO showDiaryDetail (Long userId, Date diaryDate) throws ParseException {
+    public DiaryShowDetailResponseDTO showDiaryDetail (Long userId, java.sql.Date diaryDate) {
 
         log.info("[DiaryRepository.showDiaryDetail]");
 
@@ -40,9 +39,8 @@ public class DiaryRepository {
             content = (String) result[2];
         }
 
-
-        List<String> imageUrlList = em.createQuery("SELECT p.imageUrl FROM photo p WHERE p.diary.diaryId = :diary_id")
-                .setParameter("diary_id", diaryId).getResultList();
+        List<String> imageUrlList =  em.createQuery("SELECT p.imageUrl FROM diaryphoto dp LEFT OUTER JOIN dp.photo p"+
+                " WHERE dp.diary.diaryId = :diary_id").setParameter("diary_id", diaryId).getResultList();
 
         List<String> tagNameList = em.createQuery("SELECT t.tagName"+
                         " FROM diarytag dt LEFT OUTER JOIN dt.tag t"+
@@ -154,6 +152,7 @@ public class DiaryRepository {
         //새로운 diaryTag 추가 (tagName에 해당하는 tagid 찾고 -> tagid 기준으로 행 추가)
         List<Long> newTagIds = em.createQuery("SELECT t.tagId FROM tag t WHERE t.tagName IN :tag_names")
                 .setParameter("tag_names", tagNames).getResultList();
+
         for(Long newTagId:newTagIds){
             DiaryTag diaryTag = new DiaryTag();
             diaryTag.setDiary(em.find(Diary.class, diaryId));
@@ -181,7 +180,6 @@ public class DiaryRepository {
             diaryId = result;
         }
 
-        System.out.println("diaryId: "+diaryId);
 
         //diaryphoto에서 삭제
         List<Long> deleteDiaryPhotoIds = em.createQuery("SELECT dp.diaryPhotoId FROM diaryphoto dp WHERE dp.diary.diaryId = :diary_id")

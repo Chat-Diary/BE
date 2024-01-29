@@ -47,10 +47,6 @@ public class DiaryController {
     public ResponseEntity<DiaryModifyResponseDTO> modifyDiary(@RequestPart(value="image") List<MultipartFile> multipartFiles, @RequestPart(value="request") DiaryModifyRequestDTO diaryModifyRequestDTO) throws IOException, ParseException {
         log.info("[DiaryController.modifyDiary]");
 
-        System.out.println(diaryModifyRequestDTO.getDiaryDate());
-        System.out.println(diaryModifyRequestDTO.getDiaryDate().getClass().getName());
-
-
         List<String> newImageUrls =  diaryService.FileUpload(multipartFiles);
 
         diaryModifyRequestDTO.setNewImgUrls(newImageUrls);
