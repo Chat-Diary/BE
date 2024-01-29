@@ -1,7 +1,6 @@
 FROM openjdk:17-alpine
 ARG JAR_PATH=/build/libs/*.jar
 COPY ${JAR_PATH} /home/server.jar
-ENTRYPOINT ["java","-jar","/home/server.jar"]
 ARG OPEN_AI_KEY
 ENV OPEN_AI_KEY=${OPEN_AI_KEY}
 ARG DEV_DB_HOST
@@ -18,3 +17,8 @@ ARG PROD_DB_USER
 ENV PROD_DB_USER=${PROD_DB_USER}
 ARG ACTIVE_PROFILE
 ENV ACTIVE_PROFILE=${ACTIVE_PROFILE}
+ENV TZ=Asia/Seoul
+RUN apk add --no-cache tzdata && \
+    cp /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone
+ENTRYPOINT ["java","-jar","/home/server.jar"]
