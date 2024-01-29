@@ -57,6 +57,10 @@ jobs:
           --build-arg PROD_DB_PASSWORD=${{ secrets.PROD_DB_PASSWORD }} \
           --build-arg PROD_DB_USER=${{ secrets.PROD_DB_USER }} \
           --build-arg ACTIVE_PROFILE=${{ secrets.ACTIVE_PROFILE }} \
+          --build-arg S3_BUCKET=${{ secrets.S3_BUCKET }} \
+          --build-arg REGION=${{ secrets.REGION }} \
+          --build-arg ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
+          --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
           -t chatdiary/chatdiary-image:latest .
           docker images
           docker push chatdiary/chatdiary-image:latest
