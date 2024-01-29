@@ -30,6 +30,8 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
 
+    private final S3Uploader s3Uploader;
+
     public DiaryShowDetailResponseDTO showDiary(Long userId, Date diaryDate) throws ParseException {
         log.info("[DiaryService.showDiary]");
         return diaryRepository.showDiaryDetail(userId, diaryDate);
@@ -37,7 +39,6 @@ public class DiaryService {
 
     @Transactional
     public DiaryModifyResponseDTO modifyDiary(DiaryModifyRequestDTO diaryModifyRequestDTO) throws ParseException {
-
         log.info("[DiaryService.modifyDiary]");
 
         //0. 다이어리 ID 구하기
@@ -65,7 +66,7 @@ public class DiaryService {
     }
 
 
-    private final S3Uploader s3Uploader;
+
 
     public List<String> FileUpload(List<MultipartFile> multipartFiles) throws IOException {
         log.info("[DiaryService.FileUpload]");
@@ -75,7 +76,7 @@ public class DiaryService {
             String imgUrl = s3Uploader.upload(multipartFile, "test_images");
             newImgUrls.add(imgUrl);
         }
-        System.out.println("imgurl: "+newImgUrls);
+
         return newImgUrls;
     }
 

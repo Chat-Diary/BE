@@ -1,25 +1,11 @@
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ChatDiary?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
-    username: root
-    password:
-  jpa:
+datasource:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/ChatDiary?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+  username: root
+  password:
+jpa:
+  hibernate:
+    ddl-auto: create
+  properties:
     hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        format_sql: true
-
-cloud:
-  aws:
-    s3:
-      bucket: chatdiary-bucket
-    region:
-      static: ap-northeast-2
-      auto: false
-    stack:
-      auto: false
-    credentials:
-      access-key: AKIA5VORDNY5D2IOGKAM
-      secret-key: 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
+      format_sql: true

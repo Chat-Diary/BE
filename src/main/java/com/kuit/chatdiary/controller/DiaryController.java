@@ -1,6 +1,5 @@
 package com.kuit.chatdiary.controller;
 
-import com.kuit.chatdiary.aws.S3Uploader;
 import com.kuit.chatdiary.dto.diary.DiaryDeleteRequestDTO;
 import com.kuit.chatdiary.dto.diary.DiaryDeleteResponseDTO;
 import com.kuit.chatdiary.dto.diary.DiaryModifyRequestDTO;
@@ -33,7 +32,6 @@ public class DiaryController {
 
     private final DiaryService diaryService;
 
-    private final S3Uploader s3Uploader;
 
     @GetMapping("/detail")
     public ResponseEntity<DiaryShowDetailResponseDTO> showDiary(@RequestParam(name="user_id") Long userId, @RequestParam(name="diary_date") Date diaryDate) throws ParseException, ParseException {

@@ -15,16 +15,16 @@ import org.springframework.core.env.Environment;
 @Configuration
 @RequiredArgsConstructor
 public class S3Config {
-    @Value("${cloud.aws.credentials.access-key}")
+
+    @Value("${ACCESS_KEY}")
     private String accessKey;
 
-    @Value("${cloud.aws.credentials.secret-key}")
+    @Value("${SECRET_KEY}")
     private String accessSecret;
 
-    @Value("${cloud.aws.region.static}")
+    @Value("${REGION}")
     private String region;
 
-    private final Environment env;
     @Bean
     public AmazonS3 s3Client(){
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, accessSecret);
