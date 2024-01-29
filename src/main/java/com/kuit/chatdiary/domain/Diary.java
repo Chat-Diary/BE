@@ -1,8 +1,10 @@
 package com.kuit.chatdiary.domain;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -10,11 +12,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity(name = "diary")
 @Getter
+@Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Diary {
@@ -45,11 +47,8 @@ public class Diary {
     @ColumnDefault("'ACTIVE'")
     private String status;
 
-    @OneToMany(mappedBy = "diary")
-    private List<DiaryTag> diaryTagList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "diary")
-    private List<Photo> photoList = new ArrayList<>();
+//    @OneToMany(mappedBy = "diary")
+//    private List<DiaryTag> diaryTagList = new ArrayList<>();
 
 
 }

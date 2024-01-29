@@ -21,6 +21,6 @@ public class Tag {
     @Column(name = "tag_name")
     private String tagName;
 
-    @OneToMany(mappedBy = "tag")
-    private List<DiaryTag> diaryTagList = new ArrayList<>();
+//    @OneToMany(mappedBy = "tag")
+//    private List<DiaryTag> diaryTagList = new ArrayList<>();
 }
