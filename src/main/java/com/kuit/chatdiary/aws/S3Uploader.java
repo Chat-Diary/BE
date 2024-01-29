@@ -46,6 +46,8 @@ public class S3Uploader {
         File uploadFile = convert(multipartFile);
 
         String uploadImageUrl = putS3(uploadFile, fileName);
+        uploadFile.delete();
+
         return uploadImageUrl;
     }
 
