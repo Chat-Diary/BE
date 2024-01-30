@@ -12,6 +12,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatSenderStaticResponseDTO {
+
     private Sender sender;
     private Long chatCount;
     private double percentage;
