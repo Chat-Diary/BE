@@ -1,5 +1,6 @@
 package com.kuit.chatdiary.dto.diary;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
