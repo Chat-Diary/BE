@@ -10,7 +10,6 @@ import java.util.List;
 public class SenderRepository {
 
     private final EntityManager em;
-
     public SenderRepository(EntityManager em) {
         this.em = em;
     }
