@@ -3,7 +3,7 @@ package com.kuit.chatdiary.service.chat;
 import com.kuit.chatdiary.domain.Sender;
 import com.kuit.chatdiary.dto.chat.ChatSenderStaticResponseDTO;
 import com.kuit.chatdiary.dto.diary.DateRangeDTO;
-import com.kuit.chatdiary.repository.SenderRepository;
+import com.kuit.chatdiary.repository.statics.SenderRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;

@@ -1,4 +1,4 @@
-package com.kuit.chatdiary.repository;
+package com.kuit.chatdiary.repository.statics;
 
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
