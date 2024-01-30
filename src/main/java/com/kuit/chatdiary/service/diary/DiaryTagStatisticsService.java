@@ -29,6 +29,11 @@ public class DiaryTagStatisticsService {
             Long count = (Long) result[2];
             statisticsList.add(new TagStatisticResponseDTO(category, tagName, count, calculatePercent(count, totalTags), startDate, endDate));
         }
+
+        statisticsList.sort((o1, o2) -> {
+            return (int) (o2.getCount() - o1.getCount());
+        });
+
         return statisticsList;
     }
 
