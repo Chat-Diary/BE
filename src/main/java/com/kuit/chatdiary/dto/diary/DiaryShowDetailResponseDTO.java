@@ -19,12 +19,12 @@ public class DiaryShowDetailResponseDTO {
 
     private String title;
 
-    //private String imgUrl;
     private List<String> imgUrl;
 
     private String content;
 
-    //private String tagName;
     private List<String> tagName;
+
+    private Long CharacterIndex;
 
 }
