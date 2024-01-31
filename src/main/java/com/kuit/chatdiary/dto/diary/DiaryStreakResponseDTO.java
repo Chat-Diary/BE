@@ -1,6 +1,12 @@
 package com.kuit.chatdiary.dto.diary;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class DiaryStreakResponseDTO {
-    private Long userId;
-    private String diaryStreakDate;
+    private long diaryStreakDate;
 }
