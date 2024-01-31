@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,8 +48,32 @@ public class DiaryRepository {
                         " WHERE dt.diary.id = :diary_id")
                 .setParameter("diary_id", diaryId).getResultList();
 
+        List<Object[]> senderCounts = em.createQuery("SELECT c.sender, COUNT(*) AS cnt FROM chat c"+
+                        " WHERE DATE(c.createAt) = : diary_date AND c.sender NOT IN :user"+
+                        " GROUP BY c.sender ORDER BY cnt DESC")
+                .setParameter("diary_date", diaryDate).setParameter("user", Sender.USER).getResultList();
 
-        return new DiaryShowDetailResponseDTO(diaryDate, title, imageUrlList, content, tagNameList);
+        List<Sender> senders = new ArrayList<>();
+
+        Long maxCount = -1L;
+        for(Object[] senderCount : senderCounts){
+            if(maxCount < 0){
+                maxCount = (Long) senderCount[1];
+                senders.add((Sender) senderCount[0]);
+            }else{
+                if(maxCount != senderCount[1]){
+                    break;
+                }else{
+                    senders.add((Sender) senderCount[0]);
+                }
+            }
+        }
+
+        //리스트 중 랜덤으로 고르기
+        Integer randomIndex = (int) (Math.random()*senders.size());
+        Sender sender = senders.get(randomIndex);
+
+        return new DiaryShowDetailResponseDTO(diaryDate, title, imageUrlList, content, tagNameList, (long) sender.getIndex());
 
     }
 
