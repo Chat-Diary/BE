@@ -17,7 +17,7 @@ public class TagSearchController {
         this.tagSearchService = tagSearchService;
     }
     @GetMapping("/list/tag")
-    public List<TagSearchResponseDTO> findByTag(@RequestParam(name = "tagName") List<String> tagNames) {
-        return tagSearchService.findByTag(tagNames);
+    public List<TagSearchResponseDTO> findByTag(@RequestParam("userId") Long userId, @RequestParam(name = "tagName") List<String> tagNames) {
+        return tagSearchService.findByTag(tagNames,userId);
     }
 }
