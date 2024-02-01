@@ -23,6 +23,7 @@ public class Member {
     @Column(name = "user_id")
     private Long userId;
 
+    @Column(columnDefinition = "TEXT")
     private String email;
 
     private String password;

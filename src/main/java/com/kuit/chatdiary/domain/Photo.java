@@ -19,6 +19,6 @@ public class Photo {
     @JoinColumn(name = "chat_id")
     private Chat chat;
 
-    @Column(name = "image_url")
+    @Column(columnDefinition = "TEXT", name = "image_url")
     private String imageUrl;
 }
