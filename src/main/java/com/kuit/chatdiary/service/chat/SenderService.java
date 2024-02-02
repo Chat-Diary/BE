@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SenderService {
@@ -22,24 +20,35 @@ public class SenderService {
     }
     public List<ChatSenderStaticResponseDTO> calculateSenderStatistics(Long memberId, Date startDate, Date endDate) {
         List<Object[]> chatStatistics = senderRepository.countChatsBySenderAndDate(memberId, startDate, endDate);
-        /** USER가 Sender이면 계산 안하기  */
-        long totalChats = chatStatistics.stream()
-                .filter(e -> !Sender.USER.name().equals(e[0]))
-                .mapToLong(e -> (Long) e[1])
-                .sum();
+
+        /** value를 count로 활용해서 연산 쉽게 */
+        Map<Sender, Long> chatCountMap = new HashMap<>();
+        long totalChats = 0;
+        for (Object[] result : chatStatistics) {
+            String senderName = (String) result[0];
+            Long count = (Long) result[1];
+
+            if (!senderName.equals(Sender.USER.name())) {
+                Sender sender = Sender.valueOf(senderName);
+                chatCountMap.put(sender, count);
+                totalChats += count;
+            }
+        }
+        /** 이미 키 있으면 업데이트 안하기
+         * 0개 처리
+         * */
+        for (Sender sender : Sender.values()) {
+            chatCountMap.putIfAbsent(sender, 0L);
+        }
 
         List<ChatSenderStaticResponseDTO> statisticsList = new ArrayList<>();
-        for (Object[] result : chatStatistics) {
-            Sender sender;
-            if (result[0] instanceof String) {
-                sender = Sender.valueOf((String) result[0]);//enum 으로 변환해서 사용
-            } else {
-                continue;
+        for (Map.Entry<Sender, Long> entry : chatCountMap.entrySet()) {
+            if (entry.getKey() != Sender.USER) {
+                double percentage = calculatePercent(entry.getValue(), totalChats);
+                statisticsList.add(new ChatSenderStaticResponseDTO(entry.getKey(), entry.getValue(), percentage, startDate, endDate));
             }
-            Long count = (Long) result[1];
-            double percentage = calculatePercent(count, totalChats);
-            statisticsList.add(new ChatSenderStaticResponseDTO(sender, count, percentage, startDate, endDate));
         }
+
         return statisticsList;
     }
 
