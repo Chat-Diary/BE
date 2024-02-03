@@ -18,23 +18,40 @@ public class DiaryTagStatisticsService {
         this.diaryTagRepository = diaryTagRepository;
     }
 
-    public List<TagStatisticResponseDTO> calculateTagStatistics(Long memberId, Date startDate, Date endDate) {
-        List<Object[]> tagStatistics = diaryTagRepository.findTagStatisticsByMember(memberId, startDate, endDate);
-        /** 쿼리 3번째 결과를 추출해서 스트림으로 탐색해서 다 더해서 전체 카운트 계산..! */
-        long totalTags = tagStatistics.stream().mapToLong(e -> (Long) e[2]).sum();
+    public List<TagStatisticResponseDTO> calculateTagStatistics(Long memberId, String type) {
+        LocalDate localDate = LocalDate.now();
+        DateRangeDTO dateRange = calculateDateRangeBasedOnType(type, localDate);
+        List<Object[]> tagStatistics = diaryTagRepository.findTagStatisticsByMember(memberId, dateRange.getStartDate(), dateRange.getEndDate());
+        long totalTags = calculateTotalTags(tagStatistics);
+        List<TagStatisticResponseDTO> statisticsList = buildStatisticsList(tagStatistics, totalTags, dateRange);
+        sortStatisticsListByCount(statisticsList);
+        return statisticsList;
+    }
+
+    /** 타입별로 나눠서 계산 */
+    private DateRangeDTO calculateDateRangeBasedOnType(String type, LocalDate date) {
+        return staticsType(type, date);
+    }
+
+    /** 전체 계산 다 더하기 */
+    private long calculateTotalTags(List<Object[]> tagStatistics) {
+        return tagStatistics.stream().mapToLong(e -> (Long) e[2]).sum();
+    }
+
+    private List<TagStatisticResponseDTO> buildStatisticsList(List<Object[]> tagStatistics, long totalTags, DateRangeDTO dateRange) {
         List<TagStatisticResponseDTO> statisticsList = new ArrayList<>();
         for (Object[] result : tagStatistics) {
             String category = (String) result[0];
             String tagName = (String) result[1];
             Long count = (Long) result[2];
-            statisticsList.add(new TagStatisticResponseDTO(category, tagName, count, calculatePercent(count, totalTags), startDate, endDate));
+            statisticsList.add(new TagStatisticResponseDTO(category, tagName, count, calculatePercent(count, totalTags), dateRange.getStartDate(), dateRange.getEndDate()));
         }
-
-        statisticsList.sort((o1, o2) -> {
-            return (int) (o2.getCount() - o1.getCount());
-        });
-
         return statisticsList;
+    }
+
+    /** 정렬 메서드 */
+    private void sortStatisticsListByCount(List<TagStatisticResponseDTO> statisticsList) {
+        statisticsList.sort(Comparator.comparingLong(TagStatisticResponseDTO::getCount).reversed());
     }
 
     public double calculatePercent(long count,long totalTags){

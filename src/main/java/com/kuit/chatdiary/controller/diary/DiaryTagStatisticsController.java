@@ -24,10 +24,7 @@ public class DiaryTagStatisticsController {
     public ResponseEntity<List<TagStatisticResponseDTO>> getTagStatistics(
             @RequestParam("memberId") Long memberId,
             @RequestParam("type") String type) {
-        LocalDate localDate =LocalDate.now();
-        DateRangeDTO dateRange = diaryTagStatisticsService.staticsType(type,localDate);
-        List<TagStatisticResponseDTO> tagStatistics = diaryTagStatisticsService.calculateTagStatistics(memberId, dateRange.getStartDate()
-                ,dateRange.getEndDate());
+        List<TagStatisticResponseDTO> tagStatistics = diaryTagStatisticsService.calculateTagStatistics(memberId, type);
         return ResponseEntity.ok(tagStatistics);
     }
 }
