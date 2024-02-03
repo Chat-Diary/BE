@@ -22,10 +22,8 @@ public class DiaryStreakController {
 
     @GetMapping("/streak")
     public ResponseEntity<DiaryStreakResponseDTO> getStreakDate(
-            @RequestParam("memberId") Long userId,
-            @RequestParam("date") LocalDate today
-    ){
-        DiaryStreakResponseDTO response=diaryStreakService.streakDate(userId,today);
+            @RequestParam("memberId") Long userId){
+        DiaryStreakResponseDTO response=diaryStreakService.streakDate(userId);
         return ResponseEntity.ok(response);
     }
 }

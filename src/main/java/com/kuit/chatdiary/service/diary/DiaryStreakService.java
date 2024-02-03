@@ -14,7 +14,8 @@ public class DiaryStreakService {
         this.diaryStreakRepository = diaryStreakRepository;
     }
 
-    public DiaryStreakResponseDTO streakDate(long userId, LocalDate today){
+    public DiaryStreakResponseDTO streakDate(long userId){
+        LocalDate today=LocalDate.now();
         long streakDate=diaryStreakRepository.streakDate(userId,today);
         DiaryStreakResponseDTO response = new DiaryStreakResponseDTO(streakDate);
         return response;
