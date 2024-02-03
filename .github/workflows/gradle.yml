@@ -61,9 +61,9 @@ jobs:
           --build-arg REGION=${{ secrets.REGION }} \
           --build-arg ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
           --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
-          -t chatdiary/chatdiary-image:latest .
+          -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }} .
           docker images
-          docker push chatdiary/chatdiary-image:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}
 
       - name: deploy
         uses: appleboy/ssh-action@master
