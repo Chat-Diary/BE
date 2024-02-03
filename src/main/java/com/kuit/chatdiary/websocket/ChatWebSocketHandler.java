@@ -29,7 +29,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
         CompletableFuture.runAsync(() -> {
             try {
-                int status = chatService.processUserMessage(request.getUserId(), request.getContent(), request.getSelectedModel());
+                int status = chatService.processUserMessage(request.getUserId(), request.getContent(), request.getChatType());
                 session.sendMessage(new TextMessage(objectMapper.writeValueAsString(status)));
             } catch (Exception e) {
                 log.error("User message processing failed", e);
@@ -39,7 +39,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
         CompletableFuture.runAsync(() -> {
             try {
-                Chat gptResponse = chatService.processGptMessage(request.getUserId(), request.getContent(), request.getSelectedModel());
+                Chat gptResponse = chatService.processGptMessage(request.getUserId(), request.getContent(), request.getSelectedModel(), request.getChatType());
                 session.sendMessage(new TextMessage(objectMapper.writeValueAsString(gptResponse)));
             } catch (Exception e) {
                 log.error("GPT message processing failed", e);
