@@ -26,9 +26,8 @@ public class SenderController {
     @GetMapping("/sender")
     public ResponseEntity<List<ChatSenderStaticResponseDTO>> getTagStatistics(
             @RequestParam("memberId") Long memberId,
-            @RequestParam("type") String type,
-            @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate) {
-        DateRangeDTO dateRange = senderService.staticsType(type,localDate);
+            @RequestParam("type") String type){
+        DateRangeDTO dateRange = senderService.staticsType(type);
         List<ChatSenderStaticResponseDTO> tagStatistics = senderService.calculateSenderStatistics(memberId, dateRange.getStartDate()
                 ,dateRange.getEndDate());
         return ResponseEntity.ok(tagStatistics);

@@ -59,7 +59,8 @@ public class SenderService {
     }
 
     /** 나중에 메서드 합쳐서 리펙토링 필요 */
-    public DateRangeDTO staticsType(String type, LocalDate localDate){
+    public DateRangeDTO staticsType(String type){
+        LocalDate localDate = LocalDate.now();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(java.sql.Date.valueOf(localDate));
         Date startDate, endDate;
