@@ -23,8 +23,8 @@ public class DiaryTagStatisticsController {
     @GetMapping("/tags")
     public ResponseEntity<List<TagStatisticResponseDTO>> getTagStatistics(
             @RequestParam("memberId") Long memberId,
-            @RequestParam("type") String type,
-            @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate) {
+            @RequestParam("type") String type) {
+        LocalDate localDate =LocalDate.now();
         DateRangeDTO dateRange = diaryTagStatisticsService.staticsType(type,localDate);
         List<TagStatisticResponseDTO> tagStatistics = diaryTagStatisticsService.calculateTagStatistics(memberId, dateRange.getStartDate()
                 ,dateRange.getEndDate());
