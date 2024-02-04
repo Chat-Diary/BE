@@ -35,7 +35,7 @@ public class SenderService {
         final long finalTotalChats = totalChats;
         List<ChatSenderDetailResponseDTO> details = chatCountMap.entrySet().stream()
                 .filter(entry -> entry.getKey() != Sender.USER)
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())) /** 정렬 */
                 .map(entry -> new ChatSenderDetailResponseDTO(entry.getKey(), entry.getValue(), calculatePercent(entry.getValue(), finalTotalChats)))
                 .collect(Collectors.toList());
 
