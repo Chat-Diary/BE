@@ -63,36 +63,26 @@ public class DiaryTagStatisticsService {
 
     /** 코드 더 줄이고 싶은데.. */
     public DateRangeDTO staticsType(String type, LocalDate localDate){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(java.sql.Date.valueOf(localDate));
-        Date startDate, endDate;
+        LocalDate startDate;
+        LocalDate endDate;
+
         switch (type) {
             case "weekly":
-                /** 주간 -> 해당 주의 시작일과 종료일을 계산 */
-                calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
-                startDate = new Date(calendar.getTimeInMillis());
-                calendar.add(Calendar.DAY_OF_WEEK, 6);
-                endDate = new Date(calendar.getTimeInMillis());
+                startDate = localDate.with(java.time.DayOfWeek.MONDAY);
+                endDate = localDate.with(java.time.DayOfWeek.SUNDAY);
                 break;
             case "monthly":
-                /** 월간 -> 해당 월의 시작일과 종료일을 계산 */
-                calendar.set(Calendar.DAY_OF_MONTH, 1);
-                startDate = new Date(calendar.getTimeInMillis());
-                calendar.add(Calendar.MONTH, 1);
-                calendar.add(Calendar.DAY_OF_MONTH, -1);
-                endDate = new Date(calendar.getTimeInMillis());
+                startDate = localDate.withDayOfMonth(1);
+                endDate = localDate.withDayOfMonth(localDate.lengthOfMonth());
                 break;
             case "yearly":
-                /** 연간 -> 해당 연도의 시작일과 종료일을 계산 */
-                calendar.set(Calendar.DAY_OF_YEAR, 1);
-                startDate = new Date(calendar.getTimeInMillis());
-                calendar.add(Calendar.YEAR, 1);
-                calendar.add(Calendar.DAY_OF_YEAR, -1);
-                endDate = new Date(calendar.getTimeInMillis());
+                startDate = localDate.withDayOfYear(1);
+                endDate = localDate.withDayOfYear(localDate.lengthOfYear());
                 break;
             default:
                 throw new IllegalArgumentException("Invalid type: " + type);
         }
-        return new DateRangeDTO(startDate, endDate);
+
+        return new DateRangeDTO(Date.valueOf(startDate), Date.valueOf(endDate));
     }
 }
