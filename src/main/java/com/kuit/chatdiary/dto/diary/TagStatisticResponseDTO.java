@@ -16,7 +16,4 @@ public class TagStatisticResponseDTO {
     private String tagName;
     private Long count;
     private double percentage;
-    private Date startDate;
-    private Date endDate;
-
 }
