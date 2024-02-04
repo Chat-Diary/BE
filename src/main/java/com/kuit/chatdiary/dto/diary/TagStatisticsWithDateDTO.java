@@ -13,5 +13,5 @@ import java.util.List;
 public class TagStatisticsWithDateDTO {
     private Date startDate;
     private Date endDate;
-    private List<TagStatisticResponseDTO> tagStatistics;
+    private List<TagStatisticResponseDTO> Statistics;
 }

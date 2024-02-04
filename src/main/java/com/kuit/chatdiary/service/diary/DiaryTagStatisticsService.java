@@ -2,6 +2,7 @@ package com.kuit.chatdiary.service.diary;
 
 import com.kuit.chatdiary.dto.diary.DateRangeDTO;
 import com.kuit.chatdiary.dto.diary.TagStatisticResponseDTO;
+import com.kuit.chatdiary.dto.diary.TagStatisticsWithDateDTO;
 import com.kuit.chatdiary.repository.diary.DiaryTagRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +19,15 @@ public class DiaryTagStatisticsService {
         this.diaryTagRepository = diaryTagRepository;
     }
 
-    public List<TagStatisticResponseDTO> calculateTagStatistics(Long memberId, String type) {
+    /** TagStatisticsWithDateDTO로 수정 */
+    public TagStatisticsWithDateDTO calculateTagStatistics(Long memberId, String type) {
         LocalDate localDate = LocalDate.now();
         DateRangeDTO dateRange = calculateDateRangeBasedOnType(type, localDate);
         List<Object[]> tagStatistics = diaryTagRepository.findTagStatisticsByMember(memberId, dateRange.getStartDate(), dateRange.getEndDate());
         long totalTags = calculateTotalTags(tagStatistics);
-        List<TagStatisticResponseDTO> statisticsList = buildStatisticsList(tagStatistics, totalTags, dateRange);
+        List<TagStatisticResponseDTO> statisticsList = buildStatisticsList(tagStatistics, totalTags);
         sortStatisticsListByCount(statisticsList);
-        return statisticsList;
+        return new TagStatisticsWithDateDTO(dateRange.getStartDate(), dateRange.getEndDate(), statisticsList);
     }
 
     /** 타입별로 나눠서 계산 */
@@ -38,13 +40,13 @@ public class DiaryTagStatisticsService {
         return tagStatistics.stream().mapToLong(e -> (Long) e[2]).sum();
     }
 
-    private List<TagStatisticResponseDTO> buildStatisticsList(List<Object[]> tagStatistics, long totalTags, DateRangeDTO dateRange) {
+    private List<TagStatisticResponseDTO> buildStatisticsList(List<Object[]> tagStatistics, long totalTags) {
         List<TagStatisticResponseDTO> statisticsList = new ArrayList<>();
         for (Object[] result : tagStatistics) {
             String category = (String) result[0];
             String tagName = (String) result[1];
             Long count = (Long) result[2];
-            statisticsList.add(new TagStatisticResponseDTO(category, tagName, count, calculatePercent(count, totalTags), dateRange.getStartDate(), dateRange.getEndDate()));
+            statisticsList.add(new TagStatisticResponseDTO(category, tagName, count, calculatePercent(count, totalTags)));
         }
         return statisticsList;
     }
