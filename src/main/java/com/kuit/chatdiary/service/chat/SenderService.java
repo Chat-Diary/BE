@@ -28,8 +28,10 @@ public class SenderService {
         for (Object[] result : chatStatistics) {
             Sender sender = Sender.valueOf((String) result[0]);
             Long count = (Long) result[1];
-            chatCountMap.merge(sender, count, Long::sum);
-            totalChats += count;
+            if (sender != Sender.USER) { /** USER가 아닌 경우에만 처리 */
+                chatCountMap.merge(sender, count, Long::sum);
+                totalChats += count;
+            }
         }
 
         final long finalTotalChats = totalChats;
