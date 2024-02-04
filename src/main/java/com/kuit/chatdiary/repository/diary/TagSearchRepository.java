@@ -18,16 +18,17 @@ public class TagSearchRepository {
 
 
     /** 지식 한계로 쿼리문 세개를 나눠서.. */
-    public List<TagSearchResponseDTO> findByTag(List<String> tagName) {
+    public List<TagSearchResponseDTO> findByTag(List<String> tagName, Long userId) {
         int tagCount = tagName.size();
         List<Diary> diaries = em.createQuery(
                         "SELECT d FROM diary d " +
                                 "JOIN diarytag dt ON d.diaryId = dt.diary.diaryId " +
                                 "JOIN tag t ON dt.tag.tagId = t.tagId " +
-                                "WHERE t.tagName IN :tagNames " +
+                                "WHERE t.tagName IN :tagNames AND d.member.userId = :userId " +
                                 "GROUP BY d " +
                                 "HAVING COUNT(DISTINCT t) = :tagCount", Diary.class)
                 .setParameter("tagNames", tagName)
+                .setParameter("userId", userId)
                 .setParameter("tagCount", (long) tagCount)
                 .getResultList();
 

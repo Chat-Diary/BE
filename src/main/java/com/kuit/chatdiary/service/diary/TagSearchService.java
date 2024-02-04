@@ -12,8 +12,8 @@ public class TagSearchService {
     public TagSearchService(TagSearchRepository tagSearchRepository) {
         this.tagSearchRepository = tagSearchRepository;
     }
-    public List<TagSearchResponseDTO> findByTag(List<String> tagNames){
-        return tagSearchRepository.findByTag(tagNames);
+    public List<TagSearchResponseDTO> findByTag(List<String> tagNames,long userId){
+        return tagSearchRepository.findByTag(tagNames,userId);
     }
 
 }
