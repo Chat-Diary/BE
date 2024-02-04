@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class TagStatisticsWithDateDTO {
+public class TagStatisticsWithDateResponseDTO {
     private Date startDate;
     private Date endDate;
     private List<TagStatisticResponseDTO> Statistics;

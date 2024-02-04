@@ -2,7 +2,7 @@ package com.kuit.chatdiary.service.diary;
 
 import com.kuit.chatdiary.dto.diary.DateRangeDTO;
 import com.kuit.chatdiary.dto.diary.TagStatisticResponseDTO;
-import com.kuit.chatdiary.dto.diary.TagStatisticsWithDateDTO;
+import com.kuit.chatdiary.dto.diary.TagStatisticsWithDateResponseDTO;
 import com.kuit.chatdiary.repository.diary.DiaryTagRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +20,14 @@ public class DiaryTagStatisticsService {
     }
 
     /** TagStatisticsWithDateDTO로 수정 */
-    public TagStatisticsWithDateDTO calculateTagStatistics(Long memberId, String type) {
+    public TagStatisticsWithDateResponseDTO calculateTagStatistics(Long memberId, String type) {
         LocalDate localDate = LocalDate.now();
         DateRangeDTO dateRange = calculateDateRangeBasedOnType(type, localDate);
         List<Object[]> tagStatistics = diaryTagRepository.findTagStatisticsByMember(memberId, dateRange.getStartDate(), dateRange.getEndDate());
         long totalTags = calculateTotalTags(tagStatistics);
         List<TagStatisticResponseDTO> statisticsList = buildStatisticsList(tagStatistics, totalTags);
         sortStatisticsListByCount(statisticsList);
-        return new TagStatisticsWithDateDTO(dateRange.getStartDate(), dateRange.getEndDate(), statisticsList);
+        return new TagStatisticsWithDateResponseDTO(dateRange.getStartDate(), dateRange.getEndDate(), statisticsList);
     }
 
     /** 타입별로 나눠서 계산 */
