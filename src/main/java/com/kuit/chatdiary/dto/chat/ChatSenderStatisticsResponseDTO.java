@@ -1,6 +1,5 @@
 package com.kuit.chatdiary.dto.chat;
 
-import com.kuit.chatdiary.domain.Sender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +12,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatSenderStaticResponseDTO {
+public class ChatSenderStatisticsResponseDTO {
     private Date startDate;
     private Date endDate;
-    private List<ChatSenderStaticResponseDTO> statistics;
+    private List<ChatSenderDetailResponseDTO> statistics;
 }
