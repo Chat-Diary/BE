@@ -34,34 +34,35 @@ public class DiaryTagStatisticsService {
         LocalDate localDate = LocalDate.now();
         DateRangeDTO dateRange = calculateDateRangeBasedOnType(type, localDate);
         List<Object[]> tagStatistics = diaryTagRepository.findTagStatisticsByMember(memberId, dateRange.getStartDate(), dateRange.getEndDate());
-        Map<Long, List<String>> allTagsCountMap = new HashMap<>();
 
-        Map<String, Map<Long, List<String>>> processedData = new HashMap<>();
-        for (Object[] row : tagStatistics ) {
+        Map<String, Map<Long, Set<String>>> categoryTagsMap = new HashMap<>();
+
+        String[] categories = {"전체", "인물", "행동", "장소", "감정"};
+        for (String category : categories) {
+            categoryTagsMap.put(category, new HashMap<>());
+        }
+
+        for (Object[] row : tagStatistics) {
             String category = (String) row[0];
-            /** 전체는 임의의 카테고리
-             *  카테고리 입력받으면 그 입력 카테고리에대해서만 맵을 생성 해서 데이터 가공
-             * */
             String tagName = (String) row[1];
             Long count = (Long) row[2];
 
-            allTagsCountMap.computeIfAbsent(count, k -> new ArrayList<>()).add(tagName);
-
-            /** 갯수와, count와 category로 맵 설정 */
-                processedData.computeIfAbsent(category, k -> new HashMap<>())
-                        .computeIfAbsent(count, k -> new ArrayList<>())
-                        .add(tagName);
-
+            categoryTagsMap.get(category).computeIfAbsent(count, k -> new HashSet<>()).add(tagName);
+            categoryTagsMap.get("전체").computeIfAbsent(count, k -> new HashSet<>()).add(tagName);
         }
-        processedData.put("전체", allTagsCountMap);
 
         Map<String, List<TagDetailStatisticsDTO>> statisticsMap = new HashMap<>();
-        for (Map.Entry<String, Map<Long, List<String>>> categoryEntry : processedData.entrySet()) {
-            List<TagDetailStatisticsDTO> categoryStatistics = buildDetailStatisticsList(categoryEntry.getValue());
-            statisticsMap.put(categoryEntry.getKey(), categoryStatistics);
+        for (String category : categories) {
+            List<TagDetailStatisticsDTO> categoryStats = categoryTagsMap.get(category).entrySet().stream()
+                    .map(entry -> new TagDetailStatisticsDTO(entry.getKey(), entry.getValue().toArray(new String[0])))
+                    .sorted(Comparator.comparingLong(TagDetailStatisticsDTO::getCount).reversed())
+                    .collect(Collectors.toList());
+            statisticsMap.put(category, categoryStats);
         }
-        return new TagDetailStatisticsResponseDTO(dateRange.getStartDate(), dateRange.getEndDate(), statisticsMap);
+
+        return new TagDetailStatisticsResponseDTO(dateRange.getStartDate(),dateRange.getEndDate(), statisticsMap);
     }
+
 
 
 
