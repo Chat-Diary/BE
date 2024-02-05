@@ -32,7 +32,7 @@ public class DiaryService {
 
     private final S3Uploader s3Uploader;
 
-    public DiaryShowDetailResponseDTO showDiary(Long userId, Date diaryDate) throws ParseException {
+    public DiaryShowDetailResponseDTO showDiary(Long userId, Date diaryDate) throws Exception {
         log.info("[DiaryService.showDiary]");
         return diaryRepository.showDiaryDetail(userId, diaryDate);
     }
