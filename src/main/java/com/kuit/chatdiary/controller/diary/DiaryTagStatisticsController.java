@@ -1,5 +1,6 @@
 package com.kuit.chatdiary.controller.diary;
 
+import com.kuit.chatdiary.dto.diary.TagDetailStatisticsResponseDTO;
 import com.kuit.chatdiary.dto.diary.TagStatisticsWithDateResponseDTO;
 import com.kuit.chatdiary.service.diary.DiaryTagStatisticsService;
 import org.springframework.http.ResponseEntity;
@@ -22,4 +23,15 @@ public class DiaryTagStatisticsController {
         TagStatisticsWithDateResponseDTO tagStatistics = diaryTagStatisticsService.calculateTagStatistics(memberId, type);
         return ResponseEntity.ok(tagStatistics);
     }
+
+    @GetMapping("/tags/detail")
+    public ResponseEntity<TagDetailStatisticsResponseDTO> geDetailTagStatistics(
+            @RequestParam("memberId") Long memberId,
+            @RequestParam("type") String type,
+            @RequestParam("category") String category
+            ) {
+        TagDetailStatisticsResponseDTO tagStatistics = diaryTagStatisticsService.calculateTagDetailStatistics(memberId,type,category);
+        return ResponseEntity.ok(tagStatistics);
+    }
+
 }
