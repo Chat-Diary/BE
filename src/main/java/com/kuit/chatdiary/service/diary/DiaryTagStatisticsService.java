@@ -37,7 +37,9 @@ public class DiaryTagStatisticsService {
         Map<String, Map<Long, List<String>>> processedData = new HashMap<>();
         for (Object[] row : tagStatistics ) {
             String category = (String) row[0];
-            /** 전체는 임의의 카테고리 */
+            /** 전체는 임의의 카테고리
+             *  카테고리 입력받으면 그 입력 카테고리에대해서만 맵을 생성 해서 데이터 가공
+             * */
             if(categoryFilter.equals("전체") || categoryFilter.equals(category)) {
                 String tagName = (String) row[1];
                 Long count = (Long) row[2];
@@ -54,7 +56,7 @@ public class DiaryTagStatisticsService {
 
 
 
-        /** 타입별로 나눠서 계산 */
+    /** 타입별로 나눠서 계산 */
     private DateRangeDTO calculateDateRangeBasedOnType(String type, LocalDate date) {
         return staticsType(type, date);
     }
@@ -75,12 +77,19 @@ public class DiaryTagStatisticsService {
         return statisticsList;
     }
 
+    /** 리스안에 리스트안에 리스트 와 같은 구조로 가공 (맵안에 맵)
+     * 카테고리로 한번 묶고, 횟수로 그 안에서 그릅화 하기 위함
+     * */
     private List<TagDetailStatisticsDTO> buildDetailStatisticsList(List<Object[]> tagStatistics,Map<String, Map<Long, List<String>>> processedData) {
         List<TagDetailStatisticsDTO> statistics = new ArrayList<>();
         for (Map.Entry<String, Map<Long, List<String>>> categoryEntry : processedData.entrySet()) {
-            String category = categoryEntry.getKey();
+            String category = categoryEntry.getKey(); /** 현재 순회중인 카테고리 */
+            /** 두번째 맵 반복문통해 순회
+             *  태그 횟수가 키값이므로 그걸로 탐색
+             *  */
             for (Map.Entry<Long, List<String>> countEntry : categoryEntry.getValue().entrySet()) {
                 Long count = countEntry.getKey();
+                /** count 같은 리스트 뽑아서 String 리스트에 저장 */
                 String[] tags = countEntry.getValue().toArray(new String[0]);
                 statistics.add(new TagDetailStatisticsDTO(category, count, tags));
             }
