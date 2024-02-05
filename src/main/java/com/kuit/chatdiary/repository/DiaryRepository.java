@@ -23,7 +23,7 @@ public class DiaryRepository {
 
     private final EntityManager em;
 
-    public DiaryShowDetailResponseDTO showDiaryDetail (Long userId, java.sql.Date diaryDate) {
+    public DiaryShowDetailResponseDTO showDiaryDetail (Long userId, java.sql.Date diaryDate) throws Exception {
 
         log.info("[DiaryRepository.showDiaryDetail]");
 
@@ -33,6 +33,10 @@ public class DiaryRepository {
 
         List<Object[]> resultList = em.createQuery("SELECT d.diaryId, d.title, d.content FROM diary d WHERE d.member.userId = :user_id AND d.diaryDate = :diary_date")
                 .setParameter("user_id", userId).setParameter("diary_date", diaryDate).getResultList();
+
+        if(resultList.size()==0){
+            throw new Exception("존재하지 않는 일기입니다.");
+        }
 
         for(Object[] result : resultList){
             diaryId = (Long) result[0];
@@ -48,30 +52,13 @@ public class DiaryRepository {
                         " WHERE dt.diary.id = :diary_id")
                 .setParameter("diary_id", diaryId).getResultList();
 
-        List<Object[]> senderCounts = em.createQuery("SELECT c.sender, COUNT(*) AS cnt FROM chat c"+
+        List<Object[]> senderCounts = em.createQuery("SELECT c.sender, MAX(c.createAt) AS latest_created_at, COUNT(*) AS cnt FROM chat c"+
                         " WHERE DATE(c.createAt) = : diary_date AND c.sender NOT IN :user"+
-                        " GROUP BY c.sender ORDER BY cnt DESC")
+                        " GROUP BY c.sender ORDER BY cnt DESC, latest_created_at DESC")
                 .setParameter("diary_date", diaryDate).setParameter("user", Sender.USER).getResultList();
 
-        List<Sender> senders = new ArrayList<>();
+        Sender sender = (Sender) senderCounts.get(0)[0];
 
-        Long maxCount = -1L;
-        for(Object[] senderCount : senderCounts){
-            if(maxCount < 0){
-                maxCount = (Long) senderCount[1];
-                senders.add((Sender) senderCount[0]);
-            }else{
-                if(maxCount != senderCount[1]){
-                    break;
-                }else{
-                    senders.add((Sender) senderCount[0]);
-                }
-            }
-        }
-
-        //리스트 중 랜덤으로 고르기
-        Integer randomIndex = (int) (Math.random()*senders.size());
-        Sender sender = senders.get(randomIndex);
 
         return new DiaryShowDetailResponseDTO(diaryDate, title, imageUrlList, content, tagNameList, (long) sender.getIndex());
 
@@ -88,6 +75,7 @@ public class DiaryRepository {
 
         List<Long> resultList = em.createQuery("SELECT d.diaryId FROM diary d WHERE d.member.userId = :user_id AND d.diaryDate = :diary_date")
                 .setParameter("user_id", diaryModifyRequestDTO.getUserId()).setParameter("diary_date",diaryDate).getResultList();
+
 
         for(Long result : resultList){
             diaryId = result;
