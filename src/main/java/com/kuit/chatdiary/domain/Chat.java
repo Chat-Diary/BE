@@ -29,6 +29,7 @@ public class Chat {
     @ColumnDefault("'USER'")
     private Sender sender;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @CreatedDate
