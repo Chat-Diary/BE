@@ -1,6 +1,8 @@
 package com.kuit.chatdiary.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kuit.chatdiary.aws.S3Uploader;
+import com.kuit.chatdiary.domain.ChatType;
 import com.kuit.chatdiary.dto.chat.ChatWebSocketRequestDTO;
 import com.kuit.chatdiary.domain.Chat;
 import com.kuit.chatdiary.service.ChatService;
@@ -21,14 +23,25 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private ChatService chatService;
 
     @Autowired
+    private S3Uploader s3Uploader;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         ChatWebSocketRequestDTO request = objectMapper.readValue(message.getPayload(), ChatWebSocketRequestDTO.class);
 
-        CompletableFuture.runAsync(() -> {
+        CompletableFuture<Void> first = CompletableFuture.runAsync(() -> {
             try {
+                if (ChatType.IMG.equals(request.getChatType())) {
+                    log.info("ChatType: IMG");
+
+                    String imgUrl = s3Uploader.uploadBase64File(request.getContent(), "test_images");
+                    log.info(imgUrl);
+                    request.setContent(imgUrl);
+                }
+
                 int status = chatService.processUserMessage(request.getUserId(), request.getContent(), request.getChatType());
                 session.sendMessage(new TextMessage(objectMapper.writeValueAsString(status)));
             } catch (Exception e) {
@@ -37,7 +50,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             }
         });
 
-        CompletableFuture.runAsync(() -> {
+        first.thenRunAsync(() -> {
             try {
                 Chat gptResponse = chatService.processGptMessage(request.getUserId(), request.getContent(), request.getSelectedModel(), request.getChatType());
                 session.sendMessage(new TextMessage(objectMapper.writeValueAsString(gptResponse)));
