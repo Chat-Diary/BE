@@ -102,7 +102,9 @@ public class DiaryTagStatisticsService {
     private void sortStatisticsListByCount(List<TagStatisticResponseDTO> statisticsList) {
         statisticsList.sort(Comparator.comparingLong(TagStatisticResponseDTO::getCount).reversed());
     }
-
+    /** 정렬 메서드 재탕
+     * 반환하는 자료형이 달라서 분리됬지만.. 리펙시 묶는것 가능해보임
+     * */
     private void sortDetailStatisticsListByCount(List<TagDetailStatisticsDTO> statisticsList) {
         statisticsList.sort(Comparator.comparingLong(TagDetailStatisticsDTO::getCount).reversed());
     }
