@@ -8,9 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class TagDetailStatisticsDTO {
-
-    private String category;
     private Long count;
     private String[] tags;
-
 }

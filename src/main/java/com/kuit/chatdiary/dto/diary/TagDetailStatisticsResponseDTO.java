@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @Getter
@@ -13,5 +14,6 @@ import java.util.List;
 public class TagDetailStatisticsResponseDTO {
     private Date startDate;
     private Date endDate;
-    private List<TagDetailStatisticsDTO> statistics;
+    private Map<String, List<TagDetailStatisticsDTO>> statistics;
+
 }

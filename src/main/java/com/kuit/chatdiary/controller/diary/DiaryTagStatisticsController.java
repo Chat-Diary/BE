@@ -27,10 +27,9 @@ public class DiaryTagStatisticsController {
     @GetMapping("/tags/detail")
     public ResponseEntity<TagDetailStatisticsResponseDTO> geDetailTagStatistics(
             @RequestParam("memberId") Long memberId,
-            @RequestParam("type") String type,
-            @RequestParam("category") String category
+            @RequestParam("type") String type
             ) {
-        TagDetailStatisticsResponseDTO tagStatistics = diaryTagStatisticsService.calculateTagDetailStatistics(memberId,type,category);
+        TagDetailStatisticsResponseDTO tagStatistics = diaryTagStatisticsService.calculateTagDetailStatistics(memberId,type);
         return ResponseEntity.ok(tagStatistics);
     }
 
