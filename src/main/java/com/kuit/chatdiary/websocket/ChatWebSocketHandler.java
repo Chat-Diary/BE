@@ -57,6 +57,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             } catch (Exception e) {
                 log.error("GPT message processing failed", e);
                 sendErrorMessage(session, "GPT message processing error");
+
+                chatService.deleteUserMessage(request.getUserId());
             }
         });
     }

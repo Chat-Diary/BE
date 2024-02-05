@@ -80,4 +80,18 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
+    public void deleteUserMessage(Long userId) {
+        try {
+            List<Chat> userChats = chatRepository.findTopByMember_UserIdOrderByChatIdDesc(userId);
+            if (!userChats.isEmpty()) {
+                Chat chatToDelete = userChats.get(0);
+                log.info("Deleting user chat with chatId: {}", chatToDelete.getChatId());
+                chatRepository.delete(chatToDelete);
+            }
+        } catch (Exception e) {
+            log.error("Error deleting user chat", e);
+            throw new RuntimeException("Error deleting user chat", e);
+        }
+    }
+
 }
