@@ -6,10 +6,7 @@ import com.kuit.chatdiary.dto.diary.TagSearchResponseDTO;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class TagSearchRepository {
@@ -20,58 +17,34 @@ public class TagSearchRepository {
     }
 
     public List<TagSearchResponseDTO> findByTag(List<String> tagName, Long userId) {
-        String diarySql = "SELECT d.diary_id, d.title, d.diary_date " +
-                "FROM diary d " +
-                "INNER JOIN diarytag dt ON d.diary_id = dt.diary_id " +
-                "INNER JOIN tag t ON dt.tag_id = t.tag_id " +
-                "WHERE t.tag_name IN :tagNames AND d.user_id = :userId " +
-                "GROUP BY d.diary_id, d.title, d.diary_date " +
-                "HAVING COUNT(DISTINCT t.tag_id) = :tagCount";
+        String diaryJpql = "SELECT new com.kuit.chatdiary.dto.TagSearchResponseDTO(d.diaryId, d.title, d.diaryDate) " +
+                "FROM Diary d JOIN d.diaryTags dt JOIN dt.tag t " +
+                "WHERE t.tagName IN :tagNames AND d.member.id = :userId " +
+                "GROUP BY d.diaryId, d.title, d.diaryDate " +
+                "HAVING COUNT(DISTINCT t.tagId) = :tagCount";
 
-        List<Object[]> diaryResults = em.createNativeQuery(diarySql)
+        List<TagSearchResponseDTO> responses = em.createQuery(diaryJpql, TagSearchResponseDTO.class)
                 .setParameter("tagNames", tagName)
                 .setParameter("userId", userId)
                 .setParameter("tagCount", Long.valueOf(tagName.size()))
                 .getResultList();
 
-        List<TagSearchResponseDTO> responses = new ArrayList<>();
-        for (Object[] diaryResult : diaryResults) {
-            Long diaryId = ((Number) diaryResult[0]).longValue();
-            String title = (String) diaryResult[1];
-            Date diaryDate = (Date) diaryResult[2];
-
-            String photoSql = "SELECT p.image_url " +
-                    "FROM diaryphoto dp " +
-                    "INNER JOIN photo p ON dp.photo_id = p.photo_id " +
-                    "WHERE dp.diary_id = :diaryId";
-            List<String> photoUrls = em.createNativeQuery(photoSql)
-                    .setParameter("diaryId", diaryId)
+        responses.forEach(response -> {
+            String photoJpql = "SELECT p.imageUrl FROM DiaryPhoto dp JOIN dp.photo p WHERE dp.diary.diaryId = :diaryId";
+            List<String> photoUrls = em.createQuery(photoJpql, String.class)
+                    .setParameter("diaryId", response.getDiaryId())
                     .getResultList();
-
-            String tagSql = "SELECT t.tag_id, t.tag_name " +
-                    "FROM diarytag dt " +
-                    "INNER JOIN tag t ON dt.tag_id = t.tag_id " +
-                    "WHERE dt.diary_id = :diaryId";
-            List<Object[]> tagResults = em.createNativeQuery(tagSql)
-                    .setParameter("diaryId", diaryId)
-                    .getResultList();
-
-            List<TagInfoDTO> tagList = tagResults.stream()
-                    .map(tagResult -> new TagInfoDTO(
-                            ((Number) tagResult[0]).longValue(),
-                            (String) tagResult[1]))
-                    .collect(Collectors.toList());
-
-            TagSearchResponseDTO response = new TagSearchResponseDTO();
-            response.setDiaryId(diaryId);
-            response.setTitle(title);
-            response.setDiaryDate(diaryDate);
             response.setPhotoUrls(photoUrls);
-            response.setTagList(tagList);
 
-            responses.add(response);
-        }
+            String tagJpql = "SELECT new com.kuit.chatdiary.dto.TagInfoDTO(t.tagId, t.tagName) " +
+                    "FROM DiaryTag dt JOIN dt.tag t WHERE dt.diary.diaryId = :diaryId";
+            List<TagInfoDTO> tagList = em.createQuery(tagJpql, TagInfoDTO.class)
+                    .setParameter("diaryId", response.getDiaryId())
+                    .getResultList();
+            response.setTagList(tagList);
+        });
 
         return responses;
     }
+
 }
