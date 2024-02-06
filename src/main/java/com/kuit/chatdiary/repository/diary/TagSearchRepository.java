@@ -20,7 +20,6 @@ public class TagSearchRepository {
     }
 
     public List<TagSearchResponseDTO> findByTag(List<String> tagName, Long userId) {
-        // 다이어리 검색 쿼리
         String diarySql = "SELECT d.diary_id, d.title, d.diary_date " +
                 "FROM diary d " +
                 "INNER JOIN diarytag dt ON d.diary_id = dt.diary_id " +
@@ -41,7 +40,6 @@ public class TagSearchRepository {
             String title = (String) diaryResult[1];
             Date diaryDate = (Date) diaryResult[2];
 
-            // 사진 URL 검색 쿼리
             String photoSql = "SELECT p.image_url " +
                     "FROM diaryphoto dp " +
                     "INNER JOIN photo p ON dp.photo_id = p.photo_id " +
@@ -50,7 +48,6 @@ public class TagSearchRepository {
                     .setParameter("diaryId", diaryId)
                     .getResultList();
 
-            // 태그 리스트 검색 쿼리
             String tagSql = "SELECT t.tag_id, t.tag_name " +
                     "FROM diarytag dt " +
                     "INNER JOIN tag t ON dt.tag_id = t.tag_id " +
