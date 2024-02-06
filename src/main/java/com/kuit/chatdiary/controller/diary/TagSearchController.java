@@ -1,6 +1,6 @@
 package com.kuit.chatdiary.controller.diary;
 
-import com.kuit.chatdiary.dto.diary.TagSearchResponseDTO;
+import com.kuit.chatdiary.dto.diary.DiaryListResponseDTO;
 import com.kuit.chatdiary.service.diary.TagSearchService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,7 @@ public class TagSearchController {
         this.tagSearchService = tagSearchService;
     }
     @GetMapping("/list/tag")
-    public List<TagSearchResponseDTO> findByTag(@RequestParam("userId") Long userId, @RequestParam(name = "tagName") List<String> tagNames) {
+    public List<DiaryListResponseDTO> findByTag(@RequestParam("userId") Long userId, @RequestParam(name = "tagName") List<String> tagNames) {
         return tagSearchService.findByTag(tagNames,userId);
     }
 }
