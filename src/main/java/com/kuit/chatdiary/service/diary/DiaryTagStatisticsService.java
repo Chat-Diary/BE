@@ -47,6 +47,9 @@ public class DiaryTagStatisticsService {
             String tagName = (String) row[1];
             Long count = (Long) row[2];
 
+            /** 카테고리로 맵 가져오기
+             *  맵에 특정 카운트에 해당하는 집합 없으면 새로운 집합 생성
+             * */
             categoryTagsMap.get(category).computeIfAbsent(count, k -> new HashSet<>()).add(tagName);
             categoryTagsMap.get("전체").computeIfAbsent(count, k -> new HashSet<>()).add(tagName);
         }
