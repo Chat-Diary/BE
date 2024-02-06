@@ -15,11 +15,7 @@ public class TagSearchResponseDTO {
 
     private Long diaryId;
     private String title;
-    private String content;
     private Date diaryDate;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
-    private String status;
-    private List<String> tagList;
+    private List<TagInfoDTO> tagList;
     private List<String> photoUrls;
 }
