@@ -44,6 +44,7 @@ public class DiaryRepository {
             content = (String) result[2];
         }
 
+
         List<String> imageUrlList =  em.createQuery("SELECT p.imageUrl FROM diaryphoto dp LEFT OUTER JOIN dp.photo p"+
                 " WHERE dp.diary.diaryId = :diary_id").setParameter("diary_id", diaryId).getResultList();
 
@@ -57,10 +58,13 @@ public class DiaryRepository {
                         " GROUP BY c.sender ORDER BY cnt DESC, latest_created_at DESC")
                 .setParameter("diary_date", diaryDate).setParameter("user", Sender.USER).getResultList();
 
+        if(senderCounts.size()==0){
+            return new DiaryShowDetailResponseDTO(diaryDate, title, imageUrlList, content, tagNameList, null);
+        }
+
         Sender sender = (Sender) senderCounts.get(0)[0];
-
-
         return new DiaryShowDetailResponseDTO(diaryDate, title, imageUrlList, content, tagNameList, (long) sender.getIndex());
+
 
     }
 
