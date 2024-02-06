@@ -56,6 +56,7 @@ public class DiaryTagStatisticsService {
             List<TagDetailStatisticsDTO> categoryStats = categoryTagsMap.get(category).entrySet().stream()
                     .map(entry -> new TagDetailStatisticsDTO(entry.getKey(), entry.getValue().toArray(new String[0])))
                     .sorted(Comparator.comparingLong(TagDetailStatisticsDTO::getCount).reversed())
+                    .limit(10)
                     .collect(Collectors.toList());
             statisticsMap.put(category, categoryStats);
         }
