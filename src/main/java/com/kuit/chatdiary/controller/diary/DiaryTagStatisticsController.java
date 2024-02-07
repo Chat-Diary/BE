@@ -24,6 +24,7 @@ public class DiaryTagStatisticsController {
         return ResponseEntity.ok(tagStatistics);
     }
 
+
     @GetMapping("/tags/detail")
     public ResponseEntity<TagDetailStatisticsResponseDTO> geDetailTagStatistics(
             @RequestParam("memberId") Long memberId,
