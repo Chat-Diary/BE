@@ -8,7 +8,10 @@ import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponseDTO;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,7 +38,7 @@ public class DiaryRepository {
                 .setParameter("user_id", userId).setParameter("diary_date", diaryDate).getResultList();
 
         if(resultList.size()==0){
-            throw new Exception("존재하지 않는 일기입니다.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
         for(Object[] result : resultList){
