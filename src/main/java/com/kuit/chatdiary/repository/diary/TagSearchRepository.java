@@ -1,7 +1,9 @@
 package com.kuit.chatdiary.repository.diary;
 
 import com.kuit.chatdiary.domain.Diary;
-import com.kuit.chatdiary.dto.diary.TagSearchResponseDTO;
+import com.kuit.chatdiary.domain.DiaryPhoto;
+import com.kuit.chatdiary.domain.DiaryTag;
+import com.kuit.chatdiary.dto.diary.DiaryListResponseDTO;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
@@ -16,47 +18,29 @@ public class TagSearchRepository {
         this.em = em;
     }
 
+    public List<DiaryListResponseDTO> findByTag(List<String> tagNames, Long userId) {
+        String diaryJpql = "SELECT DISTINCT d FROM diarytag dt " +
+                "JOIN dt.diary d " +
+                "JOIN dt.tag t " +
+                "WHERE t.tagName IN :tagNames AND d.member.userId = :userId GROUP BY d HAVING COUNT(t) = :tagCount";
 
-    /** 지식 한계로 쿼리문 세개를 나눠서.. */
-    public List<TagSearchResponseDTO> findByTag(List<String> tagName, Long userId) {
-        int tagCount = tagName.size();
-        List<Diary> diaries = em.createQuery(
-                        "SELECT d FROM diary d " +
-                                "JOIN diarytag dt ON d.diaryId = dt.diary.diaryId " +
-                                "JOIN tag t ON dt.tag.tagId = t.tagId " +
-                                "WHERE t.tagName IN :tagNames AND d.member.userId = :userId " +
-                                "GROUP BY d " +
-                                "HAVING COUNT(DISTINCT t) = :tagCount", Diary.class)
-                .setParameter("tagNames", tagName)
+        List<Diary> diaries = em.createQuery(diaryJpql, Diary.class)
                 .setParameter("userId", userId)
-                .setParameter("tagCount", (long) tagCount)
+                .setParameter("tagNames", tagNames)
+                .setParameter("tagCount", tagNames.size())
                 .getResultList();
 
+
         return diaries.stream().map(diary -> {
-            TagSearchResponseDTO response = new TagSearchResponseDTO();
-            response.setDiaryId(diary.getDiaryId());
-            response.setTitle(diary.getTitle());
-            response.setContent(diary.getContent());
-            response.setDiaryDate(diary.getDiaryDate());
-            response.setCreateAt(diary.getCreateAt());
-            response.setUpdateAt(diary.getUpdateAt());
-            response.setStatus(diary.getStatus());
-
-            List<String> photoUrls = em.createQuery(
-                            "SELECT dp.photo.imageUrl FROM diaryphoto dp WHERE dp.diary.diaryId = :diaryId", String.class)
-                    .setParameter("diaryId", diary.getDiaryId())
+            List<DiaryPhoto> diaryPhotos = em.createQuery("SELECT dp FROM diaryphoto dp WHERE dp.diary = :diary", DiaryPhoto.class)
+                    .setParameter("diary", diary)
                     .getResultList();
-            response.setPhotoUrls(photoUrls);
-
-            List<String> tagNames = em.createQuery(
-                            "SELECT t.tagName FROM diarytag dt JOIN dt.tag t WHERE dt.diary.diaryId = :diaryId", String.class)
-                    .setParameter("diaryId", diary.getDiaryId())
+            List<DiaryTag> diaryTags = em.createQuery("SELECT dt FROM diarytag dt WHERE dt.diary = :diary", DiaryTag.class)
+                    .setParameter("diary", diary)
                     .getResultList();
-            response.setTagList(tagNames);
 
-            return response;
+            return new DiaryListResponseDTO(diary, diaryPhotos, diaryTags);
         }).collect(Collectors.toList());
     }
-
 
 }
