@@ -69,7 +69,6 @@ public class DiaryTagStatisticsService {
 
 
 
-
     /** 타입별로 나눠서 계산 */
     private DateRangeDTO calculateDateRangeBasedOnType(String type, LocalDate date) {
         return staticsType(type, date);
