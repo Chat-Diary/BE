@@ -3,10 +3,13 @@ package com.kuit.chatdiary.service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.kuit.chatdiary.domain.Member;
+import com.kuit.chatdiary.repository.MemberRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +25,20 @@ import java.util.HashMap;
 
 @Slf4j
 @Service
-public class KakaoService {
+public class LogInService {
+
+    @Autowired
+    private final MemberRepository memberRepository;
 
     @Value("${KAKAO_API_KEY}")
     private String kakaoApiKey;
 
     @Value("${KAKAO_REDIRECT_URI}")
     private String kakaoRedirectUri;
+
+    public LogInService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     // AccessToken 발급하는 메서드
     public String getAccessToken(String code) {
@@ -124,5 +134,33 @@ public class KakaoService {
                 .setExpiration(expirationDate)
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public Boolean isMember(String nickname) {
+        Member member = memberRepository.findByNickname(nickname);
+        if(member==null){
+            return false;
+        }
+        return true;
+    }
+
+    public void saveMember(String nickname) {
+        //이메일, 패스워드는 막넣음
+        String defaultEmail = nickname+"@"+nickname;
+        String defaultPassword = nickname+"123";
+
+        Member member = new Member();
+        member.setNickname(nickname);
+        member.setEmail(defaultEmail);
+        member.setPassword(defaultPassword);
+
+        memberRepository.save(member);
+
+        if(member.getUserId() !=null){
+            log.info("가입 완료!");
+        }else{
+            log.info("가입 실패!");
+        }
+
     }
 }
