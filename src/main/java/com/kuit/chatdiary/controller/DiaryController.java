@@ -34,7 +34,7 @@ public class DiaryController {
 
 
     @GetMapping("/detail")
-    public ResponseEntity<DiaryShowDetailResponseDTO> showDiary(@RequestParam(name="user_id") Long userId, @RequestParam(name="diary_date") Date diaryDate) throws ParseException, ParseException {
+    public ResponseEntity<DiaryShowDetailResponseDTO> showDiary(@RequestParam(name="user_id") Long userId, @RequestParam(name="diary_date") Date diaryDate) throws Exception {
         log.info("[DiaryController.showDiary]");
 
         return ResponseEntity.ok().body(diaryService.showDiary(userId,diaryDate));

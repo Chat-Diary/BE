@@ -8,10 +8,14 @@ import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponseDTO;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +26,7 @@ public class DiaryRepository {
 
     private final EntityManager em;
 
-    public DiaryShowDetailResponseDTO showDiaryDetail (Long userId, java.sql.Date diaryDate) {
+    public DiaryShowDetailResponseDTO showDiaryDetail (Long userId, java.sql.Date diaryDate) throws Exception {
 
         log.info("[DiaryRepository.showDiaryDetail]");
 
@@ -33,11 +37,16 @@ public class DiaryRepository {
         List<Object[]> resultList = em.createQuery("SELECT d.diaryId, d.title, d.content FROM diary d WHERE d.member.userId = :user_id AND d.diaryDate = :diary_date")
                 .setParameter("user_id", userId).setParameter("diary_date", diaryDate).getResultList();
 
+        if(resultList.size()==0){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
         for(Object[] result : resultList){
             diaryId = (Long) result[0];
             title = (String) result[1];
             content = (String) result[2];
         }
+
 
         List<String> imageUrlList =  em.createQuery("SELECT p.imageUrl FROM diaryphoto dp LEFT OUTER JOIN dp.photo p"+
                 " WHERE dp.diary.diaryId = :diary_id").setParameter("diary_id", diaryId).getResultList();
@@ -47,8 +56,18 @@ public class DiaryRepository {
                         " WHERE dt.diary.id = :diary_id")
                 .setParameter("diary_id", diaryId).getResultList();
 
+        List<Object[]> senderCounts = em.createQuery("SELECT c.sender, MAX(c.createAt) AS latest_created_at, COUNT(*) AS cnt FROM chat c"+
+                        " WHERE DATE(c.createAt) = : diary_date AND c.sender NOT IN :user"+
+                        " GROUP BY c.sender ORDER BY cnt DESC, latest_created_at DESC")
+                .setParameter("diary_date", diaryDate).setParameter("user", Sender.USER).getResultList();
 
-        return new DiaryShowDetailResponseDTO(diaryDate, title, imageUrlList, content, tagNameList);
+        if(senderCounts.size()==0){
+            return new DiaryShowDetailResponseDTO(diaryDate, title, imageUrlList, content, tagNameList, null);
+        }
+
+        Sender sender = (Sender) senderCounts.get(0)[0];
+        return new DiaryShowDetailResponseDTO(diaryDate, title, imageUrlList, content, tagNameList, (long) sender.getIndex());
+
 
     }
 
@@ -63,6 +82,7 @@ public class DiaryRepository {
 
         List<Long> resultList = em.createQuery("SELECT d.diaryId FROM diary d WHERE d.member.userId = :user_id AND d.diaryDate = :diary_date")
                 .setParameter("user_id", diaryModifyRequestDTO.getUserId()).setParameter("diary_date",diaryDate).getResultList();
+
 
         for(Long result : resultList){
             diaryId = result;
