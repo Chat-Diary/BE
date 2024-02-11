@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @NoArgsConstructor
@@ -15,6 +16,6 @@ public class NoticeResponseDTO {
     private String title;
     private String content;
 
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
+    private Date noticeDate;
+
 }
