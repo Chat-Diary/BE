@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "develop" ]
   pull_request:
-    branches: [  ]
+    branches: [ ]
 
 permissions:
   contents: read
@@ -61,6 +61,8 @@ jobs:
           --build-arg REGION=${{ secrets.REGION }} \
           --build-arg ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
           --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
+          --build-arg KAKAO_API_KEY=${{ secrets.KAKAO_API_KEY }} \
+          --build-arg KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }} \
           -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }} .
           docker images
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}
