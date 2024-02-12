@@ -2,6 +2,7 @@ package com.kuit.chatdiary.service;
 
 import com.kuit.chatdiary.domain.Chat;
 import com.kuit.chatdiary.domain.ChatType;
+import com.kuit.chatdiary.domain.Sender;
 import com.kuit.chatdiary.repository.ChatRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,21 +36,10 @@ public class OpenAIService {
         List<Map<String, Object>> previousMessages = getRecentChats(userId);
         messages.addAll(previousMessages);
 
-        Map<String, Object> userMessage = new HashMap<>();
-        userMessage.put("role", "user");
-
-        if (ChatType.CHAT.equals(chatType)) {
-            userMessage.put("content", List.of(getTextPart(content)));
-        } else if (ChatType.IMG.equals(chatType)) {
-            userMessage.put("content", List.of(getImagePart(content)));
-        }
-
-        messages.add(userMessage);
-
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("messages", messages);
         requestBody.put("model", "gpt-4-vision-preview");
-        requestBody.put("max_tokens", 60);
+        requestBody.put("max_tokens", 200);
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
 
@@ -68,12 +58,19 @@ public class OpenAIService {
         List<Map<String, Object>> previousMessages = new ArrayList<>();
         for (Chat chat : recentChats) {
             Map<String, Object> message = new HashMap<>();
-            message.put("role", "assistant");
 
-            if (ChatType.CHAT.equals(chat.getChatType())) {
+            if (Sender.USER.equals(chat.getSender())) {
+                message.put("role", "user");
+
+                if (ChatType.CHAT.equals(chat.getChatType())) {
+                    message.put("content", List.of(getTextPart(chat.getContent())));
+                } else if (ChatType.IMG.equals(chat.getChatType())) {
+                    log.info("OpenAIService.getRecentChats, IMG");
+                    message.put("content", List.of(getImagePart(chat.getContent())));
+                }
+            } else {
+                message.put("role", "assistant");
                 message.put("content", List.of(getTextPart(chat.getContent())));
-            } else if (ChatType.IMG.equals(chat.getChatType())) {
-                message.put("content", List.of(getImagePart(chat.getContent())));
             }
 
             previousMessages.add(message);
