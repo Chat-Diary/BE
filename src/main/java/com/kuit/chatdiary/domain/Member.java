@@ -1,10 +1,7 @@
 package com.kuit.chatdiary.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Cleanup;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -16,12 +13,15 @@ import java.util.List;
 
 @Entity(name = "member")
 @Getter
+@Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) //auto increment
     @Column(name = "user_id")
     private Long userId;
+
+    private String nickname;
 
     private String email;
 
