@@ -1,6 +1,7 @@
 package com.kuit.chatdiary.controller.notice;
 
 import com.kuit.chatdiary.dto.diary.TagPoolResponseDTO;
+import com.kuit.chatdiary.dto.notice.NoticeListResponseDTO;
 import com.kuit.chatdiary.dto.notice.NoticeResponseDTO;
 import com.kuit.chatdiary.service.notice.NoticeService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<NoticeResponseDTO>> getNoticeList(){
+    public ResponseEntity<List<NoticeListResponseDTO>> getNoticeList(){
         return ResponseEntity.ok(noticeService.findNotices());
     }
 
