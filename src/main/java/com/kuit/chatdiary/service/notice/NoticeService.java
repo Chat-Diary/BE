@@ -1,6 +1,7 @@
 package com.kuit.chatdiary.service.notice;
 
 import com.kuit.chatdiary.domain.Notice;
+import com.kuit.chatdiary.dto.notice.NoticeListResponseDTO;
 import com.kuit.chatdiary.dto.notice.NoticeResponseDTO;
 import com.kuit.chatdiary.repository.notice.NoticeRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,16 @@ public class NoticeService {
 
     private final NoticeRepository noticeRepository;
 
-    public List<NoticeResponseDTO> findNotices() {
+    /**
+     *
+     * */
+
+    public List<NoticeListResponseDTO> findNotices() {
         List<Notice> notices = noticeRepository.findAll();
         return notices.stream()
-                .map(notice -> new NoticeResponseDTO(
+                .map(notice -> new NoticeListResponseDTO(
                         notice.getNoticeId(),
                         notice.getTitle(),
-                        notice.getContent(),
                         notice.getNoticeDate()))
                 .collect(Collectors.toList());
     }
