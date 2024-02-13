@@ -1,17 +1,16 @@
 package com.kuit.chatdiary.repository;
 
 import com.kuit.chatdiary.domain.Sender;
-import com.kuit.chatdiary.dto.CalendarInquiryResponse;
+import com.kuit.chatdiary.dto.CalendarInquiryResponseDTO;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 @Slf4j
@@ -22,46 +21,31 @@ public class CalendarInquiryRepository {
         this.em = em;
     }
 
-    public Map<LocalDate, List<CalendarInquiryResponse>> existsChatByMonth(long memberId, YearMonth month) {
-        LocalDate startOfMonth = month.atDay(1);
-        LocalDate endOfMonth = month.atEndOfMonth();
-        Map<LocalDate, List<CalendarInquiryResponse>> chatExistsByMonth = new HashMap<>();
 
-        for (LocalDate date = startOfMonth; !date.isAfter(endOfMonth); date = date.plusDays(1)) {
-            List<CalendarInquiryResponse> dailyResponses = new ArrayList<>();
-            for (Sender sender : Sender.values()) {
-                dailyResponses.add(new CalendarInquiryResponse(sender, false));
-            }
-            chatExistsByMonth.put(date, dailyResponses);
+    public boolean existsDiary(long memberId, Date diaryDate) {
+        String jpql = "SELECT COUNT(d) FROM diary d WHERE d.member.id = :memberId AND d.diaryDate = :diaryDate";
+        TypedQuery<Long> query = em.createQuery(jpql, Long.class)
+                .setParameter("memberId", memberId)
+                .setParameter("diaryDate", diaryDate);
+        Long count = query.getSingleResult();
+        return count > 0;
+    }
+
+    public Sender findMostActiveSender(long memberId, Date diaryDate) {
+        String jpql = "SELECT c.sender FROM chat c " +
+                "WHERE c.member.id = :memberId AND c.createAt >= :startDate AND c.createAt < :endDate " +
+                "GROUP BY c.sender ORDER BY COUNT(c) DESC";
+        TypedQuery<Sender> query = em.createQuery(jpql, Sender.class)
+                .setParameter("memberId", memberId)
+                .setParameter("startDate", diaryDate.toLocalDate().atStartOfDay())
+                .setParameter("endDate", diaryDate.toLocalDate().plusDays(1).atStartOfDay())
+                .setMaxResults(1);
+        List<Sender> resultList = query.getResultList();
+        /** USER 제외 */
+        if (!resultList.isEmpty() && resultList.get(0) != Sender.USER) {
+            return resultList.get(0);
+        } else {
+            return null;
         }
-
-        List<Object[]> results = em.createQuery(
-                        "SELECT CAST(c.createAt AS date), c.sender, COUNT(*) " +
-                                "FROM chat c WHERE c.member.userId = :userId " +
-                                "AND c.createAt BETWEEN :startOfMonth AND :endOfMonth " +
-                                "GROUP BY CAST(c.createAt AS date), c.sender", Object[].class)
-                .setParameter("userId", memberId)
-                .setParameter("startOfMonth", startOfMonth.atStartOfDay())
-                .setParameter("endOfMonth", endOfMonth.atTime(LocalTime.MAX))
-                .getResultList();
-
-        log.info("Query results: {}", results);
-        for (Object[] result : results) {
-            LocalDate date = ((java.sql.Date) result[0]).toLocalDate();
-            Sender sender = (Sender) result[1];
-            Long count = (Long) result[2];
-
-            List<CalendarInquiryResponse> dailyResponses = chatExistsByMonth.get(date);
-
-            if (dailyResponses != null) {
-                for (CalendarInquiryResponse response : dailyResponses) {
-                    if (response.getSender() == sender) {
-                        response.setExists(count > 0);
-                        break;
-                    }
-                }
-            }
-        }
-        return chatExistsByMonth;
     }
 }
