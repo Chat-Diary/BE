@@ -53,7 +53,7 @@ public class OpenAIService {
     }
 
     public List<Map<String, Object>> getRecentChats(Long userId) {
-        List<Chat> recentChats = chatRepository.findTop10ByMember_UserIdOrderByChatIdDesc(userId);
+        List<Chat> recentChats = chatRepository.findTop10ByMember_UserIdOrderByChatIdAsc(userId);
 
         List<Map<String, Object>> previousMessages = new ArrayList<>();
         for (Chat chat : recentChats) {

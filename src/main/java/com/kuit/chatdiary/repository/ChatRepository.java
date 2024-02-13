@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 
-    List<Chat> findTop10ByMember_UserIdOrderByChatIdDesc(Long userId);
+    List<Chat> findTop10ByMember_UserIdOrderByChatIdAsc(Long userId);
     List<Chat> findTop10ByChatIdGreaterThan(Long lastChatId);
     List<Chat> findTopByMember_UserIdOrderByChatIdDesc(Long userId);
 }
