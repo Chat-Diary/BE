@@ -1,43 +1,50 @@
 package com.kuit.chatdiary.service.calendar;
 
+import com.kuit.chatdiary.domain.Diary;
 import com.kuit.chatdiary.domain.Sender;
-import com.kuit.chatdiary.dto.CalendarInquiryResponse;
-import com.kuit.chatdiary.dto.DateInquiryResponse;
+import com.kuit.chatdiary.dto.CalendarInquiryResponseDTO;
+import com.kuit.chatdiary.repository.diary.DiaryListRepository;
+import com.kuit.chatdiary.repository.statics.SenderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.kuit.chatdiary.repository.CalendarInquiryRepository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CalendarInquiryService {
 
-    private final CalendarInquiryRepository calendarInquiryRepository;
+    private final DiaryListRepository diaryListRepository;
+    private final SenderRepository senderRepository;
 
-    public CalendarInquiryService(CalendarInquiryRepository calendarInquiryRepository) {
-        this.calendarInquiryRepository = calendarInquiryRepository;
+    public boolean existsDiary(long memberId, java.util.Date diaryDate) {
+        List<Diary> diaries = diaryListRepository.getDiaries(memberId, diaryDate, diaryDate);
+        return !diaries.isEmpty();
     }
 
-    public List<DateInquiryResponse> existsChatByMonth(long memberId, YearMonth month) {
-        Map<LocalDate, List<CalendarInquiryResponse>> chatExistsByMonth = calendarInquiryRepository.existsChatByMonth(memberId, month);
+    public List<CalendarInquiryResponseDTO> getCalendarInquiryResponses(long memberId, LocalDate startDate, LocalDate endDate) {
+        List<CalendarInquiryResponseDTO> responses = new ArrayList<>();
 
-        List<DateInquiryResponse> list = new ArrayList<>();
-        /**각 요소들에 대해 반복*/
-        for(Map.Entry<LocalDate, List<CalendarInquiryResponse>> entry : chatExistsByMonth.entrySet()) {
-            List<LocalDate> dates = new ArrayList<>();
-            /**키 값 받아서 리스트에 저장*/
-            dates.add(entry.getKey());
-            DateInquiryResponse response = new DateInquiryResponse(dates, entry.getValue());
-            list.add(response);
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            Date diaryDate = Date.valueOf(date);
+            boolean exists =  existsDiary(memberId, diaryDate);
+            Sender sender =  senderRepository.findMostActiveSender(memberId, diaryDate);
+            responses.add(new CalendarInquiryResponseDTO(diaryDate.toString(), sender, exists));
         }
-        return list;
+
+        return responses;
     }
 
 
-
-
+    public List<CalendarInquiryResponseDTO> getCalendarInquiryResponses(long memberId, YearMonth month) {
+        LocalDate startDate = month.atDay(1);
+        LocalDate endDate = month.atEndOfMonth();
+        return getCalendarInquiryResponses(memberId, startDate, endDate);
+    }
 }
