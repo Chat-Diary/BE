@@ -1,7 +1,9 @@
 package com.kuit.chatdiary.service;
 
+import com.kuit.chatdiary.AIPrompt;
 import com.kuit.chatdiary.domain.Chat;
 import com.kuit.chatdiary.domain.ChatType;
+import com.kuit.chatdiary.domain.Member;
 import com.kuit.chatdiary.domain.Sender;
 import com.kuit.chatdiary.repository.ChatRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +27,8 @@ public class OpenAIService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public String getCompletion(Long userId, String content, ChatType chatType) {
+    public String getCompletion(Long userId, Integer model, Member member) {
+
         String url = "https://api.openai.com/v1/chat/completions";
 
         HttpHeaders headers = new HttpHeaders();
@@ -33,7 +36,19 @@ public class OpenAIService {
         headers.setBearerAuth(OPEN_AI_KEY);
 
         List<Map<String, Object>> messages = new ArrayList<>();
-        List<Map<String, Object>> previousMessages = getRecentChats(userId);
+
+        String sender = String.valueOf(Sender.getByIndex(model));
+        String nickname = member.getNickname();
+        String gender = member.getGender();
+        String age = String.valueOf(member.getAge());
+        String prompt = AIPrompt.valueOf(sender).getPrompt(nickname, gender, age);
+
+        Map<String, Object> systemMessage = new HashMap<>();
+        systemMessage.put("role", "system");
+        systemMessage.put("content", prompt);
+        messages.add(systemMessage);
+
+        List<Map<String, Object>> previousMessages = getRecentMessages(userId);
         messages.addAll(previousMessages);
 
         Map<String, Object> requestBody = new HashMap<>();
@@ -52,7 +67,7 @@ public class OpenAIService {
         }
     }
 
-    public List<Map<String, Object>> getRecentChats(Long userId) {
+    public List<Map<String, Object>> getRecentMessages(Long userId) {
         List<Chat> recentChats = chatRepository.findTop10ByMember_UserIdOrderByChatIdAsc(userId);
 
         List<Map<String, Object>> previousMessages = new ArrayList<>();
