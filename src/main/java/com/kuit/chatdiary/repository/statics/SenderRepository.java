@@ -1,6 +1,8 @@
 package com.kuit.chatdiary.repository.statics;
 
+import com.kuit.chatdiary.domain.Sender;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -26,5 +28,26 @@ public class SenderRepository {
                 .setParameter("startDate", startDate)
                 .setParameter("endDate", endDate)
                 .getResultList();
+    }
+
+    public Sender findMostActiveSender(long userId, Date diaryDate) {
+        String jpql = "SELECT c.sender FROM chat c " +
+                "WHERE c.member.id = :memberId AND c.sender != :sender " +
+                "AND c.createAt >= :startDate AND c.createAt < :endDate " +
+                "GROUP BY c.sender " +
+                "ORDER BY COUNT(c) DESC, MAX(c.createAt) DESC";
+        TypedQuery<Sender> query = em.createQuery(jpql, Sender.class)
+                .setParameter("memberId", userId)
+                .setParameter("sender", Sender.USER)
+                .setParameter("startDate", diaryDate.toLocalDate().atStartOfDay())
+                .setParameter("endDate", diaryDate.toLocalDate().plusDays(1).atStartOfDay())
+                .setMaxResults(1);
+        List<Sender> resultList = query.getResultList();
+
+        if (!resultList.isEmpty()) {
+            return resultList.get(0);
+        } else {
+            return null;
+        }
     }
 }
