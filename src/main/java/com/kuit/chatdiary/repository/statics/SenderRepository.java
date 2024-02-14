@@ -34,7 +34,8 @@ public class SenderRepository {
         String jpql = "SELECT c.sender FROM chat c " +
                 "WHERE c.member.id = :memberId AND c.sender != :sender " +
                 "AND c.createAt >= :startDate AND c.createAt < :endDate " +
-                "GROUP BY c.sender ORDER BY COUNT(c) DESC";
+                "GROUP BY c.sender " +
+                "ORDER BY COUNT(c) DESC, MAX(c.createAt) DESC";
         TypedQuery<Sender> query = em.createQuery(jpql, Sender.class)
                 .setParameter("memberId", userId)
                 .setParameter("sender", Sender.USER)
