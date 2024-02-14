@@ -28,7 +28,11 @@ public class DiaryStreakRepository {
          * 조회 기준 날짜 하루전으로 일기 스트릭 인정해줌
          * */
         if (diaries.isEmpty() || !diaries.get(0).getDiaryDate().toLocalDate().equals(today.minusDays(1))) {
-            return 0L;
+            if(diaries.get(0).getDiaryDate().toLocalDate().equals(today)){
+
+            }else{
+                return 0L;
+            }
         }
 
         long streakCount = 1;
