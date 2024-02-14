@@ -32,18 +32,18 @@ public class SenderRepository {
 
     public Sender findMostActiveSender(long userId, Date diaryDate) {
         String jpql = "SELECT c.sender FROM chat c " +
-                "WHERE c.member.id = :memberId AND c.sender != :user " +
+                "WHERE c.member.id = :memberId AND c.sender != :sender " +
                 "AND c.createAt >= :startDate AND c.createAt < :endDate " +
                 "GROUP BY c.sender ORDER BY COUNT(c) DESC";
         TypedQuery<Sender> query = em.createQuery(jpql, Sender.class)
                 .setParameter("memberId", userId)
-                .setParameter("user", Sender.USER)
+                .setParameter("sender", Sender.USER)
                 .setParameter("startDate", diaryDate.toLocalDate().atStartOfDay())
                 .setParameter("endDate", diaryDate.toLocalDate().plusDays(1).atStartOfDay())
                 .setMaxResults(1);
         List<Sender> resultList = query.getResultList();
-        /** USER 제외 */
-        if (!resultList.isEmpty() && resultList.get(0) != Sender.USER) {
+
+        if (!resultList.isEmpty()) {
             return resultList.get(0);
         } else {
             return null;
