@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Map;
 
@@ -21,7 +24,7 @@ public class LogInController {
 
 
     @GetMapping("/kakao/callback")
-    public KakaoLoginResponseDTO login(@RequestParam("code") String code) throws Exception {
+    public ModelAndView login(@RequestParam("code") String code, RedirectAttributes redirectAttributes) throws Exception {
         //1. 클라이언트에서 로그인 코드를 보내줌 (서버에서 할일 X)
         System.out.println("code: "+code);
 
@@ -48,14 +51,16 @@ public class LogInController {
         //가입된 사용자 -> 바로 로그인
         if(isMember){
             log.info("가입된 사용자입니다.");
-            return new KakaoLoginResponseDTO(jwt);
+            redirectAttributes.addFlashAttribute("message", "로그인 성공!");
         }else{//미가입 사용자 -> 회원가입&로그인
             log.info("미가입 사용자입니다.");
             logInService.saveMember(nickname);
-
-            return new KakaoLoginResponseDTO(jwt);
+            redirectAttributes.addFlashAttribute("message", "회원가입 및 로그인 성공!");
         }
-
+        KakaoLoginResponseDTO kakaoLoginResponseDTO = new KakaoLoginResponseDTO(jwt);
+        ModelAndView modelAndView = new ModelAndView(new RedirectView("https://chatdiaryapp.com", true));
+        modelAndView.addObject("kakaoLoginResponseDTO", kakaoLoginResponseDTO);
+        return modelAndView;
 
     }
 
