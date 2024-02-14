@@ -11,5 +11,5 @@ public class ChatWebSocketRequestDTO {
     private Long userId;
     private String content;
     private Integer selectedModel;
-    private String chatType;
+    private ChatType chatType;
 }

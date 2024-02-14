@@ -29,12 +29,12 @@ public class ChatService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public int processUserMessage(Long userId, String content, Integer model) throws JsonProcessingException {
+    public int processUserMessage(Long userId, String content, ChatType chatType) {
         try {
             Member member = memberRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("Member not found"));
 
-            Chat userChat = new Chat(member, Sender.USER, content, ChatType.CHAT);
+            Chat userChat = new Chat(member, Sender.USER, content, chatType);
             chatRepository.save(userChat);
 
             return HttpStatus.OK.value();
@@ -44,11 +44,11 @@ public class ChatService {
         }
     }
 
-    public Chat processGptMessage(Long userId, String content, Integer model) throws JsonProcessingException {
+    public Chat processGptMessage(Long userId, String content, Integer model, ChatType chatType) throws JsonProcessingException {
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Member not found"));
 
-        String gptResponse = extractGptResponse(openAIService.getCompletion(userId, content));
+        String gptResponse = extractGptResponse(openAIService.getCompletion(userId, content, chatType));
 
         log.info("gptResponse: {}", gptResponse);
         Chat gptChat = new Chat(member, Sender.getByIndex(model), gptResponse, ChatType.CHAT);
@@ -78,6 +78,20 @@ public class ChatService {
         return chats.stream()
                 .map(ChatGetResponseDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    public void deleteUserMessage(Long userId) {
+        try {
+            List<Chat> userChats = chatRepository.findTopByMember_UserIdOrderByChatIdDesc(userId);
+            if (!userChats.isEmpty()) {
+                Chat chatToDelete = userChats.get(0);
+                log.info("Deleting user chat with chatId: {}", chatToDelete.getChatId());
+                chatRepository.delete(chatToDelete);
+            }
+        } catch (Exception e) {
+            log.error("Error deleting user chat", e);
+            throw new RuntimeException("Error deleting user chat", e);
+        }
     }
 
 }
