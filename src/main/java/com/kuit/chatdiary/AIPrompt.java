@@ -23,7 +23,7 @@ public enum AIPrompt {
                 throw new IllegalArgumentException("Prompt file not found: " + path);
             }
             String prompt = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-            prompt = prompt.replace("{nickname}", nickname)
+            prompt = prompt.replace("{nickname}", defaultValue(nickname, "사용자"))
                            .replace("{gender}", defaultValue(gender, "Unknown"))
                            .replace("{age}", defaultValue(age, "Unknown"));
             return prompt;
