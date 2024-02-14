@@ -24,10 +24,10 @@ public class DiaryStreakRepository {
                 .setParameter("userId",userId)
                 .getResultList();
 
-        /** 오늘 날짜 기준으로 조회하기위한 조건문
-         *  연속 기록있어도 조회기준 날짜 즉 오늘 작성 일기 없다면 연속작성 기록 없는거로
+        /**
+         * 조회 기준 날짜 하루전으로 일기 스트릭 인정해줌
          * */
-        if (diaries.isEmpty() || !diaries.get(0).getDiaryDate().toLocalDate().equals(today)) {
+        if (diaries.isEmpty() || !diaries.get(0).getDiaryDate().toLocalDate().equals(today.minusDays(1))) {
             return 0L;
         }
 
