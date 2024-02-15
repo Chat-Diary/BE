@@ -1,6 +1,5 @@
 package com.kuit.chatdiary.service;
 
-import com.kuit.chatdiary.AIPrompt;
 import com.kuit.chatdiary.domain.Chat;
 import com.kuit.chatdiary.domain.ChatType;
 import com.kuit.chatdiary.domain.Member;
@@ -22,6 +21,15 @@ public class OpenAIService {
     @Value("${OPEN_AI_KEY}")
     private String OPEN_AI_KEY;
 
+    @Value("${AIPROMPT_CHICHI}")
+    private String AIPROMPT_CHICHI;
+
+    @Value("${AIPROMPT_DADA}")
+    private String AIPROMPT_DADA;
+
+    @Value("${AIPROMPT_LULU}")
+    private String AIPROMPT_LULU;
+
     @Autowired
     private ChatRepository chatRepository;
 
@@ -37,15 +45,20 @@ public class OpenAIService {
 
         List<Map<String, Object>> messages = new ArrayList<>();
 
-        String sender = String.valueOf(Sender.getByIndex(model));
         String nickname = member.getNickname();
         String gender = member.getGender();
         String age = String.valueOf(member.getAge());
-        String prompt = AIPrompt.valueOf(sender).getPrompt(nickname, gender, age);
+        String userPrompt = createUserPrompt(nickname, gender, age);
+        String prompt = switch (model) {
+            case 1 -> AIPROMPT_DADA;
+            case 2 -> AIPROMPT_CHICHI;
+            case 3 -> AIPROMPT_LULU;
+            default -> throw new IllegalStateException("Unexpected value: " + model);
+        };
 
         Map<String, Object> systemMessage = new HashMap<>();
         systemMessage.put("role", "system");
-        systemMessage.put("content", prompt);
+        systemMessage.put("content", userPrompt + prompt);
         messages.add(systemMessage);
 
         List<Map<String, Object>> previousMessages = getRecentMessages(userId);
@@ -108,5 +121,18 @@ public class OpenAIService {
         imagePart.put("image_url", imageUrl);
         return imagePart;
     }
+
+    public String createUserPrompt(String nickname, String gender, String age) {
+        String prompt = "You talk with a friend named '{nickname}' who is a {gender}, {age} years old.\n";
+        prompt = prompt.replace("{nickname}", defaultValue(nickname, "사용자"))
+                .replace("{gender}", defaultValue(gender, "Unknown"))
+                .replace("{age}", defaultValue(age, "Unknown"));
+        return prompt;
+    }
+
+    private String defaultValue(String value, String defaultValue) {
+        return (value != null) ? value : defaultValue;
+    }
+
 
 }

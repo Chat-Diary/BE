@@ -22,19 +22,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Decrypt CHICHI file
-        run: openssl aes-256-cbc -d -in src/main/resources/AIPrompt/CHICHI.txt.enc -out src/main/resources/AIPrompt/CHICHI.txt -pass pass:${{ secrets.PROMPT_SECRET_PASSWORD }}
-
-      - name: Decrypt DADA file
-        run: openssl aes-256-cbc -d -in src/main/resources/AIPrompt/DADA.txt.enc -out src/main/resources/AIPrompt/DADA.txt -pass pass:${{ secrets.PROMPT_SECRET_PASSWORD }}
-
-      - name: Decrypt LULU file
-        run: openssl aes-256-cbc -d -in src/main/resources/AIPrompt/LULU.txt.enc -out src/main/resources/AIPrompt/LULU.txt -pass pass:${{ secrets.PROMPT_SECRET_PASSWORD }}
-
       - name: Build with Gradle
         run: ./gradlew --warning-mode all build -i
         env:
           OPEN_AI_KEY: ${{ secrets.OPEN_AI_KEY }}
+          AIPROMPT_CHICHI: ${{ secrets.AIPROMPT_CHICHI }}
+          AIPROMPT_DADA: ${{ secrets.AIPROMPT_DADA }}
+          AIPROMPT_LULU: ${{ secrets.AIPROMPT_LULU }}
 
   docker-build:
     runs-on: ubuntu-latest
