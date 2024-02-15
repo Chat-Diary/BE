@@ -58,6 +58,12 @@ public class OpenAIService {
 
         Collections.reverse(recentChats);
 
+        String ChatIdsFromRecentChats = recentChats.stream()
+                .map(chat -> String.valueOf(chat.getChatId()))
+                .collect(Collectors.joining(", "));
+
+        log.info("OpenAIService.getRecentChats, recentChats chatIds: {}", ChatIdsFromRecentChats);
+
         List<Map<String, Object>> previousMessages = new ArrayList<>();
         for (Chat chat : recentChats) {
             Map<String, Object> message = new HashMap<>();
@@ -68,7 +74,7 @@ public class OpenAIService {
                 if (ChatType.CHAT.equals(chat.getChatType())) {
                     message.put("content", List.of(getTextPart(chat.getContent())));
                 } else if (ChatType.IMG.equals(chat.getChatType())) {
-                    log.info("OpenAIService.getRecentChats, IMG");
+                    log.info("OpenAIService.getRecentChats, IMG chatId: {}", chat.getChatId());
                     message.put("content", List.of(getImagePart(chat.getContent())));
                 }
             } else {
