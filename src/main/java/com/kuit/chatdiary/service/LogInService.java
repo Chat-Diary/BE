@@ -153,6 +153,7 @@ public class LogInService {
         member.setNickname(nickname);
         member.setEmail(defaultEmail);
         member.setPassword(defaultPassword);
+        member.setStatus("ACTIVE");
 
         memberRepository.save(member);
 
