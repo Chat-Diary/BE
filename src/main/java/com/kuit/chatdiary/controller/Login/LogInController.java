@@ -20,9 +20,6 @@ public class LogInController {
     @Autowired
     public LogInService logInService;
 
-
-    //@GetMapping("/kakao/callback")
-    //public ModelAndView login(@RequestParam("code") String code, RedirectAttributes redirectAttributes) throws Exception {
     @GetMapping("/kakao/login")
     public ResponseEntity<KakaoLoginResponseDTO> login(@RequestParam(value = "code") String code) throws Exception {
         //1. 클라이언트에서 로그인 코드를 보내줌 (서버에서 할일 X)
