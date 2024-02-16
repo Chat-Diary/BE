@@ -34,6 +34,13 @@ public class SenderService {
             }
         }
 
+        for(int i = 1; i < 4; i++){
+            if(!chatCountMap.containsKey(Sender.getByIndex(i))){
+                System.out.println("puupup: "+Sender.getByIndex(i));
+                chatCountMap.put(Sender.getByIndex(i), 0L);
+            }
+        }
+
         final long finalTotalChats = totalChats;
         List<ChatSenderDetailResponseDTO> details = chatCountMap.entrySet().stream()
                 .filter(entry -> entry.getKey() != Sender.USER)
