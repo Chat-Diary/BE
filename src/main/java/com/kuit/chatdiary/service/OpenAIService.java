@@ -44,6 +44,8 @@ public class OpenAIService {
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
 
+        log.info(request.toString());
+
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
             return response.getBody();
@@ -75,7 +77,13 @@ public class OpenAIService {
                     message.put("content", List.of(getTextPart(chat.getContent())));
                 } else if (ChatType.IMG.equals(chat.getChatType())) {
                     log.info("OpenAIService.getRecentChats, IMG chatId: {}", chat.getChatId());
-                    continue;
+                    if(chat.getContent().equals(recentChats.get(recentChats.size()-1).getContent())){
+                        message.put("content", List.of(getImagePart(chat.getContent())));
+                    }else{
+                        continue;
+                    }
+
+
                 }
             } else {
                 message.put("role", "assistant");
