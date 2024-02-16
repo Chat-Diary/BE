@@ -70,8 +70,8 @@ public class ChatService {
         return "";
     }
 
-    public List<ChatGetResponseDTO> getChats(Long chatId) {
-        List<Chat> chats = chatRepository.findTop10ByChatIdGreaterThan(chatId);
+    public List<ChatGetResponseDTO> getChats(Long userId, Long lastChatId) {
+        List<Chat> chats = chatRepository.findTop10ByUserIdAndChatIdGreaterThanOrderByChatIdDesc(userId, lastChatId);
         if (chats.isEmpty()) {
             return null;
         }
