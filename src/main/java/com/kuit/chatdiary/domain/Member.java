@@ -27,6 +27,10 @@ public class Member {
 
     private String password;
 
+    private String gender;
+
+    private Integer age;
+
     @CreatedDate
     @Column(name = "create_at")
     private LocalDateTime createAt;
@@ -37,12 +41,5 @@ public class Member {
 
     @ColumnDefault("'ACTIVE'")
     private String status;
-
-//    @OneToMany(mappedBy = "member")  // 자신이 연관관계 주인이 아님
-//    private List<Chat> chatList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "member")
-//    private List<Diary> diaryList = new ArrayList<>();
-
 
 }

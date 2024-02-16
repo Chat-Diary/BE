@@ -26,6 +26,9 @@ jobs:
         run: ./gradlew --warning-mode all build -i
         env:
           OPEN_AI_KEY: ${{ secrets.OPEN_AI_KEY }}
+          AIPROMPT_CHICHI: ${{ secrets.AIPROMPT_CHICHI }}
+          AIPROMPT_DADA: ${{ secrets.AIPROMPT_DADA }}
+          AIPROMPT_LULU: ${{ secrets.AIPROMPT_LULU }}
 
   docker-build:
     runs-on: ubuntu-latest
@@ -63,6 +66,9 @@ jobs:
           --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
           --build-arg KAKAO_API_KEY=${{ secrets.KAKAO_API_KEY }} \
           --build-arg KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }} \
+          --build-arg AIPROMPT_DADA=${{ secrets.AIPROMPT_DADA }} \
+          --build-arg AIPROMPT_CHICHI=${{ secrets.AIPROMPT_DADA }} \
+          --build-arg AIPROMPT_LULU=${{ secrets.AIPROMPT_DADA }} \
           -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }} .
           docker images
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO_NAME }}
