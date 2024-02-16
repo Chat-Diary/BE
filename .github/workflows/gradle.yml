@@ -26,6 +26,9 @@ jobs:
         run: ./gradlew --warning-mode all build -i
         env:
           OPEN_AI_KEY: ${{ secrets.OPEN_AI_KEY }}
+          AIPROMPT_CHICHI: ${{ secrets.AIPROMPT_CHICHI }}
+          AIPROMPT_DADA: ${{ secrets.AIPROMPT_DADA }}
+          AIPROMPT_LULU: ${{ secrets.AIPROMPT_LULU }}
 
   docker-build:
     runs-on: ubuntu-latest
