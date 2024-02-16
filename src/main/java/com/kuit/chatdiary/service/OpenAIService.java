@@ -75,7 +75,7 @@ public class OpenAIService {
                     message.put("content", List.of(getTextPart(chat.getContent())));
                 } else if (ChatType.IMG.equals(chat.getChatType())) {
                     log.info("OpenAIService.getRecentChats, IMG chatId: {}", chat.getChatId());
-                    message.put("content", List.of(getImagePart(chat.getContent())));
+                    continue;
                 }
             } else {
                 message.put("role", "assistant");
