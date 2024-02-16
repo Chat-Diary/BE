@@ -44,12 +44,13 @@ public class DiaryController {
 
 
     @PostMapping("/modify")
-    public ResponseEntity<DiaryModifyResponseDTO> modifyDiary(@RequestPart(value="image") List<MultipartFile> multipartFiles, @RequestPart(value="request") DiaryModifyRequestDTO diaryModifyRequestDTO) throws IOException, ParseException {
+    public ResponseEntity<DiaryModifyResponseDTO> modifyDiary(@RequestPart(value="image", required=false) List<MultipartFile> multipartFiles, @RequestPart(value="request") DiaryModifyRequestDTO diaryModifyRequestDTO) throws IOException, ParseException {
         log.info("[DiaryController.modifyDiary]");
 
-        List<String> newImageUrls =  diaryService.FileUpload(multipartFiles);
-
-        diaryModifyRequestDTO.setNewImgUrls(newImageUrls);
+        if(multipartFiles!=null){
+            List<String> newImageUrls =  diaryService.FileUpload(multipartFiles);
+            diaryModifyRequestDTO.setNewImgUrls(newImageUrls);
+        }
 
         return ResponseEntity.ok().body(diaryService.modifyDiary(diaryModifyRequestDTO));
     }
