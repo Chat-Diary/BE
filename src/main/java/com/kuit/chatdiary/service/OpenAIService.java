@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -71,6 +72,8 @@ public class OpenAIService {
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
 
+        System.out.println(request);
+
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
             return response.getBody();
@@ -81,8 +84,9 @@ public class OpenAIService {
     }
 
     public List<Map<String, Object>> getRecentMessages(Long userId) {
-        List<Chat> recentChats = chatRepository.findTop10ByMember_UserIdOrderByChatIdAsc(userId);
-
+        List<Chat> recentChats = chatRepository.findTop10ByMember_UserIdOrderByChatIdDesc(userId);
+        List<String> temp = recentChats.stream().map(c -> c.getContent()).collect(Collectors.toList());
+        System.out.println(temp);
         List<Map<String, Object>> previousMessages = new ArrayList<>();
         for (Chat chat : recentChats) {
             Map<String, Object> message = new HashMap<>();
@@ -103,6 +107,9 @@ public class OpenAIService {
 
             previousMessages.add(message);
         }
+
+        Collections.reverse(previousMessages);
+        System.out.println(previousMessages);
         return previousMessages;
     }
 
