@@ -62,7 +62,7 @@ public class OpenAIService {
         systemMessage.put("content", userPrompt + prompt);
         messages.add(systemMessage);
 
-        List<Map<String, Object>> previousMessages = getRecentMessages(userId);
+        List<Map<String, Object>> previousMessages = getRecentChats(userId);
         messages.addAll(previousMessages);
 
         Map<String, Object> requestBody = new HashMap<>();
