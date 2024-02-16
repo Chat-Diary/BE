@@ -11,4 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class KakaoLoginResponseDTO {
     private String jwt;
+
+    private Long userId;
+
+    private String nickname;
 }

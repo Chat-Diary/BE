@@ -22,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -110,10 +111,20 @@ public class LogInService {
             String result = responseSb.toString();
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
+//
+//            JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+//            String nickname = properties.getAsJsonObject().get("nickname").getAsString();
 
             JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+            JsonObject kakaoAccount = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+
             String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+            String email = kakaoAccount.getAsJsonObject().get("email").getAsString();
+
+
             userInfo.put("nickname", nickname);
+            userInfo.put("email", email);
+
 
             br.close();
 
@@ -136,22 +147,21 @@ public class LogInService {
                 .compact();
     }
 
-    public Boolean isMember(String nickname) {
-        Member member = memberRepository.findByNickname(nickname);
-        if(member==null){
-            return false;
+    public Boolean isMember(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if(member.isPresent()){
+            return true;
         }
-        return true;
+        return false;
     }
 
-    public void saveMember(String nickname) {
-        //이메일, 패스워드는 막넣음
-        String defaultEmail = nickname+"@"+nickname;
+    public void saveMember(String nickname, String email) {
+        //패스워드는 막넣음
         String defaultPassword = nickname+"123";
 
         Member member = new Member();
         member.setNickname(nickname);
-        member.setEmail(defaultEmail);
+        member.setEmail(email);
         member.setPassword(defaultPassword);
         member.setStatus("ACTIVE");
 
@@ -163,5 +173,11 @@ public class LogInService {
             log.info("가입 실패!");
         }
 
+    }
+
+    public Long getUserId(String email){
+        Long userId = memberRepository.findByEmail(email).get().getUserId();
+       // System.out.println("getUserId에서 UserId: "+member.getUserId());
+        return userId;
     }
 }

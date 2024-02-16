@@ -31,28 +31,29 @@ public class LogInController {
 
         //3. 사용자 정보 받기
         Map<String, Object> userInfo = logInService.getUserInfo(accessToken);
+        System.out.println("userinfo : "+userInfo);
         String nickname = (String)userInfo.get("nickname");
+        String email = (String) userInfo.get("email");
 
         System.out.println("nickname = " + nickname);
+        System.out.println("email = " + email);
         System.out.println("accessToken = " + accessToken);
 
-        if(nickname == null){
-            throw new Exception("인증되지 않은 사용자입니다");
-        }
-
-        String jwt = logInService.generateJwt(nickname, 3600000);
+        String jwt = logInService.generateJwt(email, 3600000);
         System.out.println("jwt: "+jwt);
 
-        Boolean isMember = logInService.isMember(nickname);
+        Boolean isMember = logInService.isMember(email);
 
         //가입된 사용자 -> 바로 로그인
         if(isMember){
-            log.info("가입된 사용자입니다.");
+            log.info("이미 가입된 사용자입니다.");
         }else{//미가입 사용자 -> 회원가입&로그인
             log.info("미가입 사용자입니다.");
-            logInService.saveMember(nickname);
+            logInService.saveMember(nickname, email);
         }
-        KakaoLoginResponseDTO kakaoLoginResponseDTO = new KakaoLoginResponseDTO(jwt);
+
+        Long userId = logInService.getUserId(email);
+        KakaoLoginResponseDTO kakaoLoginResponseDTO = new KakaoLoginResponseDTO(jwt, userId, nickname);
         return ResponseEntity.ok().body(kakaoLoginResponseDTO);
     }
 
