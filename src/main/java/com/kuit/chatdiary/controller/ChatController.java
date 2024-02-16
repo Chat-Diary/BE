@@ -20,11 +20,11 @@ public class ChatController {
     private ChatService chatService;
 
     @GetMapping("/get")
-    public ResponseEntity<List<ChatGetResponseDTO>> getChats(@RequestParam Long chatId) {
-        List<ChatGetResponseDTO> chats = chatService.getChats(chatId);
+    public ResponseEntity<List<ChatGetResponseDTO>> getChats(@RequestParam Long userId, @RequestParam Long chatId) {
+        List<ChatGetResponseDTO> chats = chatService.getChats(userId, chatId);
         if (chats == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
-        return ResponseEntity.ok(chatService.getChats(chatId));
+        return ResponseEntity.ok(chatService.getChats(userId, chatId));
     }
 }
