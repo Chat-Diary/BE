@@ -10,7 +10,7 @@ import java.util.List;
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 
     List<Chat> findTop10ByMember_UserIdOrderByChatIdDesc(Long userId);
-    @Query("SELECT c FROM chat c WHERE c.member.userId = :userId AND c.chatId > :lastChatId ORDER BY c.chatId DESC")
+    @Query("SELECT c FROM chat c WHERE c.member.userId = :userId AND c.chatId > :lastChatId ORDER BY c.chatId ASC")
     List<Chat> findTop10ByUserIdAndChatIdGreaterThanOrderByChatIdDesc(@Param("userId") Long userId, @Param("lastChatId") Long lastChatId);
     List<Chat> findTopByMember_UserIdOrderByChatIdDesc(Long userId);
 }
