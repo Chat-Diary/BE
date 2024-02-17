@@ -71,7 +71,7 @@ public class ChatService {
     }
 
     public List<ChatGetResponseDTO> getChats(Long userId, Long lastChatId) {
-        List<Chat> chats = chatRepository.findTop10ByUserIdAndChatIdGreaterThanOrderByChatIdDesc(userId, lastChatId);
+        List<Chat> chats = chatRepository.findTop10ByUserIdAndChatIdLessThanOrderByChatIdDesc(userId, lastChatId);
         if (chats.isEmpty()) {
             return null;
         }
