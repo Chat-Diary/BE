@@ -34,6 +34,7 @@ public class Diary {
 
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @CreatedDate
