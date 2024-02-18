@@ -34,15 +34,12 @@ public class LogInService {
     @Value("${KAKAO_API_KEY}")
     private String kakaoApiKey;
 
-    @Value("${KAKAO_REDIRECT_URI}")
-    private String kakaoRedirectUri;
-
     public LogInService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
 
     // AccessToken 발급하는 메서드
-    public String getAccessToken(String code) {
+    public String getAccessToken(String code, String redirectUri) {
         log.info("[KakaoService.getAccessToken]");
 
         String accessToken = "";
@@ -60,7 +57,7 @@ public class LogInService {
 
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=").append(kakaoApiKey);
-            sb.append("&redirect_uri=").append(kakaoRedirectUri);
+            sb.append("&redirect_uri=").append(redirectUri);
             sb.append("&code=").append(code);
 
             bw.write(sb.toString());
@@ -111,9 +108,6 @@ public class LogInService {
             String result = responseSb.toString();
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
-//
-//            JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
-//            String nickname = properties.getAsJsonObject().get("nickname").getAsString();
 
             JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
             JsonObject kakaoAccount = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
