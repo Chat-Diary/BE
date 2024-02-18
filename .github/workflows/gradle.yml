@@ -66,6 +66,7 @@ jobs:
           --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
           --build-arg KAKAO_API_KEY=${{ secrets.KAKAO_API_KEY }} \
           --build-arg KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }} \
+          --build-arg KAKAO_REDIRECT_URI_LOCAL=${{ secrets.KAKAO_REDIRECT_URI_LOCAL }} \
           --build-arg AIPROMPT_DADA=${{ secrets.AIPROMPT_DADA }} \
           --build-arg AIPROMPT_CHICHI=${{ secrets.AIPROMPT_DADA }} \
           --build-arg AIPROMPT_LULU=${{ secrets.AIPROMPT_DADA }} \
