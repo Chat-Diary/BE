@@ -1,6 +1,5 @@
 package com.kuit.chatdiary.domain;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,7 +47,15 @@ public class Diary {
     @ColumnDefault("'ACTIVE'")
     private String status;
 
-//    @OneToMany(mappedBy = "diary")
+    public Diary(Member member, Date diaryDate, String title, String content, String status) {
+        this.member = member;
+        this.diaryDate = diaryDate;
+        this.title = title;
+        this.content = content;
+        this.status = status;
+    }
+
+    //    @OneToMany(mappedBy = "diary")
 //    private List<DiaryTag> diaryTagList = new ArrayList<>();
 
 

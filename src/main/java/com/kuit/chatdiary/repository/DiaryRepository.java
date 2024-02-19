@@ -6,16 +6,15 @@ import com.kuit.chatdiary.dto.diary.DiaryDeleteResponseDTO;
 import com.kuit.chatdiary.dto.diary.DiaryModifyRequestDTO;
 import com.kuit.chatdiary.dto.diary.DiaryShowDetailResponseDTO;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -234,5 +233,18 @@ public class DiaryRepository {
     }
 
 
+    @Transactional
+    public Diary insertDiary(Member member) throws ParseException {
+       //diaryDate
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        java.util.Date utilDate = dateFormat.parse("20240214");
+        java.sql.Date diaryDate = new java.sql.Date(utilDate.getTime());
 
+        Diary diary = new Diary(member, diaryDate, "테니스 첫걸음", "오늘은 테니스의 첫 수업이 있는 날이었다. 아침에 일어나서부터 설레임이 가득했다. 처음이라 그런지 자세부터 배우느라 정말 힘들었다. 선생님이 추가 레슨을 해주셔서 정말 감사했다. 한 시간이 금새 지나갔고 아직은 부족하지만, 얼른 배워서 멋지게 치고 싶은 욕심이 생겼다. 나는 테니스를 경기할 수 있을 정도의 실력을 갖추기 위해 열심히 배우고 싶다는 다짐을 하며 하루를 마무리했다.", "ACTIVE");
+
+        em.persist(diary);
+
+        return diary;
+
+    }
 }

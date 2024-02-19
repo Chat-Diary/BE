@@ -24,4 +24,8 @@ public class DiaryTag {
     @JoinColumn(name="tag_id")
     private Tag tag;
 
+    public DiaryTag(Diary diary, Tag tag) {
+        this.diary = diary;
+        this.tag = tag;
+    }
 }

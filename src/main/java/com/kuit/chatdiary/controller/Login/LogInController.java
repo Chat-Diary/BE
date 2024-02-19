@@ -62,6 +62,9 @@ public class LogInController {
         }
 
         Long userId = logInService.getUserId(email);
+
+        logInService.insertData(userId);
+
         KakaoLoginResponseDTO kakaoLoginResponseDTO = new KakaoLoginResponseDTO(jwt, userId, nickname);
         return ResponseEntity.ok().body(kakaoLoginResponseDTO);
     }
@@ -100,6 +103,9 @@ public class LogInController {
         }
 
         Long userId = logInService.getUserId(email);
+
+        logInService.insertData(userId);
+
         KakaoLoginResponseDTO kakaoLoginResponseDTO = new KakaoLoginResponseDTO(jwt, userId, nickname);
         return ResponseEntity.ok().body(kakaoLoginResponseDTO);
     }

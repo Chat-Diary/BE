@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Optional;
+
 @Entity(name="photo")
 @Getter
 @Setter
@@ -21,4 +23,10 @@ public class Photo {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    public Photo(Chat chat, String imageUrl) {
+        this.chat = chat;
+        this.imageUrl = imageUrl;
+    }
+
 }

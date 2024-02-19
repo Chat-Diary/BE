@@ -24,5 +24,8 @@ public class DiaryPhoto {
     @JoinColumn(name="photo_id")
     private Photo photo;
 
-
+    public DiaryPhoto(Diary diary, Photo photo) {
+        this.diary = diary;
+        this.photo = photo;
+    }
 }
