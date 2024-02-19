@@ -72,7 +72,7 @@ public class ChatService {
 
     public List<ChatGetResponseDTO> getChats(Long userId, Long lastChatId) {
         List<Chat> chats = chatRepository.findTop10ByUserIdAndChatIdGreaterThanOrderByChatIdDesc(userId, lastChatId);
-        chats = chats.stream().limit(10).collect(Collectors.toList());
+        System.out.println(chats);
         if (chats.isEmpty()) {
             return null;
         }
