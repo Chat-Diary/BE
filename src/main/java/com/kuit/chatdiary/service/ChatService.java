@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,7 +75,7 @@ public class ChatService {
         List<Chat> chats = chatRepository.findTop10ByUserIdAndChatIdGreaterThanOrderByChatIdDesc(userId, lastChatId);
         System.out.println(chats);
         if (chats.isEmpty()) {
-            return null;
+            return new ArrayList<>();
         }
         return chats.stream()
                 .map(ChatGetResponseDTO::new)
