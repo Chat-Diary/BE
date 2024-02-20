@@ -1,6 +1,10 @@
 package com.kuit.chatdiary.repository;
 
 import com.kuit.chatdiary.domain.Chat;
+import com.kuit.chatdiary.domain.ChatType;
+import com.kuit.chatdiary.domain.Member;
+import com.kuit.chatdiary.domain.Sender;
+import jakarta.persistence.EntityManager;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
